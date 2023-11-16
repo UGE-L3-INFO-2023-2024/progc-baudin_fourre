@@ -10,11 +10,10 @@
 typedef struct {
     Map map;
     time next_wave;
-    MonsterHead monsters;
-    GemHead gems;
+    MonsterList monsters;
+    ActiveGemList active_gems;
     Inventory inventory;
     Mana mana;
-    // Liste des shots
 } Game;
 
 #endif // __GAME_H__
