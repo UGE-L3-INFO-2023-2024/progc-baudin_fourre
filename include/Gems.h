@@ -14,9 +14,10 @@ typedef struct {
 
 typedef struct ActiveGem {
     Gem gem;
-    Cell *cell;
+    Cell *tower;
     time start_time;
     time_interval shot_interval;
+    // last shot ?
     LIST_ENTRY(ActiveGem) entries;
 } ActiveGem;
 

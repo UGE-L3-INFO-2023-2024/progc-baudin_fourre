@@ -12,8 +12,9 @@ typedef struct Monster {
     Position position;
     float speed;
     Hue hue;
+    int hp_init;
     int hp;
-    Element residu;
+    Element residu; // TODO : revoir le nom là
     ShotList shots;
     LIST_ENTRY(Monster) entries;
 } Monster;
