@@ -6,10 +6,11 @@
 #include "Gems.h"
 #include "Inventory.h"
 #include "Mana.h"
+#include "Time.h"
 
 typedef struct {
     Map map;
-    time next_wave;
+    timestamp next_wave;
     MonsterList monsters;
     ActiveGemList active_gems;
     Inventory inventory;

@@ -2,23 +2,46 @@
 #define __MONSTERS_H__
 
 #include <sys/queue.h>
+
 #include "Hue.h"
 #include "Element.h"
 #include "Map.h"
 #include "Shots.h"
+#include "Time.h"
+
+#define HP_MULT 10
 
 typedef struct Monster {
-    time start_time;
+    timestamp start_time;
     Position position;
-    float speed;
+    int speed;
     Hue hue;
-    int hp_init;
-    int hp;
-    Element residu; // TODO : revoir le nom là
+    float hp_init;
+    float hp;
+    Element residue; 
     ShotList shots;
     LIST_ENTRY(Monster) entries;
 } Monster;
 
-typedef LIST_HEAD(MonsterList, entries) MonsterList;
+typedef LIST_HEAD(MonsterList, Monster) MonsterList;
+
+/**
+ * @brief Creates a new monster initialized with the given arguments
+ * 
+ * @param speed speed of the monster, in cells per seconds
+ * @param HP initial HP of the monster
+ * @param start_time time when the monster leaves the nest
+ * @param position Initial position of the monster (nest)
+ * @return Monster* address of the Monster structure allocated, 
+ * or NULL if there was an allocation error
+ */
+Monster *create_new_monster(int speed, int HP, timestamp start_time, Position position);
+
+/**
+ * @brief Frees the space allocated for the list of monsters
+ * 
+ * @param monsters address of the list of monsters
+ */
+void free_monsters(MonsterList *monsters);
 
 #endif // __MONSTERS_H__

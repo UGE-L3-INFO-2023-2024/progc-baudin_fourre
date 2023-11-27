@@ -29,9 +29,9 @@
   - Niveau n, Maximum 2000 * 1.4^n 
   - Augmenter la réserve : 25% du max de mana = 500 * 1.4^n
   - Monstre éliminé : + (10% HP * 1.3^n) avec n niveau de la réserve de mana
-  - Monstre banni et retour au nid : - (15% HP * 1.3^n)
+  - Monstre banni et retour au nid : - (15% HP * 1.3^n) mana
   - Si plus de mana : défaite
-
+ 
 - Tours
   - Baties sur cases vides 
   - Permanentes
