@@ -1,7 +1,7 @@
 #ifndef __ELEMENT_H__
 #define __ELEMENT_H__
 
-#include "Monsters.h"
+typedef int Hue;
 
 typedef enum {
     NONE,
@@ -11,12 +11,15 @@ typedef enum {
 } Element;
 
 /**
- * @brief Adds, if necessary, an element to the field `residue` of the monster, 
- * according to the `shot_hue`
- * 
- * @param monster Address of the Monster structure to modify
- * @param shot_hue Hue of the shot targeting the monster
+ * @brief Generates a random hue in the given element, if there's one
+ *
+ * @param element Element from which to generate the hue, or NONE to generate any hue
+ * @return Hue random hue generated
  */
-void add_monster_residue(Monster *monster, Hue shot_hue);
+Hue random_hue(Element element);
+
+Element hue_to_element(Hue hue);
+
+void get_element_effect(Element monster_residue, Element shot_element);
 
 #endif // __ELEMENT_H__

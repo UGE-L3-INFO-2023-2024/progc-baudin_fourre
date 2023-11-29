@@ -12,4 +12,4 @@ interval get_interval(float seconds);
 
 // Chronometre
 
-#endif // __TIME_H__
+#endif  // __TIME_H__

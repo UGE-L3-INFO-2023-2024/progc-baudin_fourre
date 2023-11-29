@@ -4,15 +4,8 @@
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 22
 
-typedef struct {
-    char col;
-    char line;
-} Coord;
-
-typedef struct {
-    float x;
-    float y;
-} Position;
+#include "Gems.h"
+#include "Utils.h"
 
 typedef enum {
     EMPTY,
@@ -33,7 +26,7 @@ typedef struct {
     CellType type;
     Coord coord;
     union {
-        Gem *gem;
+        Gem gem;
         Direction direction;
     };
 } Cell;

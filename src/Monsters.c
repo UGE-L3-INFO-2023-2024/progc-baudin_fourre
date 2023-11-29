@@ -1,23 +1,23 @@
 /**
  * @file Monsters.c
  * @author Anaelle Fourré & Florian Baudin
- * @brief 
+ * @brief
  * @date 2023-11-25
- * 
+ *
  */
 
-#include <stdlib.h>
+#include "Monsters.h"
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/queue.h>
 
-#include "Monsters.h"
 #include "Element.h"
-#include "Hue.h"
 
 // Returns the adress of the new Monster created with the given arguments
-Monster *create_new_monster(int speed, int HP, timestamp start_time, Position position){
+Monster *create_new_monster(int speed, int HP, timestamp start_time, Position position) {
     Monster *monster = (Monster *)malloc(sizeof(Monster));
-    if (!monster){
+    if (!monster) {
         fprintf(stderr, "Allocation error\n");
         return NULL;
     }
@@ -40,5 +40,19 @@ void free_monsters(MonsterList *monsters) {
         LIST_REMOVE(monster, entries);
         free(monster);
         monster = NULL;
+    }
+}
+
+// Adds, if necessary, an element to the field `residue` of the monster, according to the `shot_hue`
+void add_monster_residue(Monster *monster, Hue shot_hue) {
+    Element shot_element = hue_to_element(shot_hue);
+    if (shot_element == NONE)
+        return;
+
+    if (monster->residue == NONE)
+        monster->residue = shot_element;
+    else {
+        get_element_effect(monster->residue, shot_element);
+        monster->residue = NONE;
     }
 }
