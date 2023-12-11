@@ -53,4 +53,13 @@ void free_monsters(MonsterList *monsters);
  */
 void add_monster_residue(Monster *monster, Hue shot_hue);
 
+/**
+ * @brief Moves the monster along the `direction` for a duration of `time_elapsed`
+ *
+ * @param monster Address of the monster to modify
+ * @param direction Direction of the movement of the monster
+ * @param time_elapsed time elapsed during the movement of the monster
+ */
+void move_monster(Monster *monster, Direction direction, interval time_elapsed);
+
 #endif // __MONSTERS_H__

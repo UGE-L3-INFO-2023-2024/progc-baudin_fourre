@@ -9,7 +9,33 @@ typedef struct {
 typedef struct {
     float x;
     float y;
-} Position;
+} Position, Vector;
+
+typedef enum {
+    NORTH,
+    SOUTH,
+    WEST,
+    EAST,
+} Direction;
+
+/**
+ * @brief Returns the vector associated to the cardinal Direction
+ *
+ * @param direction
+ * @return Vector
+ */
+Vector get_direction_vector(Direction direction);
+
+/**
+ * @brief Returns the new position of an object with a position `old_pos`
+ * moving with a vector `move` for a distance `distance`
+ *
+ * @param old_pos
+ * @param distance
+ * @param move
+ * @return Position
+ */
+Position get_new_position(Position old_pos, float distance, Vector move);
 
 // Distance entre deux points
 // Calcul vecteur de déplacement

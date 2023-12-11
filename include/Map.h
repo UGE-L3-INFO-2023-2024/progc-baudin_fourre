@@ -15,13 +15,6 @@ typedef enum {
     HOME,
 } CellType;
 
-typedef enum {
-    NORTH,
-    SOUTH,
-    WEST,
-    EAST,
-} Direction;
-
 typedef struct {
     CellType type;
     Coord coord;

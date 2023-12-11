@@ -4,6 +4,7 @@
 
 #include "Monsters.h"
 
+// Generates a random hue in the range of the `element`
 Hue random_hue(Element element) {
     int start, interval;
     switch (element) {

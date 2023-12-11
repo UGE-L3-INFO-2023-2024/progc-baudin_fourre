@@ -18,8 +18,20 @@ typedef enum {
  */
 Hue random_hue(Element element);
 
+/**
+ * @brief Returns the Element associated with the value of the `hue`
+ *
+ * @param hue
+ * @return Element
+ */
 Element hue_to_element(Hue hue);
 
+/**
+ * @brief
+ *
+ * @param monster_residue
+ * @param shot_element
+ */
 void get_element_effect(Element monster_residue, Element shot_element);
 
 #endif // __ELEMENT_H__

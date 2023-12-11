@@ -13,6 +13,7 @@
 #include <sys/queue.h>
 
 #include "Element.h"
+#include "Utils.h"
 
 // Returns the adress of the new Monster created with the given arguments
 Monster *create_new_monster(int speed, int HP, timestamp start_time, Position position) {
@@ -55,4 +56,10 @@ void add_monster_residue(Monster *monster, Hue shot_hue) {
         get_element_effect(monster->residue, shot_element);
         monster->residue = NONE;
     }
+}
+
+// Moves the monster along the `direction` for a duration of `time_elapsed`
+void move_monster(Monster *monster, Direction direction, interval time_elapsed) {
+    Vector move = get_direction_vector(direction);
+    monster->position = get_new_position(monster->position, monster->speed * time_elapsed.tv_sec, move);
 }
