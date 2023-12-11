@@ -12,10 +12,10 @@ typedef struct {
 } Position, Vector;
 
 typedef enum {
-    NORTH,
-    SOUTH,
-    WEST,
-    EAST,
+    NORTH = 0b00,
+    SOUTH = 0b01,
+    WEST  = 0b10,
+    EAST  = 0b11,
 } Direction;
 
 /**

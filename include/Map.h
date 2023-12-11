@@ -8,7 +8,7 @@
 #include "Utils.h"
 
 typedef enum {
-    EMPTY,
+    EMPTY = 0,
     TOWER,
     PATH,
     NEST,
@@ -26,7 +26,7 @@ typedef struct {
 
 typedef struct {
     Cell cells[MAP_WIDTH][MAP_HEIGHT];
-    Cell *nest;
+    Coord nest;
 } Map;
 
 #endif // __MAP_H__
