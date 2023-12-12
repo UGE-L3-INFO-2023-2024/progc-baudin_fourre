@@ -7,6 +7,8 @@
 #include "Gems.h"
 #include "Utils.h"
 
+#define CI(x) (x).col][(x).line
+
 typedef enum {
     EMPTY = 0,
     TOWER,
@@ -29,4 +31,8 @@ typedef struct {
     Coord nest;
 } Map;
 
-#endif // __MAP_H__
+Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir);
+
+Map generate_map();
+
+#endif  // __MAP_H__

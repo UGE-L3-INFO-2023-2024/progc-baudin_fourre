@@ -14,6 +14,8 @@ void init_graphic(void);
 
 void draw_grid(void);
 
+void draw_path(Map map);
+
 /**
  * @brief Waits `time` seconds
  *
@@ -29,6 +31,8 @@ void refresh(void);
 
 void clear_window(void);
 
+void draw_monster(Monster monster);
+
 /**
  * @brief Quits and frees the window
  *
@@ -36,4 +40,4 @@ void clear_window(void);
  */
 void quit(void);
 
-#endif // __GRAPHIC_H__
+#endif  // __GRAPHIC_H__

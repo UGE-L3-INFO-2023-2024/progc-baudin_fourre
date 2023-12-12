@@ -1,24 +1,21 @@
 #include "Map.h"
 
+#include <MLV/MLV_random.h>
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <MLV/MLV_random.h>
-
-#define CI(x) (x).col][(x).line
 
 static Coord random_nest_coords() {
     const int margin = 2;
     return (Coord){
         .col = MLV_get_random_integer(0 + margin, MAP_WIDTH - margin),
-        .line = MLV_get_random_integer(0 + margin, MAP_HEIGHT - margin)
-    };
+        .line = MLV_get_random_integer(0 + margin, MAP_HEIGHT - margin)};
 }
 
 static bool out_of_edges(Coord coord, int margin) {
-    return (coord.line < margin || coord.line >= MAP_HEIGHT - margin
-            || coord.col < margin || coord.col >= MAP_WIDTH - margin);
+    return (coord.line < margin || coord.line >= MAP_HEIGHT - margin ||
+            coord.col < margin || coord.col >= MAP_WIDTH - margin);
 }
 
 static void init_map(Map *map) {
@@ -39,29 +36,30 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
     assert(cell);
 
     Coord next_coord = cell->coord;
-    switch (dir)
-    {
-    case NORTH:
-        next_coord.line--;
-        break;
-    case SOUTH:
-        next_coord.line++;
-        break;
-    case EAST:
-        next_coord.col--;
-        break;
-    case WEST:
-        next_coord.col++;
-        break;
+    switch (dir) {
+        case NORTH:
+            next_coord.line--;
+            break;
+        case SOUTH:
+            next_coord.line++;
+            break;
+        case EAST:
+            next_coord.col--;
+            break;
+        case WEST:
+            next_coord.col++;
+            break;
     }
     if (out_of_edges(next_coord, 0)) {
         return NULL;
     }
-    return (Cell *) &map->cells[CI(next_coord)];
+    return (Cell *)&map->cells[CI(next_coord)];
 }
 
-bool check_around(const Map *map, const Cell *cell, Direction dir, Direction forbidden_dir, int dist) {
-    // fprintf(stderr, "CHECK AROUND d%d %d (%d, %d) %c\n", dir, dist, cell->coord.col, cell->coord.line, 'A' + cell->type);
+static bool check_around(const Map *map, const Cell *cell, Direction dir,
+                         Direction forbidden_dir, int dist) {
+    // fprintf(stderr, "CHECK AROUND d%d %d (%d, %d) %c\n", dir, dist,
+    // cell->coord.col, cell->coord.line, 'A' + cell->type);
 
     if (cell == NULL) {
         return false;
@@ -71,7 +69,9 @@ bool check_around(const Map *map, const Cell *cell, Direction dir, Direction for
     }
     if (dist > 0) {
         for (int i = 0; i < 4; i++) {
-            if (i != forbidden_dir && i != (dir ^ 0b01) && !check_around(map, next_cell_direction(map, cell, i), i, forbidden_dir, dist - 1)) {
+            if (i != forbidden_dir && i != (dir ^ 0b01) &&
+                !check_around(map, next_cell_direction(map, cell, i), i,
+                              forbidden_dir, dist - 1)) {
                 return false;
             }
         }
@@ -79,11 +79,12 @@ bool check_around(const Map *map, const Cell *cell, Direction dir, Direction for
     return true;
 }
 
-int distance_reached_direction(const Map *map, const Cell *cell, Direction dir) {
+static int distance_reached_direction(const Map *map, const Cell *cell,
+                                      Direction dir) {
     int distance = 0;
-    while ((cell = next_cell_direction(map, cell, dir))
-           && !out_of_edges(cell->coord, 2)
-           && check_around(map, cell, dir, (dir ^ 0b01), 2)) {
+    while ((cell = next_cell_direction(map, cell, dir)) &&
+           !out_of_edges(cell->coord, 2) &&
+           check_around(map, cell, dir, (dir ^ 0b01), 2)) {
         // fprintf(stderr, "COMPUTE DISTANCE\n");
         distance++;
     }
@@ -91,7 +92,7 @@ int distance_reached_direction(const Map *map, const Cell *cell, Direction dir) 
     return distance;
 }
 
-int weighted_random(int weights[], int size) {
+static int weighted_random(int weights[], int size) {
     assert(weights);
 
     int sum = 0;
@@ -116,6 +117,7 @@ int weighted_random(int weights[], int size) {
 Map generate_map() {
     int turns;
     int length;
+    int random_length;
     Map map;
 
     do {
@@ -132,13 +134,15 @@ Map generate_map() {
 
         int length_in_dir[4];
         for (int i = 0; i < 4; i++) {
-            length_in_dir[i] = distance_reached_direction(&map, cell, i); // Only if > 3 ??
+            length_in_dir[i] =
+                distance_reached_direction(&map, cell, i);  // Only if > 3 ??
         }
-        // fprintf(stderr, "LENGTHS %d %d %d %d\n", length_in_dir[0], length_in_dir[1], length_in_dir[2], length_in_dir[3]);
+        // fprintf(stderr, "LENGTHS %d %d %d %d\n", length_in_dir[0],
+        // length_in_dir[1], length_in_dir[2], length_in_dir[3]);
         Direction random_dir = weighted_random(length_in_dir, 4);
 
         while (length_in_dir[random_dir] > 2) {
-            int random_length = 0;
+            random_length = 0;
             for (int i = 0; i < length_in_dir[random_dir]; i++) {
                 random_length += MLV_get_random_integer(0, 4) < 3 ? 1 : 0;
             }
@@ -158,10 +162,14 @@ Map generate_map() {
                 printf("\n");
             } */
 
-            int axe = (~random_dir & 0b10); // Get axe to turn
-            length_in_dir[axe | 0b00] = distance_reached_direction(&map, cell, axe | 0b00);
-            length_in_dir[axe | 0b01] = distance_reached_direction(&map, cell, axe | 0b01);
-            // fprintf(stderr, "E(%d = %d, %d = %d)\n", axe | 0b00, length_in_dir[axe | 0b00], axe | 0b01, length_in_dir[axe | 0b01]);
+            int axe = (~random_dir & 0b10);  // Get axe to turn
+            length_in_dir[axe | 0b00] =
+                distance_reached_direction(&map, cell, axe | 0b00);
+            length_in_dir[axe | 0b01] =
+                distance_reached_direction(&map, cell, axe | 0b01);
+            // fprintf(stderr, "E(%d = %d, %d = %d)\n", axe | 0b00,
+            // length_in_dir[axe | 0b00], axe | 0b01, length_in_dir[axe |
+            // 0b01]);
             if (length_in_dir[axe | 0b00] + length_in_dir[axe | 0b01] <= 0) {
                 break;
             }
@@ -173,7 +181,7 @@ Map generate_map() {
         }
 
         cell->type = HOME;
-    } while (turns < 7 && length < 75);
+    } while (turns < 7 || length < 75);
 
     return map;
 }
