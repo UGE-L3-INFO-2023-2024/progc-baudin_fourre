@@ -9,7 +9,6 @@
 
 int main(void) {
     srand(time(NULL));
-    Direction dir;
     Map map = generate_map();
     timestamp timetp = (timestamp){0, 0};
     Monster *monster = create_new_monster(map, 1, 10, timetp);

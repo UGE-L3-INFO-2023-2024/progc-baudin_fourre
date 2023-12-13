@@ -49,6 +49,8 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
         case WEST:
             next_coord.col--;
             break;
+        case NODIR:
+            break;
     }
     if (out_of_edges(next_coord, 0)) {
         return NULL;

@@ -48,15 +48,21 @@ void mana_eliminate_monster(Mana *mana, Monster monster) {
         mana->quantity = mana->max;
 }
 
+// Decreases the mana quanityt by `required` if possible.
+// Returns 1 if it was possible, else 0.
+static int mana_remove_required(Mana *mana, int required) {
+    assert(required >= 0);
+    if (!enough_mana(*mana, required))
+        return 0;
+    mana->quantity -= required;
+    return 1;
+}
+
 // Decreases the mana quantity, if possible, in order to banish a monster
 int mana_banish_monster(Mana *mana, Monster monster) {
     assert(mana);
     int required = (monster.hp_init * 0.15) * pow(1.3, mana->level);
-    if (!enough_mana(*mana, required))
-        return 0;
-
-    mana->quantity -= required;
-    return 1;
+    return mana_remove_required(mana, required);
 }
 
 // Decreases the mana quantity, if possible, in order to buy a tower
@@ -67,10 +73,7 @@ int mana_buy_tower(Mana *mana) {
 
     if (nb_tower >= 3)
         required = 100 * pow(2, nb_tower - 3);
-    if (!enough_mana(*mana, required))
-        return 0;
-    mana->quantity -= required;
-    return 1;
+    return mana_remove_required(mana, required);
 }
 
 // Decreases the mana quantity, if possible, in order to buy a gem of level
@@ -78,8 +81,11 @@ int mana_buy_tower(Mana *mana) {
 int mana_buy_gem(Mana *mana, int level) {
     assert(mana);
     int required = 100 * pow(2, level);
-    if (!enough_mana(*mana, required))
-        return 0;
-    mana->quantity -= required;
-    return 1;
+    return mana_remove_required(mana, required);
+}
+
+// Decreases the mana quantity, if possible, in order to fuse gems
+int mana_fuse_gem(Mana *mana) {
+    assert(mana);
+    return mana_remove_required(mana, 100);
 }

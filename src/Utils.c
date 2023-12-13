@@ -13,6 +13,8 @@ Vector get_direction_vector(Direction direction) {
             return (Vector){-1, 0};
         case EAST:
             return (Vector){1, 0};
+        case NODIR:
+            return (Vector){0, 0};
     }
     return (Vector){0, 0};
 }

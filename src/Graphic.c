@@ -73,6 +73,15 @@ void draw_grid(void) {
     }
 }
 
+void draw_mana(Mana mana) {}
+
+static void assign_rgb(double *R, double *G, double *B, double r, double g,
+                       double b) {
+    *R = r;
+    *G = g;
+    *B = b;
+}
+
 // Returns the RGBA representation of the Hue `hue`
 MLV_Color hue_to_rgba(Hue hue) {
     assert(hue < 360);
@@ -85,44 +94,29 @@ MLV_Color hue_to_rgba(Hue hue) {
     double C = (1 - d_abs(2 * L - 1)) * S;
     double X = C * (1 - d_abs(H2 - 1));
     double m = L - C / 2;
-    // printf("H = %f ; H2 = %f \n", H, H2);
-    // printf("C = %f ; X = %f ; m = %f \n", C, X, m);
     switch (hue / 60) {
         case 0:
-            R1 = C;
-            G1 = X;
-            B1 = 0;
+            assign_rgb(&R1, &G1, &B1, C, X, 0);
             break;
         case 1:
-            R1 = X;
-            G1 = C;
-            B1 = 0;
+            assign_rgb(&R1, &G1, &B1, X, C, 0);
             break;
         case 2:
-            R1 = 0;
-            G1 = C;
-            B1 = X;
+            assign_rgb(&R1, &G1, &B1, 0, C, X);
             break;
         case 3:
-            R1 = 0;
-            G1 = X;
-            B1 = C;
+            assign_rgb(&R1, &G1, &B1, 0, X, C);
             break;
         case 4:
-            R1 = X;
-            G1 = 0;
-            B1 = C;
+            assign_rgb(&R1, &G1, &B1, X, 0, C);
             break;
         case 5:
-            R1 = C;
-            G1 = 0;
-            B1 = X;
+            assign_rgb(&R1, &G1, &B1, C, 0, X);
             break;
     }
     R = (R1 + m) * 255;
     G = (G1 + m) * 255;
     B = (B1 + m) * 255;
-    // printf("hue = %d --> RGB = (%d, %d, %d)\n", hue, R, G, B);
     return MLV_rgba(R, G, B, 255);
 }
 
