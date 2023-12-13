@@ -119,6 +119,7 @@ static int weighted_random(int weights[], int size) {
 Map generate_map() {
     int turns;
     int length;
+    int r;
     int random_length;
     Map map;
 
@@ -146,7 +147,7 @@ Map generate_map() {
         while (length_in_dir[random_dir] > 2) {
             random_length = 0;
             for (int i = 0; i < length_in_dir[random_dir]; i++) {
-                random_length += MLV_get_random_integer(0, 4) < 3 ? 1 : 0;
+                random_length += MLV_get_random_integer(0, 3) < 3 ? 1 : 0;
             }
             random_length = random_length < 3 ? 3 : random_length;
 
@@ -183,7 +184,7 @@ Map generate_map() {
         }
 
         cell->type = HOME;
-    } while (turns < 7 || length < 75);
+    } while (turns < 8 || length < 75);
 
     return map;
 }

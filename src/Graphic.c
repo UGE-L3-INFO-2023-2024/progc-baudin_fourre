@@ -2,19 +2,12 @@
 
 #include <MLV/MLV_all.h>
 #include <assert.h>
+#include <math.h>
 
 #include "Element.h"
 #include "Game.h"
 #include "Map.h"
 #include "Monsters.h"
-
-// Returns the absolute value of the double `x`
-static double d_abs(double x) {
-    if (x < 0)
-        return -x;
-    else
-        return x;
-}
 
 // Initializes the graphic window
 void init_graphic(void) {
@@ -117,38 +110,33 @@ static void assign_rgb(double *R, double *G, double *B, double r, double g,
 MLV_Color hue_to_rgba(Hue hue) {
     assert(hue < 360);
     double H = hue / 60.0;
-    double H2 = H - 2 * ((int)H / 2);
-    int R, G, B;
     double L = 0.5;
     double S = 1.0;
-    double R1, G1, B1;
-    double C = (1 - d_abs(2 * L - 1)) * S;
-    double X = C * (1 - d_abs(H2 - 1));
+    double R, G, B;
+    double C = (1 - fabs(2 * L - 1)) * S;
+    double X = C * (1 - fabs(fmod(H, 2) - 1));
     double m = L - C / 2;
     switch (hue / 60) {
         case 0:
-            assign_rgb(&R1, &G1, &B1, C, X, 0);
+            assign_rgb(&R, &G, &B, C, X, 0);
             break;
         case 1:
-            assign_rgb(&R1, &G1, &B1, X, C, 0);
+            assign_rgb(&R, &G, &B, X, C, 0);
             break;
         case 2:
-            assign_rgb(&R1, &G1, &B1, 0, C, X);
+            assign_rgb(&R, &G, &B, 0, C, X);
             break;
         case 3:
-            assign_rgb(&R1, &G1, &B1, 0, X, C);
+            assign_rgb(&R, &G, &B, 0, X, C);
             break;
         case 4:
-            assign_rgb(&R1, &G1, &B1, X, 0, C);
+            assign_rgb(&R, &G, &B, X, 0, C);
             break;
         case 5:
-            assign_rgb(&R1, &G1, &B1, C, 0, X);
+            assign_rgb(&R, &G, &B, C, 0, X);
             break;
     }
-    R = (R1 + m) * 255;
-    G = (G1 + m) * 255;
-    B = (B1 + m) * 255;
-    return MLV_rgba(R, G, B, 255);
+    return MLV_rgba((R + m) * 255, (G + m) * 255, (B + m) * 255, 255);
 }
 
 // draws the monster `monster` at its position as a circle, having its hue for
