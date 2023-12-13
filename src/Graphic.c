@@ -73,8 +73,39 @@ void draw_grid(void) {
     }
 }
 
-void draw_mana(Mana mana) {}
+// draws a bar at the corner (x, y), of size (width x height),
+// with its first (`filled`*100)% filled with color `color`
+static void draw_bar(int x, int y, int width, int height, double filled,
+                     MLV_Color color) {
+    assert(x >= 0 && x < MAP_WIDTH * CELL_SIZE);
+    assert(y >= 0 && y < MAP_HEIGHT * CELL_SIZE);
+    assert(width >= 0 && width < MAP_WIDTH * CELL_SIZE);
+    assert(height >= 0 && height < MAP_HEIGHT * CELL_SIZE);
+    assert(filled >= 0 && filled <= 100);
+    MLV_draw_filled_rectangle(x, y, width * filled, height, color);
+    MLV_draw_filled_rectangle(x + width * filled, y, width * (1.0 - filled),
+                              height, MLV_COLOR_WHITE);
+    MLV_draw_rectangle(x, y, width, height, MLV_COLOR_BLACK);
+}
 
+// Draws the mana bar at the top of the window
+void draw_mana(Mana mana) {
+    char mana_values[12];
+    sprintf(mana_values, "%d/%d", mana.quantity, mana.max);
+
+    double filled = (double)mana.quantity / (double)mana.max;
+    draw_bar((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
+             (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2, filled,
+             MLV_COLOR_CYAN);
+
+    MLV_draw_text_box((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
+                      (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2,
+                      mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
+                      MLV_rgba(0, 0, 0, 0), MLV_TEXT_CENTER, MLV_TEXT_CENTER,
+                      MLV_TEXT_CENTER);
+}
+
+// assign the values (r, g, b) to (*R, *G, *B)
 static void assign_rgb(double *R, double *G, double *B, double r, double g,
                        double b) {
     *R = r;

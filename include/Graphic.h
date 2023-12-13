@@ -52,6 +52,13 @@ void clear_window(void);
 void draw_monster(Monster monster);
 
 /**
+ * @brief Draw the mana bar at the top of the window
+ *
+ * @param mana Mana structure to display
+ */
+void draw_mana(Mana mana);
+
+/**
  * @brief Clears the path by displaying grey rectangles over each cell
  *
  * @param map Map of the path to clear

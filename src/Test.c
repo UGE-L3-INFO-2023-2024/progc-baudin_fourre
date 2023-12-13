@@ -10,6 +10,7 @@
 int main(void) {
     srand(time(NULL));
     Map map = generate_map();
+    Mana mana = init_mana();
     timestamp timetp = (timestamp){0, 0};
     Monster *monster = create_new_monster(map, 1, 10, timetp);
     interval itvl = (interval){0, 17};
@@ -17,6 +18,7 @@ int main(void) {
     init_graphic();
     clear_window();
     draw_grid();
+    draw_mana(mana);
 
     while (get_events() != QUIT) {
         clear_path(map);
