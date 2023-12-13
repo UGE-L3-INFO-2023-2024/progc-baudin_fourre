@@ -21,6 +21,7 @@ typedef struct Monster {
     ShotList shots;
     LIST_ENTRY(Monster)
     entries;
+    Direction direction;
 } Monster;
 
 typedef LIST_HEAD(MonsterList, Monster) MonsterList;
@@ -28,14 +29,14 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
 /**
  * @brief Creates a new monster initialized with the given arguments
  *
+ * @param map Map where the monster is placed
  * @param speed speed of the monster, in cells per seconds
  * @param HP initial HP of the monster
  * @param start_time time when the monster leaves the nest
- * @param position Initial position of the monster (nest)
  * @return Monster* address of the Monster structure allocated,
  * or NULL if there was an allocation error
  */
-Monster *create_new_monster(int speed, int HP, timestamp start_time, Position position);
+Monster *create_new_monster(Map map, int speed, int HP, timestamp start_time);
 
 /**
  * @brief Frees the space allocated for the list of monsters
@@ -54,12 +55,13 @@ void free_monsters(MonsterList *monsters);
 void add_monster_residue(Monster *monster, Hue shot_hue);
 
 /**
- * @brief Moves the monster along the `direction` for a duration of `time_elapsed`
+ * @brief Moves the monster on the map for a duration of
+ * `time_elapsed`
  *
+ * @param map Map where the monster moves
  * @param monster Address of the monster to modify
- * @param direction Direction of the movement of the monster
  * @param time_elapsed time elapsed during the movement of the monster
  */
-void move_monster(Monster *monster, Direction direction, interval time_elapsed);
+void move_monster(Map map, Monster *monster, interval time_elapsed);
 
-#endif // __MONSTERS_H__
+#endif  // __MONSTERS_H__

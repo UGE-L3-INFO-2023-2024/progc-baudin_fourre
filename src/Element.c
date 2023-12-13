@@ -1,5 +1,6 @@
 #include "Element.h"
 
+#include <stdio.h>
 #include <stdlib.h>
 
 #include "Monsters.h"
@@ -8,24 +9,26 @@
 Hue random_hue(Element element) {
     int start, interval;
     switch (element) {
-    case PYRO:
-        start = 330;
-        interval = 60;
-        break;
-    case DENDRO:
-        start = 90;
-        interval = 60;
-        break;
-    case HYDRO:
-        start = 210;
-        interval = 60;
-        break;
-    case NONE:
-        start = 0;
-        interval = 360;
-        break;
+        case PYRO:
+            start = 330;
+            interval = 60;
+            break;
+        case DENDRO:
+            start = 90;
+            interval = 60;
+            break;
+        case HYDRO:
+            start = 210;
+            interval = 60;
+            break;
+        case NONE:
+            start = 0;
+            interval = 360;
+            break;
     }
-    return (rand() % interval + start) % 360;
+    int r = (rand() % interval + start) % 360;
+    printf("%d\n", r);
+    return r;
 }
 
 // Returns the element associated with the `hue`
@@ -44,17 +47,17 @@ Element hue_to_element(Hue hue) {
 // according to the `monster_residue` and the `shot_element`
 void get_element_effect(Element monster_residue, Element shot_element) {
     switch (monster_residue | shot_element) {
-    case PYRO:
-        break;
-    case DENDRO:
-        break;
-    case HYDRO:
-        break;
-    case PYRO | DENDRO:
-        break;
-    case PYRO | HYDRO:
-        break;
-    case HYDRO | DENDRO:
-        break;
+        case PYRO:
+            break;
+        case DENDRO:
+            break;
+        case HYDRO:
+            break;
+        case PYRO | DENDRO:
+            break;
+        case PYRO | HYDRO:
+            break;
+        case HYDRO | DENDRO:
+            break;
     }
 }

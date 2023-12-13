@@ -12,8 +12,17 @@
  */
 void init_graphic(void);
 
+/**
+ * @brief Displays a black grid over the window
+ *
+ */
 void draw_grid(void);
 
+/**
+ * @brief Displays the path of the map
+ *
+ * @param map Map containing the `path` to draw
+ */
 void draw_path(Map map);
 
 /**
@@ -21,7 +30,7 @@ void draw_path(Map map);
  *
  * @param time
  */
-void wait_seconds(int time);
+void wait_milliseconds(int time);
 
 /**
  * @brief Refreshes the graphic window with the changes made
@@ -29,9 +38,25 @@ void wait_seconds(int time);
  */
 void refresh(void);
 
+/**
+ * @brief Clears the window (displays a grey rectangle over the window)
+ *
+ */
 void clear_window(void);
 
+/**
+ * @brief draws the Monster `monster` as a circle centered at its position
+ *
+ * @param monster Monster structure to draw
+ */
 void draw_monster(Monster monster);
+
+/**
+ * @brief Clears the path by displaying grey rectangles over each cell
+ *
+ * @param map Map of the path to clear
+ */
+void clear_path(Map map);
 
 /**
  * @brief Quits and frees the window

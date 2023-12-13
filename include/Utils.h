@@ -14,8 +14,9 @@ typedef struct {
 typedef enum {
     NORTH = 0b00,
     SOUTH = 0b01,
-    WEST  = 0b10,
-    EAST  = 0b11,
+    WEST = 0b10,
+    EAST = 0b11,
+    NODIR = 5,
 } Direction;
 
 /**
@@ -35,10 +36,18 @@ Vector get_direction_vector(Direction direction);
  * @param move
  * @return Position
  */
-Position get_new_position(Position old_pos, float distance, Vector move);
+Position get_new_position(Position old_pos, double distance, Vector move);
+
+/**
+ * @brief Checks if the `position`is centered in a cell, or else 0
+ *
+ * @param position Position to check
+ * @return int 1 if the position is centered, else 0
+ */
+int is_position_center(Position position);
 
 // Distance entre deux points
 // Calcul vecteur de déplacement
 // Calcul nouvelle position à partir de vitesse et vecteur de déplacement
 
-#endif // __UTILS_H__
+#endif  // __UTILS_H__

@@ -11,12 +11,13 @@ typedef enum {
 } WaveType;
 
 /**
- * @brief Generates a new random wave adding the monsters created to the monster list
+ * @brief Generates a new random wave adding the monsters created to the
+ * monster list
  *
  * @param monster_list address of the list of monsters
- * @param nest Cell corresponding to the nest of the monsters
+ * @param map Map where the wave is generated
  * @return int 1 if the wave was generated, 0 if there was an allocation error
  */
-int wave_generation(MonsterList *monster_list, Cell nest);
+int wave_generation(MonsterList *monster_list, Map map);
 
 #endif  // __WAVES_H__

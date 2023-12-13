@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 static Coord random_nest_coords() {
-    const int margin = 2;
+    const int margin = 3;
     return (Coord){
         .col = MLV_get_random_integer(0 + margin, MAP_WIDTH - margin),
         .line = MLV_get_random_integer(0 + margin, MAP_HEIGHT - margin)};
@@ -44,10 +44,10 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
             next_coord.line++;
             break;
         case EAST:
-            next_coord.col--;
+            next_coord.col++;
             break;
         case WEST:
-            next_coord.col++;
+            next_coord.col--;
             break;
     }
     if (out_of_edges(next_coord, 0)) {
@@ -123,8 +123,8 @@ Map generate_map() {
     do {
         map = (Map){0};
         init_map(&map);
-        // map.nest = random_nest_coords();
-        map.nest = (Coord){.col = 6, .line = 9};
+        map.nest = random_nest_coords();
+        // map.nest = (Coord){.col = 6, .line = 9};
         turns = 0;
         length = 0;
         // fprintf(stderr, "NEST (%d, %d)\n", map.nest.col, map.nest.line);
@@ -184,6 +184,16 @@ Map generate_map() {
     } while (turns < 7 || length < 75);
 
     return map;
+}
+
+// Returns the direction of the cell where the `position`is situated
+Direction get_position_direction(Map map, Position position) {
+    int x = position.x;
+    int y = position.y;
+    CellType type = map.cells[x][y].type;
+    if (type != PATH && type != NEST)
+        return NODIR;
+    return map.cells[x][y].direction;
 }
 
 /*

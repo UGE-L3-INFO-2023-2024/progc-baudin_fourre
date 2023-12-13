@@ -35,4 +35,14 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir);
 
 Map generate_map();
 
+/**
+ * @brief Get the direction of the cell below `position`
+ *
+ * @param map Map containing the cells and the path
+ * @param position Position where to get the direction
+ * @return Direction cardinal direction of the cell, or NONE if the position is
+ * not on a PATH
+ */
+Direction get_position_direction(Map map, Position position);
+
 #endif  // __MAP_H__

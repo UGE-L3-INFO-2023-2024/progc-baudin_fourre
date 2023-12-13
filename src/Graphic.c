@@ -1,11 +1,20 @@
 #include "Graphic.h"
 
 #include <MLV/MLV_all.h>
+#include <assert.h>
 
 #include "Element.h"
 #include "Game.h"
 #include "Map.h"
 #include "Monsters.h"
+
+// Returns the absolute value of the double `x`
+static double d_abs(double x) {
+    if (x < 0)
+        return -x;
+    else
+        return x;
+}
 
 // Initializes the graphic window
 void init_graphic(void) {
@@ -13,6 +22,7 @@ void init_graphic(void) {
                       MAP_HEIGHT * CELL_SIZE + 2);
 }
 
+// Draws a cell of coordinates (x, y), in the color `color`
 static void draw_cell(int x, int y, MLV_Color color) {
     MLV_Color outline = MLV_COLOR_BLACK;
 
@@ -43,6 +53,17 @@ void draw_path(Map map) {
     }
 }
 
+// clears the path of the map
+void clear_path(Map map) {
+    int test = 1;
+    for (Cell cell = map.cells[CI(map.nest)]; test;
+         cell = *next_cell_direction(&map, &cell, cell.direction)) {
+        draw_cell(cell.coord.col, cell.coord.line, MLV_COLOR_GREY);
+        if (cell.type == HOME)
+            test = 0;
+    }
+}
+
 // Draw a blank grid
 void draw_grid(void) {
     for (int i = 0; i < MAP_WIDTH; i++) {
@@ -52,56 +73,65 @@ void draw_grid(void) {
     }
 }
 
+// Returns the RGBA representation of the Hue `hue`
 MLV_Color hue_to_rgba(Hue hue) {
-    int H = hue / 60;
+    assert(hue < 360);
+    double H = hue / 60.0;
+    double H2 = H - 2 * ((int)H / 2);
+    int R, G, B;
     double L = 0.5;
     double S = 1.0;
-    double R, G, B;
-    double C = (1 - abs(2 * L - 1)) * S;
-    double X = C * (1 - abs(H % 2 - 1));
+    double R1, G1, B1;
+    double C = (1 - d_abs(2 * L - 1)) * S;
+    double X = C * (1 - d_abs(H2 - 1));
     double m = L - C / 2;
-    switch (H) {
+    // printf("H = %f ; H2 = %f \n", H, H2);
+    // printf("C = %f ; X = %f ; m = %f \n", C, X, m);
+    switch (hue / 60) {
         case 0:
-            R = C;
-            G = X;
-            B = 0;
+            R1 = C;
+            G1 = X;
+            B1 = 0;
             break;
         case 1:
-            R = X;
-            G = C;
-            B = 0;
+            R1 = X;
+            G1 = C;
+            B1 = 0;
             break;
         case 2:
-            R = 0;
-            G = C;
-            B = X;
+            R1 = 0;
+            G1 = C;
+            B1 = X;
             break;
         case 3:
-            R = 0;
-            G = X;
-            B = C;
+            R1 = 0;
+            G1 = X;
+            B1 = C;
             break;
         case 4:
-            R = X;
-            G = 0;
-            B = C;
+            R1 = X;
+            G1 = 0;
+            B1 = C;
             break;
         case 5:
-            R = C;
-            G = 0;
-            B = X;
+            R1 = C;
+            G1 = 0;
+            B1 = X;
             break;
     }
-    R = (R + m) * 255;
-    G = (G + m) * 255;
-    B = (B + m) * 255;
+    R = (R1 + m) * 255;
+    G = (G1 + m) * 255;
+    B = (B1 + m) * 255;
+    // printf("hue = %d --> RGB = (%d, %d, %d)\n", hue, R, G, B);
     return MLV_rgba(R, G, B, 255);
 }
 
+// draws the monster `monster` at its position as a circle, having its hue for
+// color
 void draw_monster(Monster monster) {
     int radius = CELL_SIZE / 3;
-    int x = monster.position.x * CELL_SIZE + CELL_SIZE / 2;
-    int y = monster.position.y * CELL_SIZE + CELL_SIZE / 2;
+    int x = monster.position.x * CELL_SIZE;
+    int y = monster.position.y * CELL_SIZE;
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
 }
 
@@ -112,8 +142,8 @@ void clear_window(void) {
 }
 
 // Waits `time` seconds
-void wait_seconds(int time) {
-    MLV_wait_seconds(time);
+void wait_milliseconds(int time) {
+    MLV_wait_milliseconds(time);
 }
 
 // Refreshes the window with the changes made
