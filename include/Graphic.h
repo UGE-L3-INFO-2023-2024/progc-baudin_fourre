@@ -5,6 +5,20 @@
 
 #include "Game.h"
 #define CELL_SIZE 32
+#define GAME_WIDTH (CELL_SIZE * MAP_WIDTH)
+#define GAME_HEIGHT (CELL_SIZE * MAP_HEIGHT)
+#define RIGHT_BAR_SIZE (10 * CELL_SIZE)
+#define RIGHT_BAR_X (MAP_WIDTH * CELL_SIZE)
+
+#define BUTTON_BKGD_COLOR MLV_COLOR_GREY
+#define TOWER_COLOR MLV_COLOR_BLACK
+#define RIGHT_BAR_COLOR MLV_COLOR_LIGHT_GREY
+
+typedef struct {
+    int x;
+    int y;
+    int size;
+} Square;
 
 /**
  * @brief Initializes the graphic window
@@ -17,6 +31,12 @@ void init_graphic(void);
  *
  */
 void draw_grid(void);
+
+/**
+ * @brief draws a bar on the right of the game window
+ *
+ */
+void draw_right_bar(void);
 
 /**
  * @brief Displays the path of the map

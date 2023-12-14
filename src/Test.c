@@ -18,6 +18,7 @@ int main(void) {
     init_graphic();
     clear_window();
     draw_grid();
+    draw_right_bar();
     draw_mana(mana);
 
     while (get_events() != QUIT) {

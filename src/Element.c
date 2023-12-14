@@ -27,7 +27,7 @@ Hue random_hue(Element element) {
             break;
     }
     int r = (rand() % interval + start) % 360;
-    printf("%d\n", r);
+    // printf("%d\n", r);
     return r;
 }
 

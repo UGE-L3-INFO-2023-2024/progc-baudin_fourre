@@ -119,9 +119,14 @@ static int weighted_random(int weights[], int size) {
 Map generate_map() {
     int turns;
     int length;
-    int r;
     int random_length;
     Map map;
+
+    for (int i = 0; i < MAP_WIDTH; i++) {
+        for (int j = 0; j < MAP_HEIGHT; j++) {
+            map.cells[i][j].type = EMPTY;
+        }
+    }
 
     do {
         map = (Map){0};

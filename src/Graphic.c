@@ -11,8 +11,76 @@
 
 // Initializes the graphic window
 void init_graphic(void) {
-    MLV_create_window("Test", "", MAP_WIDTH * CELL_SIZE + 2,
-                      MAP_HEIGHT * CELL_SIZE + 2);
+    MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
+}
+
+// draws a square `square` using the color `bkgd_color`
+static void draw_square(Square square, MLV_Color bkgd_color) {
+    MLV_draw_filled_rectangle(square.x, square.y, square.size, square.size,
+                              bkgd_color);
+    MLV_draw_rectangle(square.x, square.y, square.size, square.size,
+                       MLV_COLOR_BLACK);
+}
+
+// draws a tower in a square `s`
+static void draw_tower_in_square(Square s) {
+    draw_square(s, BUTTON_BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 1 / 10, s.y + s.size * 1 / 10,
+                              s.size * 8 / 10, s.size * 2 / 10, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 2 / 10, s.y + s.size * 3 / 10,
+                              s.size * 6 / 10, s.size * 5 / 10, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 1 / 10, s.y + s.size * 8 / 10,
+                              s.size * 8 / 10, s.size * 1 / 10, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 3 / 10, s.y + s.size * 1 / 10,
+                              s.size * 1 / 10, s.size * 1 / 10,
+                              BUTTON_BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 6 / 10, s.y + s.size * 1 / 10,
+                              s.size * 1 / 10, s.size * 1 / 10,
+                              BUTTON_BKGD_COLOR);
+}
+
+// draws a gem with the color `color` centered in the square `s`
+static void draw_gem_in_square(Square s, MLV_Color color) {
+    int vx[] = {s.x + s.size * 5 / 10,  s.x + s.size * 17 / 20,
+                s.x + s.size * 17 / 20, s.x + s.size * 5 / 10,
+                s.x + s.size * 3 / 20,  s.x + s.size * 3 / 20};
+    int vy[] = {s.y + s.size * 1 / 10, s.y + s.size * 3 / 10,
+                s.y + s.size * 7 / 10, s.y + s.size * 9 / 10,
+                s.y + s.size * 7 / 10, s.y + s.size * 3 / 10};
+    MLV_draw_filled_polygon(vx, vy, 6, color);
+}
+
+// draw the fuse_gem_button is the right bar
+static void draw_fuse_gem_button(void) {
+    int size = RIGHT_BAR_SIZE * 2 / 10;
+    Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
+                          GAME_HEIGHT * 1 / 20, size};
+    draw_square(gem, BUTTON_BKGD_COLOR);
+    gem.size = RIGHT_BAR_SIZE * 3 / 20;
+    // gem.x -= size * 1 / 10;
+    gem.y += size * 1 / 10;
+    draw_gem_in_square(gem, MLV_rgba(0, 255, 255, 150));
+    gem.x += size * 5 / 20;
+    draw_gem_in_square(gem, MLV_rgba(160, 32, 240, 150));
+}
+
+// draws the buttons of the right bar
+static void draw_top_buttons(void) {
+    Square tower = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
+                            GAME_HEIGHT * 1 / 20, RIGHT_BAR_SIZE * 2 / 10};
+    Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
+                          GAME_HEIGHT * 1 / 20, RIGHT_BAR_SIZE * 2 / 10};
+    MLV_draw_filled_rectangle(RIGHT_BAR_X, 0, RIGHT_BAR_SIZE, GAME_HEIGHT,
+                              RIGHT_BAR_COLOR);
+    draw_tower_in_square(tower);
+    draw_square(gem, BUTTON_BKGD_COLOR);
+    draw_gem_in_square(gem, MLV_COLOR_CYAN);
+    draw_fuse_gem_button();
+}
+
+// draws a bar on the right of the game window
+void draw_right_bar(void) {
+    draw_top_buttons();
 }
 
 // Draws a cell of coordinates (x, y), in the color `color`
