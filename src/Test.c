@@ -9,25 +9,27 @@
 
 int main(void) {
     srand(time(NULL));
-    Map map = generate_map();
-    Mana mana = init_mana();
+    Game game;
+    game.map = generate_map();
+    game.mana = init_mana();
     timestamp timetp = (timestamp){0, 0};
-    Monster *monster = create_new_monster(map, 1, 10, timetp);
+    Monster *monster = create_new_monster(game.map, 1, 10, timetp);
     interval itvl = (interval){0, 17};
 
-    init_graphic();
+    WindowInfo win = init_graphic();
     clear_window();
-    draw_grid();
-    draw_right_bar();
-    draw_mana(mana);
+    draw_game(game, win);
+    // draw_grid();
+    // draw_right_bar(win);
+    // draw_mana(game.mana);
 
     while (get_events() != QUIT) {
-        clear_path(map);
-        draw_path(map);
+        clear_path(game.map);
+        draw_path(game.map);
         draw_monster(*monster);
         refresh();
 
-        move_monster(map, monster, itvl);
+        move_monster(game.map, monster, itvl);
         wait_milliseconds(itvl.tv_usec);
     }
     quit();

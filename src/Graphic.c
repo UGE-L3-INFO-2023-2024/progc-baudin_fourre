@@ -10,8 +10,53 @@
 #include "Monsters.h"
 
 // Initializes the graphic window
-void init_graphic(void) {
+WindowInfo init_graphic(void) {
+    WindowInfo win;
     MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
+    win.right_bar_font =
+        MLV_load_font("fonts/calling.ttf", CELL_SIZE * 7 / 10);
+    return win;
+}
+
+// assign the values (r, g, b) to (*R, *G, *B)
+static void assign_rgb(double *R, double *G, double *B, double r, double g,
+                       double b) {
+    *R = r;
+    *G = g;
+    *B = b;
+}
+
+// Returns the RGBA representation of the Hue `hue`
+MLV_Color hue_to_rgba(Hue hue) {
+    assert(hue < 360);
+    double H = hue / 60.0;
+    double L = 0.5;
+    double S = 1.0;
+    double R, G, B;
+    double C = (1 - fabs(2 * L - 1)) * S;
+    double X = C * (1 - fabs(fmod(H, 2) - 1));
+    double m = L - C / 2;
+    switch (hue / 60) {
+        case 0:
+            assign_rgb(&R, &G, &B, C, X, 0);
+            break;
+        case 1:
+            assign_rgb(&R, &G, &B, X, C, 0);
+            break;
+        case 2:
+            assign_rgb(&R, &G, &B, 0, C, X);
+            break;
+        case 3:
+            assign_rgb(&R, &G, &B, 0, X, C);
+            break;
+        case 4:
+            assign_rgb(&R, &G, &B, X, 0, C);
+            break;
+        case 5:
+            assign_rgb(&R, &G, &B, C, 0, X);
+            break;
+    }
+    return MLV_rgba((R + m) * 255, (G + m) * 255, (B + m) * 255, 255);
 }
 
 // draws a square `square` using the color `bkgd_color`
@@ -50,7 +95,31 @@ static void draw_gem_in_square(Square s, MLV_Color color) {
     MLV_draw_filled_polygon(vx, vy, 6, color);
 }
 
-// draw the fuse_gem_button is the right bar
+static void draw_tower_in_cell(Coord coord) {
+    Square cell =
+        (Square){coord.col * CELL_SIZE, coord.line * CELL_SIZE, CELL_SIZE};
+    draw_tower_in_square(cell);
+}
+
+static void draw_gem_in_tower(ActiveGem gem) {
+    Square tower =
+        (Square){gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
+                 gem.tower.line * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2};
+    draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue));
+}
+
+static void draw_add_gem_button(Square s, int cur_level, MLV_Font *font) {
+    char gem_level[7];
+    draw_square(s, BUTTON_BKGD_COLOR);
+    draw_gem_in_square(s, MLV_COLOR_CYAN);
+    sprintf(gem_level, "< %d >", cur_level);
+    MLV_draw_text_box_with_font(s.x, s.y + s.size + s.size / 10, s.size,
+                                s.size / 3, gem_level, font, 0, TRANSPARANT,
+                                MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+                                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+}
+
+// draws the fuse_gem_button is the right bar
 static void draw_fuse_gem_button(void) {
     int size = RIGHT_BAR_SIZE * 2 / 10;
     Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
@@ -65,7 +134,7 @@ static void draw_fuse_gem_button(void) {
 }
 
 // draws the buttons of the right bar
-static void draw_top_buttons(void) {
+static void draw_top_buttons(WindowInfo win) {
     Square tower = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
                             GAME_HEIGHT * 1 / 20, RIGHT_BAR_SIZE * 2 / 10};
     Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
@@ -73,14 +142,13 @@ static void draw_top_buttons(void) {
     MLV_draw_filled_rectangle(RIGHT_BAR_X, 0, RIGHT_BAR_SIZE, GAME_HEIGHT,
                               RIGHT_BAR_COLOR);
     draw_tower_in_square(tower);
-    draw_square(gem, BUTTON_BKGD_COLOR);
-    draw_gem_in_square(gem, MLV_COLOR_CYAN);
+    draw_add_gem_button(gem, 5, win.right_bar_font);
     draw_fuse_gem_button();
 }
 
 // draws a bar on the right of the game window
-void draw_right_bar(void) {
-    draw_top_buttons();
+void draw_right_bar(WindowInfo win) {
+    draw_top_buttons(win);
 }
 
 // Draws a cell of coordinates (x, y), in the color `color`
@@ -149,6 +217,20 @@ static void draw_bar(int x, int y, int width, int height, double filled,
     MLV_draw_rectangle(x, y, width, height, MLV_COLOR_BLACK);
 }
 
+void draw_game(Game game, WindowInfo win) {
+    draw_grid();
+    draw_mana(game.mana);
+    draw_right_bar(win);
+    draw_tower_in_cell((Coord){1, 10});
+    Coord c = (Coord){5, 1};
+    draw_tower_in_cell(c);
+    Gem g = (Gem){0, 0, 57, PYRO};
+    ActiveGem gem;
+    gem.gem = g;
+    gem.tower = c;
+    draw_gem_in_tower(gem);
+}
+
 // Draws the mana bar at the top of the window
 void draw_mana(Mana mana) {
     char mana_values[12];
@@ -164,47 +246,6 @@ void draw_mana(Mana mana) {
                       mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
                       MLV_rgba(0, 0, 0, 0), MLV_TEXT_CENTER, MLV_TEXT_CENTER,
                       MLV_TEXT_CENTER);
-}
-
-// assign the values (r, g, b) to (*R, *G, *B)
-static void assign_rgb(double *R, double *G, double *B, double r, double g,
-                       double b) {
-    *R = r;
-    *G = g;
-    *B = b;
-}
-
-// Returns the RGBA representation of the Hue `hue`
-MLV_Color hue_to_rgba(Hue hue) {
-    assert(hue < 360);
-    double H = hue / 60.0;
-    double L = 0.5;
-    double S = 1.0;
-    double R, G, B;
-    double C = (1 - fabs(2 * L - 1)) * S;
-    double X = C * (1 - fabs(fmod(H, 2) - 1));
-    double m = L - C / 2;
-    switch (hue / 60) {
-        case 0:
-            assign_rgb(&R, &G, &B, C, X, 0);
-            break;
-        case 1:
-            assign_rgb(&R, &G, &B, X, C, 0);
-            break;
-        case 2:
-            assign_rgb(&R, &G, &B, 0, C, X);
-            break;
-        case 3:
-            assign_rgb(&R, &G, &B, 0, X, C);
-            break;
-        case 4:
-            assign_rgb(&R, &G, &B, X, 0, C);
-            break;
-        case 5:
-            assign_rgb(&R, &G, &B, C, 0, X);
-            break;
-    }
-    return MLV_rgba((R + m) * 255, (G + m) * 255, (B + m) * 255, 255);
 }
 
 // draws the monster `monster` at its position as a circle, having its hue for

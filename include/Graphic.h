@@ -13,6 +13,11 @@
 #define BUTTON_BKGD_COLOR MLV_COLOR_GREY
 #define TOWER_COLOR MLV_COLOR_BLACK
 #define RIGHT_BAR_COLOR MLV_COLOR_LIGHT_GREY
+#define TRANSPARANT MLV_rgba(255, 255, 255, 0)
+
+typedef struct {
+    MLV_Font *right_bar_font;
+} WindowInfo;
 
 typedef struct {
     int x;
@@ -23,8 +28,9 @@ typedef struct {
 /**
  * @brief Initializes the graphic window
  *
+ * @return WindowInfo structure containing information about the window created
  */
-void init_graphic(void);
+WindowInfo init_graphic(void);
 
 /**
  * @brief Displays a black grid over the window
@@ -35,8 +41,9 @@ void draw_grid(void);
 /**
  * @brief draws a bar on the right of the game window
  *
+ * @param win WindowInfo structure containing information on the current window
  */
-void draw_right_bar(void);
+void draw_right_bar(WindowInfo win);
 
 /**
  * @brief Displays the path of the map
@@ -77,6 +84,8 @@ void draw_monster(Monster monster);
  * @param mana Mana structure to display
  */
 void draw_mana(Mana mana);
+
+void draw_game(Game game, WindowInfo win);
 
 /**
  * @brief Clears the path by displaying grey rectangles over each cell
