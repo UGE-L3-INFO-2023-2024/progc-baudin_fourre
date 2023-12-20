@@ -17,11 +17,10 @@ typedef struct {
 typedef struct ActiveGem {
     Gem gem;
     Coord tower;
-    timestamp start_time;
-    interval shot_interval;
-    timestamp next_shot;
-    LIST_ENTRY(ActiveGem)
-    entries;
+    Timestamp start_time;
+    double shot_interval;
+    Timestamp next_shot;
+    LIST_ENTRY(ActiveGem) entries;
 } ActiveGem;
 
 typedef LIST_HEAD(ActiveGemList, ActiveGem) ActiveGemList;

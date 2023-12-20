@@ -10,7 +10,7 @@
 
 typedef struct {
     Map map;
-    timestamp next_wave;
+    Timestamp next_wave;
     MonsterList monsters;
     ActiveGemList active_gems;
     Inventory inventory;

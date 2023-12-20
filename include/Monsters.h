@@ -11,7 +11,7 @@
 #define HP_MULT 10
 
 typedef struct Monster {
-    timestamp start_time;
+    Timestamp start_time;
     Position position;
     int speed;
     Hue hue;
@@ -36,7 +36,7 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @return Monster* address of the Monster structure allocated,
  * or NULL if there was an allocation error
  */
-Monster *create_new_monster(Map map, int speed, int HP, timestamp start_time);
+Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time);
 
 /**
  * @brief Frees the space allocated for the list of monsters
@@ -60,8 +60,8 @@ void add_monster_residue(Monster *monster, Hue shot_hue);
  *
  * @param map Map where the monster moves
  * @param monster Address of the monster to modify
- * @param time_elapsed time elapsed during the movement of the monster
+ * @param time_elapsed time elapsed during the movement of the monster in seconds
  */
-void move_monster(Map map, Monster *monster, interval time_elapsed);
+void move_monster(Map map, Monster *monster, double time_elapsed);
 
 #endif  // __MONSTERS_H__

@@ -1,15 +1,18 @@
 #ifndef __TIME_H__
 #define __TIME_H__
 
-#include <sys/time.h>
+#define _DEFAULT_SOURCE 1
+#include <time.h>
+#include <stdbool.h>
 
-typedef struct timeval timestamp;
-typedef struct timeval interval;
+typedef struct timespec Timestamp;
 
-timestamp add_interval(timestamp time, int seconds);
+Timestamp time_now();
 
-interval get_interval(float seconds);
+Timestamp time_add_seconds(Timestamp time, double seconds);
 
-// Chronometre
+Timestamp time_future(double seconds);
+
+bool is_past_time(Timestamp time);
 
 #endif  // __TIME_H__

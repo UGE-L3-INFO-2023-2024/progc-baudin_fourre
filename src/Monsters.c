@@ -17,7 +17,7 @@
 #include "Utils.h"
 
 // Returns the adress of the new Monster created with the given arguments
-Monster *create_new_monster(Map map, int speed, int HP, timestamp start_time) {
+Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
     Monster *monster = (Monster *)malloc(sizeof(Monster));
     if (!monster) {
         fprintf(stderr, "Allocation error\n");
@@ -74,15 +74,15 @@ static double rand_speed(int speed) {
 
 // Moves the monster along the `direction` for a duration of `time_elapsed`
 static void move_monster_direction(Monster *monster, Direction direction,
-                                   interval time_elapsed) {
+                                   double time_elapsed) {
     Vector move = get_direction_vector(direction);
     double speed = rand_speed(monster->speed);
     monster->position = get_new_position(
-        monster->position, (speed * time_elapsed.tv_usec) / 1000.0, move);
+        monster->position, speed * time_elapsed, move); // TODO time
 }
 
 // Moves the monster on the `map` for a duration of `time_elapsed`
-void move_monster(Map map, Monster *monster, interval time_elapsed) {
+void move_monster(Map map, Monster *monster, double time_elapsed) {
     if (is_position_center(monster->position)) {
         monster->direction = get_position_direction(map, monster->position);
     }

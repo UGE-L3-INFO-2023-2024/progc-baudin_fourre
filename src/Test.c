@@ -12,9 +12,9 @@ int main(void) {
     Game game;
     game.map = generate_map();
     game.mana = init_mana();
-    timestamp timetp = (timestamp){0, 0};
+    Timestamp timetp = time_future(2.0); // TODO time
     Monster *monster = create_new_monster(game.map, 1, 10, timetp);
-    interval itvl = (interval){0, 17};
+    double itvl = 0.017; // TODO time
 
     WindowInfo win = init_graphic();
     clear_window();
@@ -29,8 +29,9 @@ int main(void) {
         draw_monster(*monster);
         refresh();
 
-        move_monster(game.map, monster, itvl);
-        wait_milliseconds(itvl.tv_usec);
+        move_monster(game.map, monster, itvl); // retrouver l'ellapsed proprement
+        wait_milliseconds(itvl * 1000); // TODO time
+        // wait according to framerate serait mieux, non ?
     }
     quit();
 

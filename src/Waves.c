@@ -64,7 +64,7 @@ int wave_generation(MonsterList *monster_list, Map map) {
     int speed, nb_monsters;
     int hp;
     WaveType type;
-    timestamp monster_start_time = (timestamp){0, 0};
+    Timestamp monster_start_time = (Timestamp){0, 0}; // TODO time
 
     type = random_wave(wave_count);
     get_wave_characteristics(type, &nb_monsters, &speed);

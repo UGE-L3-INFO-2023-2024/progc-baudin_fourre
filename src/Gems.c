@@ -20,7 +20,7 @@ Gem generate_pure_gem(int level) {
 // Allocates a new ActiveGem for the `gem`.
 // Returns the address of the ActiveGem allocated, or NULL if there was an error.
 static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
-    timestamp instant_time;
+    Timestamp instant_time;
     ActiveGem *active_gem = (ActiveGem *)malloc(sizeof(ActiveGem));
     if (!active_gem) {
         fprintf(stderr, "Allocation error\n");
