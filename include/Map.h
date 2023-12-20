@@ -3,6 +3,7 @@
 
 #define MAP_WIDTH 28
 #define MAP_HEIGHT 22
+#define MARGIN 3
 
 #include "Gems.h"
 #include "Utils.h"

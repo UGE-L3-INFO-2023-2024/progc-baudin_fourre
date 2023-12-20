@@ -2,8 +2,8 @@
 #define __UTILS_H__
 
 typedef struct {
-    char col;
-    char line;
+    int col;
+    int line;
 } Coord;
 
 typedef struct {
@@ -12,11 +12,11 @@ typedef struct {
 } Position, Vector;
 
 typedef enum {
-    NORTH = 0b00,
-    SOUTH = 0b01,
-    WEST = 0b10,
-    EAST = 0b11,
-    NODIR = 5,
+    NORTH = 0,
+    SOUTH = 1,
+    WEST = 2,
+    EAST = 3,
+    NODIR = -1,
 } Direction;
 
 /**

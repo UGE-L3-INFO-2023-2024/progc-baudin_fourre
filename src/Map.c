@@ -3,14 +3,12 @@
 #include <MLV/MLV_random.h>
 #include <assert.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static Coord random_nest_coords() {
-    const int margin = 3;
     return (Coord){
-        .col = MLV_get_random_integer(0 + margin, MAP_WIDTH - margin),
-        .line = MLV_get_random_integer(0 + margin, MAP_HEIGHT - margin)};
+        .col = MLV_get_random_integer(0 + MARGIN, MAP_WIDTH - MARGIN),
+        .line = MLV_get_random_integer(0 + MARGIN, MAP_HEIGHT - MARGIN)};
 }
 
 static bool out_of_edges(Coord coord, int margin) {
@@ -60,9 +58,6 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
 
 static bool check_around(const Map *map, const Cell *cell, Direction dir,
                          Direction forbidden_dir, int dist) {
-    // fprintf(stderr, "CHECK AROUND d%d %d (%d, %d) %c\n", dir, dist,
-    // cell->coord.col, cell->coord.line, 'A' + cell->type);
-
     if (cell == NULL) {
         return false;
     }
@@ -71,7 +66,7 @@ static bool check_around(const Map *map, const Cell *cell, Direction dir,
     }
     if (dist > 0) {
         for (int i = 0; i < 4; i++) {
-            if (i != forbidden_dir && i != (dir ^ 0b01) &&
+            if (i != forbidden_dir && i != (dir ^ 1) &&
                 !check_around(map, next_cell_direction(map, cell, i), i,
                               forbidden_dir, dist - 1)) {
                 return false;
@@ -85,12 +80,10 @@ static int distance_reached_direction(const Map *map, const Cell *cell,
                                       Direction dir) {
     int distance = 0;
     while ((cell = next_cell_direction(map, cell, dir)) &&
-           !out_of_edges(cell->coord, 2) &&
-           check_around(map, cell, dir, (dir ^ 0b01), 2)) {
-        // fprintf(stderr, "COMPUTE DISTANCE\n");
+           !out_of_edges(cell->coord, MARGIN - 1) &&
+           check_around(map, cell, dir, (dir ^ 1), MARGIN - 1)) {
         distance++;
     }
-    // fprintf(stderr, "DISTANCE %d\n", distance);
     return distance;
 }
 
@@ -101,7 +94,6 @@ static int weighted_random(int weights[], int size) {
     for (int i = 0; i < size; i++) {
         sum += weights[i];
     }
-    // fprintf(stderr, "%d", sum);
     assert(sum > 0);
 
     int random_index = size - 1;
@@ -129,32 +121,29 @@ Map generate_map() {
     }
 
     do {
+        turns = 0;
+        length = 0;
         map = (Map){0};
         init_map(&map);
         map.nest = random_nest_coords();
-        // map.nest = (Coord){.col = 6, .line = 9};
-        turns = 0;
-        length = 0;
-        // fprintf(stderr, "NEST (%d, %d)\n", map.nest.col, map.nest.line);
-        map.cells[CI(map.nest)].type = NEST;
 
         Cell *cell = &map.cells[CI(map.nest)];
+        cell->type = NEST;
 
         int length_in_dir[4];
         for (int i = 0; i < 4; i++) {
             length_in_dir[i] =
-                distance_reached_direction(&map, cell, i);  // Only if > 3 ??
+                distance_reached_direction(&map, cell, i);
         }
-        // fprintf(stderr, "LENGTHS %d %d %d %d\n", length_in_dir[0],
-        // length_in_dir[1], length_in_dir[2], length_in_dir[3]);
+
         Direction random_dir = weighted_random(length_in_dir, 4);
 
-        while (length_in_dir[random_dir] > 2) {
+        while (length_in_dir[random_dir] > MARGIN - 1) {
             random_length = 0;
             for (int i = 0; i < length_in_dir[random_dir]; i++) {
                 random_length += MLV_get_random_integer(0, 3) < 3 ? 1 : 0;
             }
-            random_length = random_length < 3 ? 3 : random_length;
+            random_length = random_length < MARGIN ? MARGIN : random_length;
 
             /** trace path **/
             for (int i = 0; i < random_length; i++) {
@@ -163,22 +152,13 @@ Map generate_map() {
                 assert(cell);
                 cell->type = PATH;
             }
-            /* for (int i = 0; i < MAP_WIDTH; i++) {
-                for (int j = 0; j < MAP_HEIGHT; j++) {
-                    printf("%c", 'A' + map.cells[i][j].type);
-                }
-                printf("\n");
-            } */
 
-            int axe = (~random_dir & 0b10);  // Get axe to turn
-            length_in_dir[axe | 0b00] =
-                distance_reached_direction(&map, cell, axe | 0b00);
-            length_in_dir[axe | 0b01] =
-                distance_reached_direction(&map, cell, axe | 0b01);
-            // fprintf(stderr, "E(%d = %d, %d = %d)\n", axe | 0b00,
-            // length_in_dir[axe | 0b00], axe | 0b01, length_in_dir[axe |
-            // 0b01]);
-            if (length_in_dir[axe | 0b00] + length_in_dir[axe | 0b01] <= 0) {
+            int axe = (~random_dir & 2);  // Get axe to turn
+            length_in_dir[axe | 0] =
+                distance_reached_direction(&map, cell, axe | 0);
+            length_in_dir[axe | 1] =
+                distance_reached_direction(&map, cell, axe | 1);
+            if (length_in_dir[axe | 0] + length_in_dir[axe | 1] <= 0) {
                 break;
             }
 
@@ -203,12 +183,6 @@ Direction get_position_direction(Map map, Position position) {
         return NODIR;
     return map.cells[x][y].direction;
 }
-
-/*
-TODO:
-- clean code
-- remove 0B00
-*/
 
 // gcc src/Map.c -Iinclude/ -o TestMap -lMLV
 /*
