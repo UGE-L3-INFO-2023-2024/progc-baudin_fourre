@@ -46,4 +46,12 @@ Map generate_map();
  */
 Direction get_position_direction(Map map, Position position);
 
+/**
+ * @brief Checks if the `coord` are within the map
+ *
+ * @param coord The Coord to check
+ * @return int 1 if the coordinates are in the map, 0 otherwise
+ */
+int is_in_map(Coord coord);
+
 #endif  // __MAP_H__

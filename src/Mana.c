@@ -65,15 +65,26 @@ int mana_banish_monster(Mana *mana, Monster monster) {
     return mana_remove_required(mana, required);
 }
 
-// Decreases the mana quantity, if possible, in order to buy a tower
-int mana_buy_tower(Mana *mana) {
-    assert(mana);
+// Returns the required amount of mana to buy a new tower
+int mana_required_tower(int add) {
     static int nb_tower = 0;
     int required = 0;
 
     if (nb_tower >= 3)
         required = 100 * pow(2, nb_tower - 3);
-    return mana_remove_required(mana, required);
+    if (add)
+        nb_tower++;
+    return required;
+}
+
+// Decreases the mana quantity, if possible, in order to buy a tower
+int mana_buy_tower(Mana *mana) {
+    assert(mana);
+    int required = mana_required_tower(0);
+    if (!mana_remove_required(mana, required))
+        return 0;
+    mana_required_tower(1);
+    return 1;
 }
 
 // Decreases the mana quantity, if possible, in order to buy a gem of level

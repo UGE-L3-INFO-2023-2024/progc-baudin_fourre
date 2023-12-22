@@ -59,4 +59,12 @@ int mana_banish_monster(Mana *mana, Monster monster);
  */
 int mana_fuse_gem(Mana *mana);
 
+/**
+ * @brief Gives the amount of mana required in order to buy a new tower
+ *
+ * @param add 1 if a new tower has been added, 0 otherwise
+ * @return int the amount of mana required to buy a new tower
+ */
+int mana_required_tower(int add);
+
 #endif  // __MANA_H__

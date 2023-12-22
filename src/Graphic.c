@@ -15,6 +15,7 @@ WindowInfo init_graphic(void) {
     MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
     win.right_bar_font =
         MLV_load_font("fonts/calling.ttf", CELL_SIZE * 7 / 10);
+    win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
     return win;
 }
 
@@ -95,12 +96,14 @@ static void draw_gem_in_square(Square s, MLV_Color color) {
     MLV_draw_filled_polygon(vx, vy, 6, color);
 }
 
+// draw a tower in the cell of coordinates `coord`
 static void draw_tower_in_cell(Coord coord) {
     Square cell =
         (Square){coord.col * CELL_SIZE, coord.line * CELL_SIZE, CELL_SIZE};
     draw_tower_in_square(cell);
 }
 
+// draws the ActiveGem `gem` in its tower
 static void draw_gem_in_tower(ActiveGem gem) {
     Square tower =
         (Square){gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
@@ -108,96 +111,104 @@ static void draw_gem_in_tower(ActiveGem gem) {
     draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue));
 }
 
+// draws the add gem button in the Square `s`, with a current level of
+// `cur_level`
 static void draw_add_gem_button(Square s, int cur_level, MLV_Font *font) {
     char gem_level[7];
     draw_square(s, BUTTON_BKGD_COLOR);
     draw_gem_in_square(s, MLV_COLOR_CYAN);
     sprintf(gem_level, "< %d >", cur_level);
     MLV_draw_text_box_with_font(s.x, s.y + s.size + s.size / 10, s.size,
-                                s.size / 3, gem_level, font, 0, TRANSPARANT,
+                                s.size / 3, gem_level, font, 1, TRANSPARANT,
                                 MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
                                 MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
 }
 
 // draws the fuse_gem_button is the right bar
-static void draw_fuse_gem_button(void) {
+static void draw_fuse_gem_button(Square s) {
     int size = RIGHT_BAR_SIZE * 2 / 10;
-    Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
-                          GAME_HEIGHT * 1 / 20, size};
-    draw_square(gem, BUTTON_BKGD_COLOR);
-    gem.size = RIGHT_BAR_SIZE * 3 / 20;
+    draw_square(s, BUTTON_BKGD_COLOR);
+    s.size = RIGHT_BAR_SIZE * 3 / 20;
     // gem.x -= size * 1 / 10;
-    gem.y += size * 1 / 10;
-    draw_gem_in_square(gem, MLV_rgba(0, 255, 255, 150));
-    gem.x += size * 5 / 20;
-    draw_gem_in_square(gem, MLV_rgba(160, 32, 240, 150));
+    s.y += size * 1 / 10;
+    draw_gem_in_square(s, MLV_rgba(0, 255, 255, 150));
+    s.x += size * 5 / 20;
+    draw_gem_in_square(s, MLV_rgba(160, 32, 240, 150));
+}
+
+// draw the new tower button in the Square `s`
+static void draw_new_tower_button(Square s, MLV_Font *font) {
+    char cost[5];
+    draw_tower_in_square(s);
+    sprintf(cost, "%d", mana_required_tower(0));
+    MLV_draw_text_box_with_font(s.x, s.y - s.size * 2 / 5, s.size, s.size / 3,
+                                cost, font, 0, TRANSPARANT, MLV_COLOR_BLACK,
+                                TRANSPARANT, MLV_TEXT_CENTER,
+                                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+}
+
+// draws the Square `s` as selected by drawing a transparent black square over
+// it
+static void draw_selected_square(Square s) {
+    MLV_Color color = MLV_rgba(0, 0, 0, 100);
+    draw_square(s, color);
 }
 
 // draws the buttons of the right bar
-static void draw_top_buttons(WindowInfo win) {
-    Square tower = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
-                            GAME_HEIGHT * 1 / 20, RIGHT_BAR_SIZE * 2 / 10};
-    Square gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
-                          GAME_HEIGHT * 1 / 20, RIGHT_BAR_SIZE * 2 / 10};
+static void draw_top_buttons(WindowInfo *win) {
+    win->new_tower = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
+                              GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
+    win->new_gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
+                            GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
+    win->fuse_gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
+                             GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
     MLV_draw_filled_rectangle(RIGHT_BAR_X, 0, RIGHT_BAR_SIZE, GAME_HEIGHT,
                               RIGHT_BAR_COLOR);
-    draw_tower_in_square(tower);
-    draw_add_gem_button(gem, 5, win.right_bar_font);
-    draw_fuse_gem_button();
+    draw_new_tower_button(win->new_tower, win->right_bar_font);
+    draw_add_gem_button(win->new_gem, 5, win->right_bar_font);
+    MLV_draw_text_box_with_font(RIGHT_BAR_X + 1, GAME_HEIGHT * 1 / 40,
+                                RIGHT_BAR_SIZE, GAME_HEIGHT * 1 / 30,
+                                "Cost:", win->right_bar_font, 0, TRANSPARANT,
+                                MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+                                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+    draw_fuse_gem_button(win->fuse_gem);
 }
 
 // draws a bar on the right of the game window
-void draw_right_bar(WindowInfo win) {
+void draw_right_bar(WindowInfo *win) {
     draw_top_buttons(win);
 }
 
-// Draws a cell of coordinates (x, y), in the color `color`
-static void draw_cell(int x, int y, MLV_Color color) {
+// Draws a cell of coordinates `coord` according to the CellType `type`
+static void draw_cell(CellType type, Coord coord) {
     MLV_Color outline = MLV_COLOR_BLACK;
-
-    MLV_draw_filled_rectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE,
-                              CELL_SIZE, color);
-    MLV_draw_rectangle(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE,
-                       outline);
-}
-
-// draws the path of the map
-void draw_path(Map map) {
     MLV_Color color;
-    int test = 1;
-    for (Cell cell = map.cells[CI(map.nest)]; test;
-         cell = *next_cell_direction(&map, &cell, cell.direction)) {
-        switch (cell.type) {
-            case NEST:
-                color = MLV_COLOR_RED;
-                break;
-            case HOME:
-                color = MLV_COLOR_GREEN;
-                test = 0;
-                break;
-            default:
-                color = MLV_COLOR_WHITE;
-        }
-        draw_cell(cell.coord.col, cell.coord.line, color);
-    }
-}
 
-// clears the path of the map
-void clear_path(Map map) {
-    int test = 1;
-    for (Cell cell = map.cells[CI(map.nest)]; test;
-         cell = *next_cell_direction(&map, &cell, cell.direction)) {
-        draw_cell(cell.coord.col, cell.coord.line, MLV_COLOR_GREY);
-        if (cell.type == HOME)
-            test = 0;
+    if (type == TOWER) {
+        draw_tower_in_cell(coord);
+        return;
     }
+
+    if (type == EMPTY)
+        color = GRID_COLOR;
+    else if (type == PATH)
+        color = PATH_COLOR;
+    else if (type == NEST)
+        color = NEST_COLOR;
+    else if (type == HOME)
+        color = HOME_COLOR;
+
+    MLV_draw_filled_rectangle(coord.col * CELL_SIZE, coord.line * CELL_SIZE,
+                              CELL_SIZE, CELL_SIZE, color);
+    MLV_draw_rectangle(coord.col * CELL_SIZE, coord.line * CELL_SIZE,
+                       CELL_SIZE, CELL_SIZE, outline);
 }
 
 // Draw a blank grid
-void draw_grid(void) {
+void draw_grid(Map map) {
     for (int i = 0; i < MAP_WIDTH; i++) {
         for (int j = 0; j < MAP_HEIGHT; j++) {
-            draw_cell(i, j, MLV_COLOR_GREY);
+            draw_cell(map.cells[i][j].type, map.cells[i][j].coord);
         }
     }
 }
@@ -217,18 +228,15 @@ static void draw_bar(int x, int y, int width, int height, double filled,
     MLV_draw_rectangle(x, y, width, height, MLV_COLOR_BLACK);
 }
 
-void draw_game(Game game, WindowInfo win) {
-    draw_grid();
+// draws the game int its entirety according the th current UserAction
+// `current_action`
+void draw_game(Game game, UserAction current_action, WindowInfo *win) {
+    draw_grid(game.map);
     draw_mana(game.mana);
     draw_right_bar(win);
-    draw_tower_in_cell((Coord){1, 10});
-    Coord c = (Coord){5, 1};
-    draw_tower_in_cell(c);
-    Gem g = (Gem){0, 0, 57, PYRO};
-    ActiveGem gem;
-    gem.gem = g;
-    gem.tower = c;
-    draw_gem_in_tower(gem);
+
+    if (current_action == NEW_TOWER)
+        draw_selected_square(win->new_tower);
 }
 
 // Draws the mana bar at the top of the window

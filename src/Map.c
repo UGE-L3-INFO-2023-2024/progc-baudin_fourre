@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+#include "Mana.h"
+
 static Coord random_nest_coords() {
     return (Coord){
         .col = MLV_get_random_integer(0 + MARGIN, MAP_WIDTH - MARGIN),
@@ -132,8 +134,7 @@ Map generate_map() {
 
         int length_in_dir[4];
         for (int i = 0; i < 4; i++) {
-            length_in_dir[i] =
-                distance_reached_direction(&map, cell, i);
+            length_in_dir[i] = distance_reached_direction(&map, cell, i);
         }
 
         Direction random_dir = weighted_random(length_in_dir, 4);
@@ -172,6 +173,13 @@ Map generate_map() {
     } while (turns < 8 || length < 75);
 
     return map;
+}
+
+// Returns 1 if the coordinates `coord` are within the map, or 0 otherwise
+int is_in_map(Coord coord) {
+    assert(coord.col >= 0);
+    assert(coord.line >= 0);
+    return (coord.col < MAP_WIDTH && coord.line < MAP_HEIGHT);
 }
 
 // Returns the direction of the cell where the `position`is situated
