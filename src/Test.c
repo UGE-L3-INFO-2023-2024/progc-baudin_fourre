@@ -49,6 +49,8 @@ int main(void) {
         return 1;
 
     cur_time = time_now();
+    printf("currrent time : %ld sec %ld nsec\n", cur_time.tv_sec,
+           cur_time.tv_nsec);
     while ((event = get_events()).type != QUIT) {
         action = get_user_action(action, event, win);
         if (action == ADD_TOWER)

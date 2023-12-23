@@ -15,8 +15,9 @@ Timestamp time_now() {
 
 Timestamp time_add_seconds(Timestamp time, double seconds) {
     Timestamp interval;
-    interval.tv_sec = seconds;
-    interval.tv_nsec = (seconds - interval.tv_sec) * 1000000000L;
+    interval.tv_sec = (time_t)seconds;
+    interval.tv_nsec =
+        (long)(seconds * 1000000000L - interval.tv_sec * 1000000000L);
 
     Timestamp new_time = {
         .tv_sec = time.tv_sec + interval.tv_sec,

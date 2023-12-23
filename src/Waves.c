@@ -9,6 +9,7 @@
 #include "Waves.h"
 
 #include <math.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/queue.h>
 
@@ -73,7 +74,9 @@ int wave_generation(MonsterList *monster_list, Map map) {
         hp *= 12;
 
     for (int i = 0; i < nb_monsters; i++) {
-        monster_start_time = time_future(i * (1 / speed));
+        monster_start_time = time_future(i * (1.0 / speed));
+        printf("Start time %ld sec %ld nsec\n", monster_start_time.tv_sec,
+               monster_start_time.tv_nsec);
         new_monster = create_new_monster(map, speed, hp, monster_start_time);
         if (!new_monster)
             return 0;
