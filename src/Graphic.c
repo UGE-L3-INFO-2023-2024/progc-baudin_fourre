@@ -16,6 +16,7 @@ WindowInfo init_graphic(void) {
     win.right_bar_font =
         MLV_load_font("fonts/calling.ttf", CELL_SIZE * 7 / 10);
     win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
+    MLV_change_frame_rate(60);
     return win;
 }
 
@@ -263,6 +264,18 @@ void draw_monster(Monster monster) {
     int x = monster.position.x * CELL_SIZE;
     int y = monster.position.y * CELL_SIZE;
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
+    draw_bar(x - radius * 1.5, y - radius * 1.5, radius * 3, radius / 2,
+             (double)monster.hp / monster.hp_init, MLV_COLOR_GREEN);
+}
+
+// draws the list of `monsters` on their position of the `map`
+void draw_monsters(MonsterList monsters, Map map) {
+    Monster *monster;
+    LIST_FOREACH(monster, &monsters, entries) {
+        if ((int)monster->position.x != map.nest.col ||
+            (int)monster->position.y != map.nest.line)
+            draw_monster(*monster);
+    }
 }
 
 // Clears the window
@@ -271,9 +284,9 @@ void clear_window(void) {
                               MAP_HEIGHT * CELL_SIZE, MLV_COLOR_LIGHT_GREY);
 }
 
-// Waits `time` seconds
-void wait_milliseconds(int time) {
-    MLV_wait_milliseconds(time);
+// Waits according to the framerate
+void wait_framerate() {
+    MLV_delay_according_to_frame_rate();
 }
 
 // Refreshes the window with the changes made

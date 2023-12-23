@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Monsters.h"
 #include "Time.h"
+#include "Waves.h"
 
 // returns the current user action from the `event` and `action` given.
 UserAction get_user_action(UserAction current_action, Event event,
@@ -34,35 +35,32 @@ UserAction get_user_action(UserAction current_action, Event event,
 int main(void) {
     srand(time(NULL));
     Game game;
-    Timestamp timetp;
-    Monster *monster;
-    double itvl;
+    Timestamp cur_time;
     Event event = (Event){NOEVENT, (Coord){0, 0}};
     UserAction action = NO_ACTION;
 
     game.map = generate_map();
     game.mana = init_mana();
-    timetp = time_future(2.0);  // TODO time
-    monster = create_new_monster(game.map, 1, 10, timetp);
-    itvl = 0.017;  // TODO time
 
     WindowInfo win = init_graphic();
     clear_window();
     draw_game(game, action, &win);
+    if (!wave_generation(&(game.monsters), game.map))
+        return 1;
 
+    cur_time = time_now();
     while ((event = get_events()).type != QUIT) {
         action = get_user_action(action, event, win);
         if (action == ADD_TOWER)
             add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
                                      event.mouse.line / CELL_SIZE});
         draw_game(game, action, &win);
-        draw_monster(*monster);
+        draw_monsters(game.monsters, game.map);
         refresh();
 
-        move_monster(game.map, monster,
-                     itvl);              // retrouver l'ellapsed proprement
-        wait_milliseconds(itvl * 1000);  // TODO time
-        // wait according to framerate serait mieux, non ?
+        move_monsters(&game, cur_time);
+        cur_time = time_now();
+        wait_framerate();  // TODO time
     }
     quit();
 

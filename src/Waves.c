@@ -64,18 +64,16 @@ int wave_generation(MonsterList *monster_list, Map map) {
     int speed, nb_monsters;
     int hp;
     WaveType type;
-    Timestamp monster_start_time = (Timestamp){0, 0}; // TODO time
+    Timestamp monster_start_time;
 
     type = random_wave(wave_count);
     get_wave_characteristics(type, &nb_monsters, &speed);
     hp = HP_MULT * pow(1.2, wave_count);
     if (type == BOSS)
         hp *= 12;
-    // monster_start_time = get instant time
 
     for (int i = 0; i < nb_monsters; i++) {
-        // monster_start_time = add_interval(monster_start_time, i * (1 /
-        // speed));
+        monster_start_time = time_future(i * (1 / speed));
         new_monster = create_new_monster(map, speed, hp, monster_start_time);
         if (!new_monster)
             return 0;

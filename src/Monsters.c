@@ -78,7 +78,7 @@ static void move_monster_direction(Monster *monster, Direction direction,
     Vector move = get_direction_vector(direction);
     double speed = rand_speed(monster->speed);
     monster->position = get_new_position(
-        monster->position, speed * time_elapsed, move); // TODO time
+        monster->position, speed * time_elapsed, move);  // TODO time
 }
 
 // Moves the monster on the `map` for a duration of `time_elapsed`

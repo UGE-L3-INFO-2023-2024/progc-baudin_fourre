@@ -1,8 +1,8 @@
 #include "Time.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 Timestamp time_now() {
     Timestamp time;
@@ -29,6 +29,14 @@ Timestamp time_add_seconds(Timestamp time, double seconds) {
     return new_time;
 }
 
+// Returns the number of seconds `elapsed` since `time`
+double elapsed_since(Timestamp time) {
+    Timestamp cur_time = time_now();
+    double time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
+    double cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
+    return (double)(cur_time_nsec - time_nsec) / 1000000000L;
+}
+
 Timestamp time_future(double seconds) {
     Timestamp now = time_now();
     return time_add_seconds(now, seconds);
@@ -36,7 +44,8 @@ Timestamp time_future(double seconds) {
 
 bool is_past_time(Timestamp time) {
     Timestamp now = time_now();
-    return (time.tv_sec == now.tv_sec) ? (time.tv_nsec < now.tv_nsec) : (time.tv_sec < now.tv_sec);
+    return (time.tv_sec == now.tv_sec) ? (time.tv_nsec < now.tv_nsec)
+                                       : (time.tv_sec < now.tv_sec);
 }
 
 // gcc src/Time.c -Iinclude/ -o TestTime

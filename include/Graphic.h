@@ -41,11 +41,10 @@ typedef struct {
 WindowInfo init_graphic(void);
 
 /**
- * @brief Waits `time` seconds
+ * @brief Waits according to the set framerate
  *
- * @param time
  */
-void wait_milliseconds(int time);
+void wait_framerate();
 
 /**
  * @brief Refreshes the graphic window with the changes made
@@ -65,6 +64,14 @@ void clear_window(void);
  * @param monster Monster structure to draw
  */
 void draw_monster(Monster monster);
+
+/**
+ * @brief draws the list of `monsters` in the `map`
+ *
+ * @param monsters
+ * @param map
+ */
+void draw_monsters(MonsterList monsters, Map map);
 
 /**
  * @brief Draw the mana bar at the top of the window

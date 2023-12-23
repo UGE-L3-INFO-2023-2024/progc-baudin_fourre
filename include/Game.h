@@ -35,4 +35,12 @@ typedef enum {
  */
 int add_tower(Game *game, Coord coord);
 
+/**
+ * @brief Moves the monsters of the `game`
+ *
+ * @param game Address of the current Game
+ * @param time Timestamp since the monsters were last moved
+ */
+void move_monsters(Game *game, Timestamp time);
+
 #endif  // __GAME_H__
