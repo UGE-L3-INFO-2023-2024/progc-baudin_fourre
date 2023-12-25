@@ -1,6 +1,12 @@
 #include "Game.h"
 
+#include <stdio.h>
+
+#include "Graphic.h"
+#include "Monsters.h"
+#include "Time.h"
 #include "Utils.h"
+#include "Window.h"
 
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
@@ -14,6 +20,21 @@ int add_tower(Game *game, Coord coord) {
     return 1;
 }
 
+// Creates a new pure gem, adding it to the inventory
+// Returns 1 if the gem could be created, 0 otherwise
+int new_gem(Game *game, int level) {
+    if (game->inventory.size == INVENTORY_SIZE) {
+        fprintf(stderr, "Inventory size exceeded\n");
+        return 0;
+    }
+    if (!mana_buy_gem(&game->mana, level))
+        return 0;
+    Gem new_gem = generate_pure_gem(level);
+    game->inventory.gems[game->inventory.size] = new_gem;
+    game->inventory.size++;
+    return 1;
+}
+
 // Move the monsters of the `game` according to their movement since `time`
 void move_monsters(Game *game, Timestamp time) {
     Monster *monster;
@@ -22,4 +43,28 @@ void move_monsters(Game *game, Timestamp time) {
         if (is_past_time(monster->start_time))
             move_monster(game->map, monster, elapsed);
     }
+}
+
+// Returns a Game structure with its initial values
+Game init_game(void) {
+    Game game;
+    game.map = generate_map();
+    game.inventory.size = 0;
+    game.active_gems.lh_first = NULL;
+    game.mana = init_mana();
+    game.monsters.lh_first = NULL;
+    game.next_wave = time_now();
+    return game;
+}
+
+// Increases the new gem level of `win` by one
+void increase_new_gem_level(WindowInfo *win) {
+    if (win->new_gem_level < GEM_LEVEL_MAX)
+        win->new_gem_level++;
+}
+
+// Decreases the new gem level of `win` by one
+void decrease_new_gem_level(WindowInfo *win) {
+    if (win->new_gem_level > 0)
+        win->new_gem_level--;
 }

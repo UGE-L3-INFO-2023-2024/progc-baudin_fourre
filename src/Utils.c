@@ -30,7 +30,7 @@ Position get_new_position(Position old_pos, double distance, Vector move) {
 
 // Returns 1 is the `position` is centered in a cell, or else 0
 int is_position_center(Position position) {
-    double margin = 0.01;
+    double margin = 0.05;
     double x = position.x - (int)position.x;
     double y = position.y - (int)position.y;
     if (0.5 - margin <= x && x <= 0.5 + margin && 0.5 - margin <= y &&

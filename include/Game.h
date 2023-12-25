@@ -7,6 +7,9 @@
 #include "Map.h"
 #include "Monsters.h"
 #include "Time.h"
+#include "Window.h"
+
+#define GEM_LEVEL_MAX 9
 
 typedef struct {
     Map map;
@@ -24,7 +27,16 @@ typedef enum {
     FUSE_GEM,
     NEW_GEM,
     ADD_ACTIVEGEM,
+    INC_GEM_LEVEL,
+    DEC_GEM_LEVEL,
 } UserAction;
+
+/**
+ * @brief Initializes a Game structure with its initial values
+ *
+ * @return Game
+ */
+Game init_game(void);
 
 /**
  * @brief Adds a tower to the coordinates given, if possible
@@ -34,6 +46,29 @@ typedef enum {
  * @return int 1 if the tower could be added, 0 otherwise
  */
 int add_tower(Game *game, Coord coord);
+
+/**
+ * @brief increases the new gem level by one
+ *
+ * @param win Address of the WindowInfo structure containing the new gem level
+ */
+void increase_new_gem_level(WindowInfo *win);
+
+/**
+ * @brief decreases the new gem level by one
+ *
+ * @param win Address of the WindowInfo structure containing the new gem level
+ */
+void decrease_new_gem_level(WindowInfo *win);
+
+/**
+ * @brief Adds a new gem to the game inventory
+ *
+ * @param game Address of the current game to add the gem to
+ * @param level level of the gem to create
+ * @return int 1 if the gem could be added, 0 otherwise
+ */
+int new_gem(Game *game, int level);
 
 /**
  * @brief Moves the monsters of the `game`

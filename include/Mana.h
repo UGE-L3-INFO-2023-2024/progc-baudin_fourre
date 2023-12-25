@@ -60,6 +60,15 @@ int mana_banish_monster(Mana *mana, Monster monster);
 int mana_fuse_gem(Mana *mana);
 
 /**
+ * @brief Decreases the mana quantity, if possible, in order to buy a gem
+ *
+ * @param mana Address of the Mana structure to modify
+ * @param level level of the gem to buy
+ * @return int 1 is buying a gem was possible, or else 0
+ */
+int mana_buy_gem(Mana *mana, int level);
+
+/**
  * @brief Gives the amount of mana required in order to buy a new tower
  *
  * @param add 1 if a new tower has been added, 0 otherwise

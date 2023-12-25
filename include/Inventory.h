@@ -5,6 +5,9 @@
 
 #define INVENTORY_SIZE 20
 
-typedef Gem * Inventory[INVENTORY_SIZE];
+typedef struct {
+    Gem gems[INVENTORY_SIZE];
+    int size;
+} Inventory;
 
-#endif // __INVENTORY_H__
+#endif  // __INVENTORY_H__
