@@ -12,6 +12,7 @@
 #define BKGD_COLOR MLV_COLOR_GREY
 #define TOWER_COLOR MLV_COLOR_BLACK
 #define RIGHT_BAR_COLOR MLV_COLOR_LIGHT_GREY
+#define SELECTED_COLOR MLV_rgba(0, 0, 0, 100)
 #define TRANSPARANT MLV_rgba(255, 255, 255, 0)
 
 // Returns the RGBA representation of the Hue `hue`

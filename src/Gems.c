@@ -7,7 +7,8 @@
 #include "Map.h"
 #include "Time.h"
 
-// Generates a random pure gem of level `level` by first choosing its type, and then its hue
+// Generates a random pure gem of level `level` by first choosing its type, and
+// then its hue
 Gem generate_pure_gem(int level) {
     Gem gem;
     gem.damage_mult = 1;
@@ -18,7 +19,8 @@ Gem generate_pure_gem(int level) {
 }
 
 // Allocates a new ActiveGem for the `gem`.
-// Returns the address of the ActiveGem allocated, or NULL if there was an error.
+// Returns the address of the ActiveGem allocated, or NULL if there was an
+// error.
 static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
     Timestamp instant_time;
     ActiveGem *active_gem = (ActiveGem *)malloc(sizeof(ActiveGem));
@@ -27,20 +29,19 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
         return NULL;
     }
 
-    // instant_time = get instant time
-
-    // active_gem->gem = gem;
-    // active_gem->tower = tower;
-    // active_gem->start_time = add_interval(instant_time, 2);
-    // active_gem->next_shot = active_gem->start_time;
-    // // Random shot interval between 1 and 2 seconds
-    // active_gem->shot_interval = get_interval(rand() / RAND_MAX + 1.);
+    active_gem->gem = gem;
+    active_gem->tower = tower;
+    active_gem->start_time = time_future(2);
+    active_gem->next_shot = active_gem->start_time;
+    // Random shot interval between 1 and 2 seconds
+    active_gem->shot_interval = rand() / RAND_MAX + 1.;
 
     return active_gem;
 }
 
 // Adds the `gem` at the head of the `activegem_list`
-int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower) {
+int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
+                          Coord tower) {
     ActiveGem *activegem = create_new_activegem(gem, tower);
     if (!activegem)
         return 0;

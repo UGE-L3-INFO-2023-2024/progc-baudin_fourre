@@ -18,6 +18,7 @@ typedef struct {
     ActiveGemList active_gems;
     Inventory inventory;
     Mana mana;
+    Error error;
 } Game;
 
 typedef enum {
@@ -29,6 +30,8 @@ typedef enum {
     ADD_ACTIVEGEM,
     INC_GEM_LEVEL,
     DEC_GEM_LEVEL,
+    SELECT_GEM,
+    WAIT_TOWER,
 } UserAction;
 
 /**
@@ -77,5 +80,15 @@ int new_gem(Game *game, int level);
  * @param time Timestamp since the monsters were last moved
  */
 void move_monsters(Game *game, Timestamp time);
+
+/**
+ * @brief Creates a new activegem in the tower given (if possible) with the
+ * selected gem in the inventory
+ *
+ * @param game address of the current Game to modify
+ * @param win Information of the current window
+ * @param tower Coordinates of the game where the gem must be added
+ */
+void add_activegem(Game *game, WindowInfo win, Coord tower);
 
 #endif  // __GAME_H__

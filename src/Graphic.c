@@ -57,15 +57,15 @@ static void draw_gem_in_square(Square s, MLV_Color color, int level,
 // draw a tower in the cell of coordinates `coord`
 static void draw_tower_in_cell(Coord coord) {
     Square cell =
-        (Square){coord.col * CELL_SIZE, coord.line * CELL_SIZE, CELL_SIZE};
+        new_square(coord.col * CELL_SIZE, coord.line * CELL_SIZE, CELL_SIZE);
     draw_tower_in_square(cell);
 }
 
 // draws the ActiveGem `gem` in its tower
 static void draw_gem_in_tower(ActiveGem gem) {
     Square tower =
-        (Square){gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
-                 gem.tower.line * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2};
+        new_square(gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
+                   gem.tower.line * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2);
     draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue), -1, NULL);
 }
 
@@ -80,9 +80,9 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
     draw_square(s, BKGD_COLOR);
     draw_gem_in_square(s, MLV_COLOR_CYAN, -1, NULL);
     win->dec_gem_level =
-        (Square){s.x, s.y + s.size + s.size / 6, s.size * 2 / 10};
-    win->inc_gem_level = (Square){s.x + s.size * 8 / 10,
-                                  s.y + s.size + s.size / 6, s.size * 2 / 10},
+        new_square(s.x, s.y + s.size + s.size / 6, s.size * 2 / 10);
+    win->inc_gem_level = new_square(
+        s.x + s.size * 8 / 10, s.y + s.size + s.size / 6, s.size * 2 / 10),
     MLV_draw_text_box_with_font(
         win->dec_gem_level.x, win->dec_gem_level.y, win->dec_gem_level.size,
         win->dec_gem_level.size, "<", win->right_bar_font, 1, TRANSPARANT,
@@ -127,21 +127,29 @@ static void draw_new_tower_button(Square s, MLV_Font *font) {
                                 MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
 }
 
-// draws the Square `s` as selected by drawing a transparent black square over
-// it
+// draws the Square `s` as selected by drawing a transparent black square
+// over it
 static void draw_selected_square(Square s) {
-    MLV_Color color = MLV_rgba(0, 0, 0, 100);
-    draw_square(s, color);
+    draw_square(s, SELECTED_COLOR);
+}
+
+static Square get_inventory_gem(Inventory inventory, int index,
+                                WindowInfo win) {
+    int size = RIGHT_BAR_SIZE * 2 / 10;
+    int x =
+        RIGHT_BAR_X + RIGHT_BAR_SIZE / 10 + size * (index % INVENTORY_COLS);
+    int y = GAME_HEIGHT * 7 / 20 + size * (index / INVENTORY_COLS);
+    return new_square(x, y, size);
 }
 
 // draws the buttons of the right bar
 static void draw_top_buttons(WindowInfo *win) {
-    win->new_tower = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
-                              GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
-    win->new_gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
-                            GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
-    win->fuse_gem = (Square){RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
-                             GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10};
+    win->new_tower = new_square(RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
+                                GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
+    win->new_gem = new_square(RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
+                              GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
+    win->fuse_gem = new_square(RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
+                               GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
     MLV_draw_filled_rectangle(RIGHT_BAR_X, 0, RIGHT_BAR_SIZE, GAME_HEIGHT,
                               RIGHT_BAR_COLOR);
     draw_new_tower_button(win->new_tower, win->right_bar_font);
@@ -159,22 +167,29 @@ static void draw_right_bar(WindowInfo *win) {
     draw_top_buttons(win);
 }
 
+// draw the `inventory` in the right bar, drawing the selected gem if there's
+// one
 static void draw_inventory(Inventory inventory, WindowInfo *win) {
     MLV_draw_text_box_with_font(
         RIGHT_BAR_X + 1, GAME_HEIGHT * 3 / 10, RIGHT_BAR_SIZE,
         GAME_HEIGHT * 1 / 30, "Inventory:", win->right_bar_font, 0,
         TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
         MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
-    Square s = (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
-                        GAME_HEIGHT * 7 / 15, RIGHT_BAR_SIZE * 8 / 10};
-
-    s.size = RIGHT_BAR_SIZE * 2 / 10;
+    Square s = (Square){
+        RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10, GAME_HEIGHT * 7 / 20,
+        RIGHT_BAR_SIZE * 8 / 10,
+        (s.size / INVENTORY_COLS) * (INVENTORY_SIZE / INVENTORY_COLS)};
+    win->inventory = s;
     for (int i = 0; i < inventory.size; i++) {
-        s.x = RIGHT_BAR_X + RIGHT_BAR_SIZE / 10 + s.size * (i % 4);
-        s.y = GAME_HEIGHT * 7 / 20 + s.size * (i / 4);
-        draw_gem_in_square(s, hue_to_rgba(inventory.gems[i].hue),
+        draw_gem_in_square(get_inventory_gem(inventory, i, *win),
+                           hue_to_rgba(inventory.gems[i].hue),
                            inventory.gems[i].level, win->right_bar_font);
     }
+    if (win->selected_gem >= 0 && win->selected_gem < inventory.size)
+        draw_gem_in_square(
+            get_inventory_gem(inventory, win->selected_gem, *win),
+            SELECTED_COLOR, inventory.gems[win->selected_gem].level,
+            win->right_bar_font);
 }
 
 // Draws a cell of coordinates `coord` according to the CellType `type`
@@ -226,6 +241,14 @@ static void draw_bar(int x, int y, int width, int height, double filled,
     MLV_draw_rectangle(x, y, width, height, MLV_COLOR_BLACK);
 }
 
+// draws the list of activegems by drawing gems in the correct towers
+static void draw_activegems(ActiveGemList activegems) {
+    ActiveGem *activegem;
+    LIST_FOREACH(activegem, &activegems, entries) {
+        draw_gem_in_tower(*activegem);
+    }
+}
+
 // draws the game int its entirety according the th current UserAction
 // `current_action`
 void draw_game(Game game, UserAction current_action, WindowInfo *win) {
@@ -233,6 +256,8 @@ void draw_game(Game game, UserAction current_action, WindowInfo *win) {
     draw_mana(game.mana);
     draw_right_bar(win);
     draw_inventory(game.inventory, win);
+    display_error(game.error, *win);
+    draw_activegems(game.active_gems);
 
     if (current_action == NEW_TOWER)
         draw_selected_square(win->new_tower);
@@ -255,8 +280,8 @@ void draw_mana(Mana mana) {
                       MLV_TEXT_CENTER);
 }
 
-// draws the monster `monster` at its position as a circle, having its hue for
-// color
+// draws the monster `monster` at its position as a circle, having its hue
+// for color
 void draw_monster(Monster monster) {
     int radius = CELL_SIZE / 3;
     int x = monster.position.x * CELL_SIZE;

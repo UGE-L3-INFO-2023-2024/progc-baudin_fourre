@@ -8,8 +8,14 @@ WindowInfo init_graphic(void) {
         MLV_load_font("fonts/calling.ttf", CELL_SIZE * 7 / 10);
     win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
     win.new_gem_level = 0;
+    win.selected_gem = -1;
     MLV_change_frame_rate(60);
     return win;
+}
+
+// Creates and returns a new Square structure with the given arguments
+Square new_square(int x, int y, int size) {
+    return (Square){x, y, size, size};
 }
 
 // Clears the window

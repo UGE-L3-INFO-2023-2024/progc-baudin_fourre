@@ -26,6 +26,9 @@ UserAction get_user_action(UserAction current_action, Event event,
             if (is_click_in_button(event.mouse, win.dec_gem_level)) {
                 return DEC_GEM_LEVEL;
             }
+            if (is_click_in_button(event.mouse, win.inventory)) {
+                return SELECT_GEM;
+            }
         }
         return NO_ACTION;
     }
@@ -38,7 +41,16 @@ UserAction get_user_action(UserAction current_action, Event event,
         else
             return NEW_TOWER;
     }
-    return NO_ACTION;
+
+    if (current_action == WAIT_TOWER) {
+        if (event.type == CLICK) {
+            return ADD_ACTIVEGEM;
+        }
+        if (event.type == ESCAPE)
+            return NO_ACTION;
+    }
+
+    return current_action;
 }
 
 int main(void) {
@@ -57,15 +69,40 @@ int main(void) {
     cur_time = time_now();
     while ((event = get_events()).type != QUIT) {
         action = get_user_action(action, event, win);
-        if (action == ADD_TOWER)
-            add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
-                                     event.mouse.line / CELL_SIZE});
-        if (action == NEW_GEM)
-            new_gem(&game, win.new_gem_level);
-        if (action == INC_GEM_LEVEL)
-            increase_new_gem_level(&win);
-        if (action == DEC_GEM_LEVEL)
-            decrease_new_gem_level(&win);
+
+        switch (action) {
+            case NO_ACTION:
+                win.selected_gem = -1;
+                break;
+            case ADD_TOWER:
+                add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
+                                         event.mouse.line / CELL_SIZE});
+                action = NO_ACTION;
+                break;
+            case NEW_GEM:
+                new_gem(&game, win.new_gem_level);
+                action = NO_ACTION;
+                break;
+            case INC_GEM_LEVEL:
+                increase_new_gem_level(&win);
+                action = NO_ACTION;
+                break;
+            case DEC_GEM_LEVEL:
+                decrease_new_gem_level(&win);
+                action = NO_ACTION;
+                break;
+            case SELECT_GEM:
+                win.selected_gem = get_selected_inventory_gem(event, win);
+                action = WAIT_TOWER;
+                break;
+            case ADD_ACTIVEGEM:
+                add_activegem(&game, win,
+                              (Coord){event.mouse.col / CELL_SIZE,
+                                      event.mouse.line / CELL_SIZE});
+                action = NO_ACTION;
+            default:
+                break;
+        }
 
         draw_game(game, action, &win);
         draw_monsters(game.monsters, game.map);

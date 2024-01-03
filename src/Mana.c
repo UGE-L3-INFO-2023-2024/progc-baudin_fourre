@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdio.h>
 
+#include "Error.h"
 #include "Monsters.h"
 
 // Initializes a mana structure with the initial values
@@ -16,6 +17,11 @@ Mana init_mana(void) {
     return mana;
 }
 
+// Modifies the `error` with new mana error
+static void get_mana_error(Error *error) {
+    new_error(error, "Not enough mana");
+}
+
 // Returns 1 if the quantity of mana is superior to the amount `required`, or
 // else 0;
 static int enough_mana(Mana mana, int required) {
@@ -23,13 +29,12 @@ static int enough_mana(Mana mana, int required) {
     if (required <= mana.quantity)
         return 1;
     else {
-        printf("Not enough mana\n");
         return 0;
     }
 }
 
 // Increases the mana level, returns 1 if it was possible, or else 0
-int increase_mana_level(Mana *mana) {
+int increase_mana_level(Mana *mana, Error *error) {
     assert(mana);
     if (!enough_mana(*mana, mana->max / 4))
         return 0;
@@ -41,7 +46,7 @@ int increase_mana_level(Mana *mana) {
 }
 
 // Increases the mana quantity with the mana won by eliminating a monster
-void mana_eliminate_monster(Mana *mana, Monster monster) {
+void mana_eliminate_monster(Mana *mana, Monster monster, Error *error) {
     assert(mana);
     mana->quantity += (monster.hp_init * 0.1) * pow(1.3, mana->level);
     if (mana->quantity > mana->max)
@@ -59,10 +64,14 @@ static int mana_remove_required(Mana *mana, int required) {
 }
 
 // Decreases the mana quantity, if possible, in order to banish a monster
-int mana_banish_monster(Mana *mana, Monster monster) {
+int mana_banish_monster(Mana *mana, Monster monster, Error *error) {
     assert(mana);
     int required = (monster.hp_init * 0.15) * pow(1.3, mana->level);
-    return mana_remove_required(mana, required);
+    if (!mana_remove_required(mana, required)) {
+        get_mana_error(error);
+        return 0;
+    }
+    return 1;
 }
 
 // Returns the required amount of mana to buy a new tower
@@ -78,25 +87,35 @@ int mana_required_tower(int add) {
 }
 
 // Decreases the mana quantity, if possible, in order to buy a tower
-int mana_buy_tower(Mana *mana) {
+int mana_buy_tower(Mana *mana, Error *error) {
     assert(mana);
     int required = mana_required_tower(0);
-    if (!mana_remove_required(mana, required))
+    if (!mana_remove_required(mana, required)) {
+        get_mana_error(error);
         return 0;
+    }
     mana_required_tower(1);
     return 1;
 }
 
 // Decreases the mana quantity, if possible, in order to buy a gem of level
 // `level`
-int mana_buy_gem(Mana *mana, int level) {
+int mana_buy_gem(Mana *mana, int level, Error *error) {
     assert(mana);
     int required = 100 * pow(2, level);
-    return mana_remove_required(mana, required);
+    if (!mana_remove_required(mana, required)) {
+        get_mana_error(error);
+        return 0;
+    }
+    return 1;
 }
 
 // Decreases the mana quantity, if possible, in order to fuse gems
-int mana_fuse_gem(Mana *mana) {
+int mana_fuse_gem(Mana *mana, Error *error) {
     assert(mana);
-    return mana_remove_required(mana, 100);
+    if (!mana_remove_required(mana, 100)) {
+        get_mana_error(error);
+        return 0;
+    }
+    return 1;
 }

@@ -24,6 +24,15 @@ typedef struct {
 Event get_events(void);
 
 /**
+ * @brief Get the index of the selected gem of the inventory from an event
+ *
+ * @param event Event retrieved (click of the mouse)
+ * @param win Information of the current window
+ * @return int index of the selected gem of the inventory
+ */
+int get_selected_inventory_gem(Event event, WindowInfo win);
+
+/**
  * @brief Checks if the Coord `click`are within the Square `button`
  *
  * @param click
