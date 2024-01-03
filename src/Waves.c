@@ -14,7 +14,7 @@
 #include <sys/queue.h>
 
 #include "Monsters.h"
-#include "Time.h"
+#include "Timer.h"
 
 // Returns a random WaveType according to the probabilities
 static WaveType random_wave(int wave_count) {

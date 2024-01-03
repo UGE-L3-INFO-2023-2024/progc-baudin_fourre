@@ -5,7 +5,7 @@
 
 #include "Element.h"
 #include "Map.h"
-#include "Time.h"
+#include "Timer.h"
 
 // Generates a random pure gem of level `level` by first choosing its type, and
 // then its hue

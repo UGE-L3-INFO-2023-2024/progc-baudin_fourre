@@ -1,7 +1,7 @@
 #include "Error.h"
 
 #include "Color.h"
-#include "Time.h"
+#include "Timer.h"
 #include "Window.h"
 
 // Modifies the `error` with the new `message`

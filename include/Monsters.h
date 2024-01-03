@@ -6,7 +6,7 @@
 #include "Element.h"
 #include "Map.h"
 #include "Shots.h"
-#include "Time.h"
+#include "Timer.h"
 
 #define HP_MULT 10
 

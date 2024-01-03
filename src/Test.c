@@ -6,7 +6,7 @@
 #include "Graphic.h"
 #include "Map.h"
 #include "Monsters.h"
-#include "Time.h"
+#include "Timer.h"
 #include "Waves.h"
 
 // returns the current user action from the `event` and `action` given.

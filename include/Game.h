@@ -6,7 +6,7 @@
 #include "Mana.h"
 #include "Map.h"
 #include "Monsters.h"
-#include "Time.h"
+#include "Timer.h"
 #include "Window.h"
 
 #define GEM_LEVEL_MAX 9

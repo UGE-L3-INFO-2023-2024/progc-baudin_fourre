@@ -2,7 +2,7 @@
 #define __SHOTS_H__
 
 #include "Map.h"
-#include "Time.h"
+#include "Timer.h"
 #include "Gems.h"
 
 typedef struct Shot {

@@ -2,6 +2,7 @@
 #define __TIME_H__
 
 #define _DEFAULT_SOURCE 1
+#include <sys/time.h>
 #include <stdbool.h>
 #include <time.h>
 

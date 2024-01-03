@@ -1,6 +1,6 @@
 #include "Utils.h"
 
-#include "Time.h"
+#include "Timer.h"
 
 // Returns the vector associated to the cardinal Direction given
 Vector get_direction_vector(Direction direction) {

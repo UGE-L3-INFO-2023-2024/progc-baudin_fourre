@@ -1,7 +1,7 @@
 #ifndef __ERROR_H__
 #define __ERROR_H__
 
-#include "Time.h"
+#include "Timer.h"
 #include "Window.h"
 
 typedef struct {
