@@ -27,7 +27,7 @@ Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
     monster->hp_init = HP;
 
     monster->hue = random_hue(NONE);
-    monster->position = (Position){map.nest.col + 0.5, map.nest.line + 0.5};
+    monster->position = coord_to_position(map.nest);
     monster->residue = NONE;
     LIST_INIT(&(monster->shots));
     monster->speed = speed;

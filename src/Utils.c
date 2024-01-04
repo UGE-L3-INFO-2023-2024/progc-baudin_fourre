@@ -2,6 +2,10 @@
 
 #include "Timer.h"
 
+#include <math.h>
+
+#define SQUARE(x) ((x)*(x))
+
 // Returns the vector associated to the cardinal Direction given
 Vector get_direction_vector(Direction direction) {
     switch (direction) {
@@ -37,4 +41,15 @@ int is_position_center(Position position) {
         y <= 0.5 + margin)
         return 1;
     return 0;
+}
+
+Position coord_to_position(Coord coord) {
+    return (Position){
+        .x = coord.col + 0.5,
+        .y = coord.line + 0.5
+    };
+}
+
+double distance_between_positions(Position pos1, Position pos2) {
+    return sqrt(SQUARE(pos1.x - pos2.x) + SQUARE(pos1.y - pos2.y));
 }
