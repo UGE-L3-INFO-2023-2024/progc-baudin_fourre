@@ -7,11 +7,16 @@
 
 typedef struct Shot {
     Position position;
-    float speed;
     Gem source;
     LIST_ENTRY(Shot) entries;
 } Shot;
 
 typedef LIST_HEAD(ShotList, Shot) ShotList;
+
+Shot *create_new_shot(Coord tower, Gem gem);
+
+void free_shots(ShotList *shots);
+
+void move_shot(Shot *shot, Position target);
 
 #endif // __SHOTS_H__

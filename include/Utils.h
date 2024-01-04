@@ -46,6 +46,10 @@ Position get_new_position(Position old_pos, double distance, Vector move);
  */
 int is_position_center(Position position);
 
+Position coord_to_position(Coord coord);
+
+double distance_between_positions(Position pos1, Position pos2);
+
 // Distance entre deux points
 // Calcul vecteur de déplacement
 // Calcul nouvelle position à partir de vitesse et vecteur de déplacement

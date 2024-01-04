@@ -91,4 +91,8 @@ void move_monsters(Game *game, Timestamp time);
  */
 void add_activegem(Game *game, WindowInfo win, Coord tower);
 
+void move_shots(Game *game, Timestamp time);
+
+void activegems_fire(Game *game);
+
 #endif  // __GAME_H__
