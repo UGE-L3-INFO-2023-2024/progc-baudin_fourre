@@ -8,6 +8,7 @@
 #include "Timer.h"
 #include "Utils.h"
 #include "Window.h"
+#include "Shots.h"
 
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
@@ -80,5 +81,69 @@ void add_activegem(Game *game, WindowInfo win, Coord tower) {
         add_to_activegemslist(&(game->active_gems),
                               game->inventory.gems[win.selected_gem], tower);
         remove_from_inventory(&(game->inventory), win.selected_gem);
+    }
+}
+
+void move_shots(Game *game, Timestamp time) {
+    double elapsed = elapsed_since(time);
+    Monster *monster;
+    LIST_FOREACH(monster, &game->monsters, entries) {
+        Shot *shot;
+        LIST_FOREACH(shot, &monster->shots, entries) {
+            move_shot(shot, monster->position, elapsed);
+        }
+    }
+}
+
+void reward_kill(Game *game, Monster *monster) {
+    // TODO
+}
+
+void damage_monsters(Game *game) {
+    Monster *monster, *next_m;
+    LIST_FOREACH_SAFE(monster, &game->monsters, entries, next_m) {
+        Shot *shot, *next_s;
+        LIST_FOREACH_SAFE(shot, &monster->shots, entries, next_s) {
+            if (!EQUAL_POSITIONS(shot->position, monster->position))
+                continue;
+            Gem gem = shot->source;
+            LIST_REMOVE(shot, entries);
+            free_shot(shot);
+            damage_monster(monster, gem);
+            if (is_dead_monster(monster)) {
+                reward_kill(game, monster);
+                LIST_REMOVE(monster, entries);
+                free_monster(monster);
+                break;
+            }
+        }
+    }
+}
+
+static Monster *find_monster_to_shoot(Coord tower_coord, MonsterList *monster_list) {
+    const float tower_field_radius = 3.0;
+    Monster *monster;
+    Monster *monster_fit = NULL;
+    LIST_FOREACH(monster, monster_list, entries) {
+        if (distance_between_positions(monster->position, coord_to_position(tower_coord)) < tower_field_radius) {
+            if (!monster_fit || monster_fit->hp < monster->hp) {
+                monster_fit = monster;
+            }
+        }
+    }
+    return monster_fit;
+}
+
+void activegems_fire(Game *game) {
+    ActiveGem *activegem;
+    LIST_FOREACH(activegem, &game->active_gems, entries) {
+        if (is_past_time(activegem->next_shot)) {
+            Monster *monster = find_monster_to_shoot(activegem->tower, &game->monsters);
+            if (monster) {
+                Shot *shot = create_new_shot(activegem->tower, activegem->gem);
+                LIST_INSERT_HEAD(&monster->shots, shot, entries);
+                activegem->next_shot = time_future(activegem->shot_interval);
+            }
+        }
     }
 }

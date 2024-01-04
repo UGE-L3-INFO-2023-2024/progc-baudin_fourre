@@ -1,6 +1,9 @@
 #ifndef __MONSTERS_H__
 #define __MONSTERS_H__
 
+#define LIST_FOREACH_SAFE(var, head, field, tvar)                              \
+	for ((var) = LIST_FIRST((head));                                       \
+	     (var) && ((tvar) = LIST_NEXT((var), field), 1); (var) = (tvar))
 #include <sys/queue.h>
 
 #include "Element.h"
@@ -19,8 +22,7 @@ typedef struct Monster {
     double hp;
     Element residue;
     ShotList shots;
-    LIST_ENTRY(Monster)
-    entries;
+    LIST_ENTRY(Monster) entries;
     Direction direction;
 } Monster;
 
@@ -45,6 +47,8 @@ Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time);
  */
 void free_monsters(MonsterList *monsters);
 
+void free_monster(Monster *monster);
+
 /**
  * @brief Adds, if necessary, an element to the field `residue` of the monster,
  * according to the `shot_hue`
@@ -63,5 +67,9 @@ void add_monster_residue(Monster *monster, Hue shot_hue);
  * @param time_elapsed time elapsed during the movement of the monster in seconds
  */
 void move_monster(Map map, Monster *monster, double time_elapsed);
+
+void damage_monster(Monster *monster, Gem gem);
+
+bool is_dead_monster(Monster *monster);
 
 #endif  // __MONSTERS_H__

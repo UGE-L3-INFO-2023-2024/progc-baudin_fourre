@@ -1,6 +1,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#define EQUAL_POSITIONS(pos1, pos2) (((pos1).x == (pos2).x) && ((pos1).y == (pos2).y))
+
 typedef struct {
     int col;
     int line;

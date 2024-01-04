@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/queue.h>
+#include <math.h>
 
 #include "Element.h"
 #include "Map.h"
@@ -43,9 +44,14 @@ void free_monsters(MonsterList *monsters) {
     while (!LIST_EMPTY(monsters)) {
         monster = LIST_FIRST(monsters);
         LIST_REMOVE(monster, entries);
-        free(monster);
+        free_monster(monster);
         monster = NULL;
     }
+}
+
+void free_monster(Monster *monster) {
+    free_shots(&monster->shots);
+    free(monster);
 }
 
 // Adds, if necessary, an element to the field `residue` of the monster,
@@ -89,4 +95,23 @@ void move_monster(Map map, Monster *monster, double time_elapsed) {
     }
     if (monster->direction != NODIR)
         move_monster_direction(monster, monster->direction, time_elapsed);
+}
+
+static inline double deg_to_rad(int deg) {
+    return deg * (M_PI / 180.0);
+}
+
+void damage_monster(Monster *monster, Gem gem) {
+    const double d = 1.0;
+    const int n = gem.level;
+    const int t_g = gem.hue;
+    const int t_m = monster->hue;
+    const double damage = d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
+    monster->hp -= damage;
+    // TODO residus
+    monster->residue = gem.type;
+}
+
+bool is_dead_monster(Monster *monster) {
+    return monster->hp <= 0.0;
 }

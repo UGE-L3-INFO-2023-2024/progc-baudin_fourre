@@ -5,6 +5,8 @@
 #include "Timer.h"
 #include "Gems.h"
 
+#include <stdbool.h>
+
 typedef struct Shot {
     Position position;
     Gem source;
@@ -17,6 +19,8 @@ Shot *create_new_shot(Coord tower, Gem gem);
 
 void free_shots(ShotList *shots);
 
-void move_shot(Shot *shot, Position target);
+void free_shot(Shot *shot);
+
+void move_shot(Shot *shot, Position target, double time_elapsed);
 
 #endif // __SHOTS_H__
