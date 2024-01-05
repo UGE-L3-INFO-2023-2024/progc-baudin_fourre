@@ -1,8 +1,8 @@
 #ifndef __GEMS_H__
 #define __GEMS_H__
 
-#include <sys/queue.h>
 
+#include "Queue.h"
 #include "Element.h"
 #include "Timer.h"
 #include "Utils.h"

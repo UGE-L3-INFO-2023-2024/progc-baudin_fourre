@@ -1,11 +1,7 @@
 #ifndef __MONSTERS_H__
 #define __MONSTERS_H__
 
-#define LIST_FOREACH_SAFE(var, head, field, tvar)                              \
-	for ((var) = LIST_FIRST((head));                                       \
-	     (var) && ((tvar) = LIST_NEXT((var), field), 1); (var) = (tvar))
-#include <sys/queue.h>
-
+#include "Queue.h"
 #include "Element.h"
 #include "Map.h"
 #include "Shots.h"

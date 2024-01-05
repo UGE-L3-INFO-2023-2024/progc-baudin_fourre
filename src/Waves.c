@@ -11,8 +11,8 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/queue.h>
 
+#include "Queue.h"
 #include "Monsters.h"
 #include "Timer.h"
 

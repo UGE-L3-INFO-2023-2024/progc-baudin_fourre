@@ -10,9 +10,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/queue.h>
 #include <math.h>
 
+#include "Queue.h"
 #include "Element.h"
 #include "Map.h"
 #include "Utils.h"
