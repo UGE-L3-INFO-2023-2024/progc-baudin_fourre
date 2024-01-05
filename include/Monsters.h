@@ -1,9 +1,9 @@
 #ifndef __MONSTERS_H__
 #define __MONSTERS_H__
 
-#include "Queue.h"
 #include "Element.h"
 #include "Map.h"
+#include "Queue.h"
 #include "Shots.h"
 #include "Timer.h"
 
@@ -60,7 +60,8 @@ void add_monster_residue(Monster *monster, Hue shot_hue);
  *
  * @param map Map where the monster moves
  * @param monster Address of the monster to modify
- * @param time_elapsed time elapsed during the movement of the monster in seconds
+ * @param time_elapsed time elapsed during the movement of the monster in
+ * seconds
  */
 void move_monster(Map map, Monster *monster, double time_elapsed);
 
@@ -68,4 +69,4 @@ void damage_monster(Monster *monster, Gem gem);
 
 bool is_dead_monster(Monster *monster);
 
-#endif  // __MONSTERS_H__
+#endif // __MONSTERS_H__

@@ -4,21 +4,21 @@
 
 #include <math.h>
 
-#define SQUARE(x) ((x)*(x))
+#define SQUARE(x) ((x) * (x))
 
 // Returns the vector associated to the cardinal Direction given
 Vector get_direction_vector(Direction direction) {
     switch (direction) {
-        case NORTH:
-            return (Vector){0, -1};
-        case SOUTH:
-            return (Vector){0, 1};
-        case WEST:
-            return (Vector){-1, 0};
-        case EAST:
-            return (Vector){1, 0};
-        case NODIR:
-            return (Vector){0, 0};
+    case NORTH:
+        return (Vector){0, -1};
+    case SOUTH:
+        return (Vector){0, 1};
+    case WEST:
+        return (Vector){-1, 0};
+    case EAST:
+        return (Vector){1, 0};
+    case NODIR:
+        return (Vector){0, 0};
     }
     return (Vector){0, 0};
 }
@@ -35,19 +35,16 @@ Position get_new_position(Position old_pos, double distance, Vector move) {
 // Returns 1 is the `position` is centered in a cell, or else 0
 int is_position_center(Position position) {
     double margin = 0.05;
-    double x = position.x - (int)position.x;
-    double y = position.y - (int)position.y;
-    if (0.5 - margin <= x && x <= 0.5 + margin && 0.5 - margin <= y &&
-        y <= 0.5 + margin)
+    double x = position.x - (int) position.x;
+    double y = position.y - (int) position.y;
+    if (0.5 - margin <= x && x <= 0.5 + margin && 0.5 - margin <= y
+        && y <= 0.5 + margin)
         return 1;
     return 0;
 }
 
 Position coord_to_position(Coord coord) {
-    return (Position){
-        .x = coord.col + 0.5,
-        .y = coord.line + 0.5
-    };
+    return (Position){.x = coord.col + 0.5, .y = coord.line + 0.5};
 }
 
 double distance_between_positions(Position pos1, Position pos2) {

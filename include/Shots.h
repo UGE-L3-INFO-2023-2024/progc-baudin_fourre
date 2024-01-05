@@ -1,9 +1,9 @@
 #ifndef __SHOTS_H__
 #define __SHOTS_H__
 
+#include "Gems.h"
 #include "Map.h"
 #include "Timer.h"
-#include "Gems.h"
 
 #include <stdbool.h>
 

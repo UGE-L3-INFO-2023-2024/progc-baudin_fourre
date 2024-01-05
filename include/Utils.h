@@ -1,7 +1,8 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
-#define EQUAL_POSITIONS(pos1, pos2) (((pos1).x == (pos2).x) && ((pos1).y == (pos2).y))
+#define EQUAL_POSITIONS(pos1, pos2)                                            \
+    (((pos1).x == (pos2).x) && ((pos1).y == (pos2).y))
 
 typedef struct {
     int col;
@@ -56,4 +57,4 @@ double distance_between_positions(Position pos1, Position pos2);
 // Calcul vecteur de déplacement
 // Calcul nouvelle position à partir de vitesse et vecteur de déplacement
 
-#endif  // __UTILS_H__
+#endif // __UTILS_H__

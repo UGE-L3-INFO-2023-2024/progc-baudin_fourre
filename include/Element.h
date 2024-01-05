@@ -13,7 +13,8 @@ typedef enum {
 /**
  * @brief Generates a random hue in the given element, if there's one
  *
- * @param element Element from which to generate the hue, or NONE to generate any hue
+ * @param element Element from which to generate the hue, or NONE to generate
+ * any hue
  * @return Hue random hue generated
  */
 Hue random_hue(Element element);

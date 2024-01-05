@@ -47,10 +47,10 @@ static void draw_gem_in_square(Square s, MLV_Color color, int level,
                 s.y + s.size * 7 / 10, s.y + s.size * 3 / 10};
     MLV_draw_filled_polygon(vx, vy, 6, color);
     if (level != -1 && font) {
-        MLV_draw_text_box_with_font(
-            s.x, s.y, s.size, s.size, level_str, font, 1, TRANSPARANT,
-            MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
-            MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+        MLV_draw_text_box_with_font(s.x, s.y, s.size, s.size, level_str, font,
+                                    1, TRANSPARANT, MLV_COLOR_BLACK,
+                                    TRANSPARANT, MLV_TEXT_CENTER,
+                                    MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
     }
 }
 
@@ -75,14 +75,14 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
     char gem_level[3];
     char cost[5];
     sprintf(gem_level, "%d", win->new_gem_level);
-    sprintf(cost, "%d", (int)(100 * pow(2, win->new_gem_level)));
+    sprintf(cost, "%d", (int) (100 * pow(2, win->new_gem_level)));
 
     draw_square(s, BKGD_COLOR);
     draw_gem_in_square(s, MLV_COLOR_CYAN, -1, NULL);
     win->dec_gem_level =
         new_square(s.x, s.y + s.size + s.size / 6, s.size * 2 / 10);
-    win->inc_gem_level = new_square(
-        s.x + s.size * 8 / 10, s.y + s.size + s.size / 6, s.size * 2 / 10),
+    win->inc_gem_level = new_square(s.x + s.size * 8 / 10,
+                                    s.y + s.size + s.size / 6, s.size * 2 / 10),
     MLV_draw_text_box_with_font(
         win->dec_gem_level.x, win->dec_gem_level.y, win->dec_gem_level.size,
         win->dec_gem_level.size, "<", win->right_bar_font, 1, TRANSPARANT,
@@ -136,8 +136,7 @@ static void draw_selected_square(Square s) {
 static Square get_inventory_gem(Inventory inventory, int index,
                                 WindowInfo win) {
     int size = RIGHT_BAR_SIZE * 2 / 10;
-    int x =
-        RIGHT_BAR_X + RIGHT_BAR_SIZE / 10 + size * (index % INVENTORY_COLS);
+    int x = RIGHT_BAR_X + RIGHT_BAR_SIZE / 10 + size * (index % INVENTORY_COLS);
     int y = GAME_HEIGHT * 7 / 20 + size * (index / INVENTORY_COLS);
     return new_square(x, y, size);
 }
@@ -172,13 +171,13 @@ static void draw_right_bar(WindowInfo *win) {
 static void draw_inventory(Inventory inventory, WindowInfo *win) {
     MLV_draw_text_box_with_font(
         RIGHT_BAR_X + 1, GAME_HEIGHT * 3 / 10, RIGHT_BAR_SIZE,
-        GAME_HEIGHT * 1 / 30, "Inventory:", win->right_bar_font, 0,
-        TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
-        MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
-    Square s = (Square){
-        RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10, GAME_HEIGHT * 7 / 20,
-        RIGHT_BAR_SIZE * 8 / 10,
-        (s.size / INVENTORY_COLS) * (INVENTORY_SIZE / INVENTORY_COLS)};
+        GAME_HEIGHT * 1 / 30, "Inventory:", win->right_bar_font, 0, TRANSPARANT,
+        MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
+        MLV_VERTICAL_CENTER);
+    Square s =
+        (Square){RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10, GAME_HEIGHT * 7 / 20,
+                 RIGHT_BAR_SIZE * 8 / 10,
+                 (s.size / INVENTORY_COLS) * (INVENTORY_SIZE / INVENTORY_COLS)};
     win->inventory = s;
     for (int i = 0; i < inventory.size; i++) {
         draw_gem_in_square(get_inventory_gem(inventory, i, *win),
@@ -213,8 +212,8 @@ static void draw_cell(CellType type, Coord coord) {
 
     MLV_draw_filled_rectangle(coord.col * CELL_SIZE, coord.line * CELL_SIZE,
                               CELL_SIZE, CELL_SIZE, color);
-    MLV_draw_rectangle(coord.col * CELL_SIZE, coord.line * CELL_SIZE,
-                       CELL_SIZE, CELL_SIZE, outline);
+    MLV_draw_rectangle(coord.col * CELL_SIZE, coord.line * CELL_SIZE, CELL_SIZE,
+                       CELL_SIZE, outline);
 }
 
 // Draw a blank grid
@@ -268,7 +267,7 @@ void draw_mana(Mana mana) {
     char mana_values[12];
     sprintf(mana_values, "%d/%d", mana.quantity, mana.max);
 
-    double filled = (double)mana.quantity / (double)mana.max;
+    double filled = (double) mana.quantity / (double) mana.max;
     draw_bar((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
              (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2, filled,
              MLV_COLOR_CYAN);
@@ -288,15 +287,15 @@ void draw_monster(Monster monster) {
     int y = monster.position.y * CELL_SIZE;
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
     draw_bar(x - radius * 1.5, y - radius * 1.5, radius * 3, radius / 2,
-             (double)monster.hp / monster.hp_init, MLV_COLOR_GREEN);
+             (double) monster.hp / monster.hp_init, MLV_COLOR_GREEN);
 }
 
 // draws the list of `monsters` on their position of the `map`
 void draw_monsters(MonsterList monsters, Map map) {
     Monster *monster;
     LIST_FOREACH(monster, &monsters, entries) {
-        if ((int)monster->position.x != map.nest.col ||
-            (int)monster->position.y != map.nest.line)
+        if ((int) monster->position.x != map.nest.col
+            || (int) monster->position.y != map.nest.line)
             draw_monster(*monster);
     }
 }

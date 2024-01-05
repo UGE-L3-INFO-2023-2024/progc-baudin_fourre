@@ -1,9 +1,8 @@
 #ifndef __GEMS_H__
 #define __GEMS_H__
 
-
-#include "Queue.h"
 #include "Element.h"
+#include "Queue.h"
 #include "Timer.h"
 #include "Utils.h"
 
@@ -39,7 +38,8 @@ Gem generate_pure_gem(int level);
  * @param activegem_list address of the head og the list of active gems
  * @param gem Gem to add to the list
  * @param tower Address of the cell where the active gem will be placed
- * @return int 1 if the gem was properly added, 0 if there was an allocation error
+ * @return int 1 if the gem was properly added, 0 if there was an allocation
+ * error
  */
 int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower);
 

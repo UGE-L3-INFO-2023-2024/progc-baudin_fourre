@@ -20,4 +20,4 @@ typedef enum {
  */
 int wave_generation(MonsterList *monster_list, Map map);
 
-#endif  // __WAVES_H__
+#endif // __WAVES_H__

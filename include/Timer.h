@@ -2,8 +2,8 @@
 #define __TIME_H__
 
 #define _DEFAULT_SOURCE 1
-#include <sys/time.h>
 #include <stdbool.h>
+#include <sys/time.h>
 #include <time.h>
 
 typedef struct timespec Timestamp;
@@ -24,4 +24,4 @@ bool is_past_time(Timestamp time);
  */
 double elapsed_since(Timestamp time);
 
-#endif  // __TIME_H__
+#endif // __TIME_H__

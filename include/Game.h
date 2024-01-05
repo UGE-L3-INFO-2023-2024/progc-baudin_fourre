@@ -95,4 +95,4 @@ void move_shots(Game *game, Timestamp time);
 
 void activegems_fire(Game *game);
 
-#endif  // __GAME_H__
+#endif // __GAME_H__

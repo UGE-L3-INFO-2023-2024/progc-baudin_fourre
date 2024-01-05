@@ -18,4 +18,4 @@ typedef struct {
  */
 void remove_from_inventory(Inventory *inventory, int index);
 
-#endif  // __INVENTORY_H__
+#endif // __INVENTORY_H__
