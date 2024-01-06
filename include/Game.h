@@ -98,4 +98,6 @@ void activegems_fire(Game *game);
 
 void damage_monsters(Game *game);
 
-#endif  // __GAME_H__
+void damage_monsters(Game *game);
+
+#endif // __GAME_H__

@@ -5,11 +5,11 @@
 
 #include "Map.h"
 
-#define CELL_SIZE 32
-#define GAME_WIDTH (CELL_SIZE * MAP_WIDTH)
-#define GAME_HEIGHT (CELL_SIZE * MAP_HEIGHT)
+#define CELL_SIZE      32
+#define GAME_WIDTH     (CELL_SIZE * MAP_WIDTH)
+#define GAME_HEIGHT    (CELL_SIZE * MAP_HEIGHT)
 #define RIGHT_BAR_SIZE (10 * CELL_SIZE)
-#define RIGHT_BAR_X (MAP_WIDTH * CELL_SIZE)
+#define RIGHT_BAR_X    (MAP_WIDTH * CELL_SIZE)
 #define INVENTORY_COLS 4
 
 typedef struct {

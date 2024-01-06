@@ -77,4 +77,4 @@ int mana_buy_gem(Mana *mana, int level, Error *error);
  */
 int mana_required_tower(int add);
 
-#endif  // __MANA_H__
+#endif // __MANA_H__

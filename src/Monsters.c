@@ -11,15 +11,15 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/queue.h>
 
 #include "Element.h"
 #include "Map.h"
+#include "Queue.h"
 #include "Utils.h"
 
 // Returns the adress of the new Monster created with the given arguments
 Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
-    Monster *monster = (Monster *)malloc(sizeof(Monster));
+    Monster *monster = (Monster *) malloc(sizeof(Monster));
     if (!monster) {
         fprintf(stderr, "Allocation error\n");
         return NULL;
@@ -74,9 +74,9 @@ static double rand_speed(int speed) {
     int sign = rand() % 2;
     double var = (rand() % 100) / 1000.0;
     if (sign)
-        return (1.0 - var) * (double)speed;
+        return (1.0 - var) * (double) speed;
     else
-        return (1.0 + var) * (double)speed;
+        return (1.0 + var) * (double) speed;
 }
 
 // Moves the monster along the `direction` for a duration of `time_elapsed`
@@ -85,7 +85,7 @@ static void move_monster_direction(Monster *monster, Direction direction,
     Vector move = get_direction_vector(direction);
     double speed = rand_speed(monster->speed);
     monster->position = get_new_position(
-        monster->position, speed * time_elapsed, move);  // TODO time
+        monster->position, speed * time_elapsed, move); // TODO time
 }
 
 // Moves the monster on the `map` for a duration of `time_elapsed`

@@ -5,16 +5,16 @@
 #include "Gems.h"
 #include "Graphic.h"
 #include "Monsters.h"
+#include "Shots.h"
 #include "Timer.h"
 #include "Utils.h"
 #include "Window.h"
-#include "Shots.h"
 
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
 int add_tower(Game *game, Coord coord) {
-    if (!is_in_map(coord) ||
-        game->map.cells[coord.col][coord.line].type != EMPTY)
+    if (!is_in_map(coord)
+        || game->map.cells[coord.col][coord.line].type != EMPTY)
         return 0;
     if (!mana_buy_tower(&game->mana, &(game->error)))
         return 0;
@@ -120,12 +120,15 @@ void damage_monsters(Game *game) {
     }
 }
 
-static Monster *find_monster_to_shoot(Coord tower_coord, MonsterList *monster_list) {
+static Monster *find_monster_to_shoot(Coord tower_coord,
+                                      MonsterList *monster_list) {
     const float tower_field_radius = 3.0;
     Monster *monster;
     Monster *monster_fit = NULL;
     LIST_FOREACH(monster, monster_list, entries) {
-        if (distance_between_positions(monster->position, coord_to_position(tower_coord)) < tower_field_radius) {
+        if (distance_between_positions(monster->position,
+                                       coord_to_position(tower_coord))
+            < tower_field_radius) {
             if (!monster_fit || monster_fit->hp < monster->hp) {
                 monster_fit = monster;
             }
@@ -138,7 +141,8 @@ void activegems_fire(Game *game) {
     ActiveGem *activegem;
     LIST_FOREACH(activegem, &game->active_gems, entries) {
         if (is_past_time(activegem->next_shot)) {
-            Monster *monster = find_monster_to_shoot(activegem->tower, &game->monsters);
+            Monster *monster =
+                find_monster_to_shoot(activegem->tower, &game->monsters);
             if (monster) {
                 Shot *shot = create_new_shot(activegem->tower, activegem->gem);
                 LIST_INSERT_HEAD(&monster->shots, shot, entries);

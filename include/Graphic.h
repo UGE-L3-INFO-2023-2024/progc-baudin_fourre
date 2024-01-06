@@ -41,4 +41,4 @@ void draw_mana(Mana mana);
  */
 void draw_game(Game game, UserAction action, WindowInfo *win);
 
-#endif  // __GRAPHIC_H__
+#endif // __GRAPHIC_H__

@@ -1,9 +1,9 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
-#define MAP_WIDTH 28
+#define MAP_WIDTH  28
 #define MAP_HEIGHT 22
-#define MARGIN 3
+#define MARGIN     3
 
 #include "Gems.h"
 #include "Utils.h"
@@ -54,4 +54,4 @@ Direction get_position_direction(Map map, Position position);
  */
 int is_in_map(Coord coord);
 
-#endif  // __MAP_H__
+#endif // __MAP_H__

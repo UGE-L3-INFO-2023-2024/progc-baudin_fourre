@@ -14,8 +14,8 @@ static Coord random_nest_coords() {
 }
 
 static bool out_of_edges(Coord coord, int margin) {
-    return (coord.line < margin || coord.line >= MAP_HEIGHT - margin ||
-            coord.col < margin || coord.col >= MAP_WIDTH - margin);
+    return (coord.line < margin || coord.line >= MAP_HEIGHT - margin
+            || coord.col < margin || coord.col >= MAP_WIDTH - margin);
 }
 
 static void init_map(Map *map) {
@@ -37,25 +37,25 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
 
     Coord next_coord = cell->coord;
     switch (dir) {
-        case NORTH:
-            next_coord.line--;
-            break;
-        case SOUTH:
-            next_coord.line++;
-            break;
-        case EAST:
-            next_coord.col++;
-            break;
-        case WEST:
-            next_coord.col--;
-            break;
-        case NODIR:
-            break;
+    case NORTH:
+        next_coord.line--;
+        break;
+    case SOUTH:
+        next_coord.line++;
+        break;
+    case EAST:
+        next_coord.col++;
+        break;
+    case WEST:
+        next_coord.col--;
+        break;
+    case NODIR:
+        break;
     }
     if (out_of_edges(next_coord, 0)) {
         return NULL;
     }
-    return (Cell *)&map->cells[CI(next_coord)];
+    return (Cell *) &map->cells[CI(next_coord)];
 }
 
 static bool check_around(const Map *map, const Cell *cell, Direction dir,
@@ -68,9 +68,9 @@ static bool check_around(const Map *map, const Cell *cell, Direction dir,
     }
     if (dist > 0) {
         for (int i = 0; i < 4; i++) {
-            if (i != forbidden_dir && i != (dir ^ 1) &&
-                !check_around(map, next_cell_direction(map, cell, i), i,
-                              forbidden_dir, dist - 1)) {
+            if (i != forbidden_dir && i != (dir ^ 1)
+                && !check_around(map, next_cell_direction(map, cell, i), i,
+                                 forbidden_dir, dist - 1)) {
                 return false;
             }
         }
@@ -81,9 +81,9 @@ static bool check_around(const Map *map, const Cell *cell, Direction dir,
 static int distance_reached_direction(const Map *map, const Cell *cell,
                                       Direction dir) {
     int distance = 0;
-    while ((cell = next_cell_direction(map, cell, dir)) &&
-           !out_of_edges(cell->coord, MARGIN - 1) &&
-           check_around(map, cell, dir, (dir ^ 1), MARGIN - 1)) {
+    while ((cell = next_cell_direction(map, cell, dir))
+           && !out_of_edges(cell->coord, MARGIN - 1)
+           && check_around(map, cell, dir, (dir ^ 1), MARGIN - 1)) {
         distance++;
     }
     return distance;
@@ -154,7 +154,7 @@ Map generate_map() {
                 cell->type = PATH;
             }
 
-            int axe = (~random_dir & 2);  // Get axe to turn
+            int axe = (~random_dir & 2); // Get axe to turn
             length_in_dir[axe | 0] =
                 distance_reached_direction(&map, cell, axe | 0);
             length_in_dir[axe | 1] =

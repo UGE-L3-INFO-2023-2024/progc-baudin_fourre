@@ -23,7 +23,7 @@ Gem generate_pure_gem(int level) {
 // error.
 static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
     Timestamp instant_time;
-    ActiveGem *active_gem = (ActiveGem *)malloc(sizeof(ActiveGem));
+    ActiveGem *active_gem = (ActiveGem *) malloc(sizeof(ActiveGem));
     if (!active_gem) {
         fprintf(stderr, "Allocation error\n");
         return NULL;
@@ -40,8 +40,7 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
 }
 
 // Adds the `gem` at the head of the `activegem_list`
-int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
-                          Coord tower) {
+int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower) {
     ActiveGem *activegem = create_new_activegem(gem, tower);
     if (!activegem)
         return 0;

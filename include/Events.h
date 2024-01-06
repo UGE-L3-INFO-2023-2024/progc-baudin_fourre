@@ -42,4 +42,4 @@ int get_selected_inventory_gem(Event event, WindowInfo win);
  */
 int is_click_in_button(Coord click, Square button);
 
-#endif  // __EVENTS_H__
+#endif // __EVENTS_H__
