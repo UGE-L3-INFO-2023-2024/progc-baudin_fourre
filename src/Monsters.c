@@ -8,10 +8,10 @@
 
 #include "Monsters.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/queue.h>
-#include <math.h>
 
 #include "Element.h"
 #include "Map.h"
@@ -102,11 +102,12 @@ static inline double deg_to_rad(int deg) {
 }
 
 void damage_monster(Monster *monster, Gem gem) {
-    const double d = 1.0;
+    const double d = 5.0;
     const int n = gem.level;
     const int t_g = gem.hue;
     const int t_m = monster->hue;
-    const double damage = d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
+    const double damage =
+        d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
     monster->hp -= damage;
     // TODO residus
     monster->residue = gem.type;

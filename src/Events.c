@@ -20,11 +20,13 @@ Event get_events(void) {
     if (mlv_event == MLV_MOUSE_BUTTON && button == MLV_BUTTON_LEFT &&
         state == MLV_PRESSED)
         event.type = CLICK;
-    if (mlv_event == MLV_KEY) {
+    if (mlv_event == MLV_KEY && state == MLV_PRESSED) {
         if (key == MLV_KEYBOARD_q)
             event.type = QUIT;
         if (key == MLV_KEYBOARD_ESCAPE)
             event.type = ESCAPE;
+        if (key == MLV_KEYBOARD_SPACE)
+            event.type = SPACE;
     }
     return event;
 }

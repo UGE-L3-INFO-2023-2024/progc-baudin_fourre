@@ -8,6 +8,7 @@ typedef enum {
     NOEVENT,
     CLICK,
     ESCAPE,
+    SPACE,
     QUIT,
 } EventType;
 

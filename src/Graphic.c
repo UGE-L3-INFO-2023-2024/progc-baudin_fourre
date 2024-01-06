@@ -226,6 +226,20 @@ void draw_grid(Map map) {
     }
 }
 
+static void draw_shot(Shot shot) {
+    int radius = 3;
+    MLV_draw_filled_circle(shot.position.x * CELL_SIZE,
+                           shot.position.y * CELL_SIZE, radius,
+                           hue_to_rgba(shot.source.hue));
+}
+
+static void draw_shots(ShotList shots) {
+    Shot *shot;
+    LIST_FOREACH(shot, &shots, entries) {
+        draw_shot(*shot);
+    }
+}
+
 // draws a bar at the corner (x, y), of size (width x height),
 // with its first (`filled`*100)% filled with color `color`
 static void draw_bar(int x, int y, int width, int height, double filled,
@@ -252,13 +266,16 @@ static void draw_activegems(ActiveGemList activegems) {
 // draws the game int its entirety according the th current UserAction
 // `current_action`
 void draw_game(Game game, UserAction current_action, WindowInfo *win) {
+    Monster *monster;
     draw_grid(game.map);
     draw_mana(game.mana);
     draw_right_bar(win);
     draw_inventory(game.inventory, win);
     display_error(game.error, *win);
     draw_activegems(game.active_gems);
-
+    LIST_FOREACH(monster, &game.monsters, entries) {
+        draw_shots(monster->shots);
+    }
     if (current_action == NEW_TOWER)
         draw_selected_square(win->new_tower);
 }

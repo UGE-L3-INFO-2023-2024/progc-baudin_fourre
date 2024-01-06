@@ -30,6 +30,8 @@ UserAction get_user_action(UserAction current_action, Event event,
                 return SELECT_GEM;
             }
         }
+        if (event.type == SPACE)
+            return NEW_WAVE;
         return NO_ACTION;
     }
 
@@ -63,8 +65,6 @@ int main(void) {
 
     clear_window();
     draw_game(game, action, &win);
-    if (!wave_generation(&(game.monsters), game.map))
-        return 1;
 
     cur_time = time_now();
     while ((event = get_events()).type != QUIT) {
@@ -100,6 +100,12 @@ int main(void) {
                               (Coord){event.mouse.col / CELL_SIZE,
                                       event.mouse.line / CELL_SIZE});
                 action = NO_ACTION;
+                break;
+            case NEW_WAVE:
+                if (!wave_generation(&(game.monsters), game.map))
+                    return 1;
+                action = NO_ACTION;
+                break;
             default:
                 break;
         }
@@ -109,8 +115,11 @@ int main(void) {
         refresh();
 
         move_monsters(&game, cur_time);
+        move_shots(&game, cur_time);
+        activegems_fire(&game);
+        damage_monsters(&game);
         cur_time = time_now();
-        wait_framerate();  // TODO time
+        wait_framerate();
     }
     quit();
 

@@ -1,7 +1,7 @@
 #include "Shots.h"
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 Shot *create_new_shot(Coord tower, Gem gem) {
     Shot *shot = malloc(sizeof(Shot));
@@ -9,10 +9,7 @@ Shot *create_new_shot(Coord tower, Gem gem) {
         fprintf(stderr, "Allocation error\n");
         return NULL;
     }
-    *shot = (Shot){
-        .position = coord_to_position(tower),
-        .source = gem
-    };
+    *shot = (Shot){.position = coord_to_position(tower), .source = gem};
     return shot;
 }
 
@@ -36,8 +33,8 @@ void move_shot(Shot *shot, Position target, double time_elapsed) {
         shot->position = target;
     }
     Vector vec = {
-        .x = shot->position.x - target.x / dist,
-        .y = shot->position.y - target.y / dist,
+        .x = (target.x - shot->position.x) / dist,
+        .y = (target.y - shot->position.y) / dist,
     };
     shot->position = get_new_position(shot->position, travel, vec);
 }

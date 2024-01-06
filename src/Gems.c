@@ -34,7 +34,7 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
     active_gem->start_time = time_future(2);
     active_gem->next_shot = active_gem->start_time;
     // Random shot interval between 1 and 2 seconds
-    active_gem->shot_interval = rand() / RAND_MAX + 1.;
+    active_gem->shot_interval = ((rand() % 5) + 6) / 10.;
 
     return active_gem;
 }

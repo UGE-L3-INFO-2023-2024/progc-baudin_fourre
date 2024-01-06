@@ -32,6 +32,7 @@ typedef enum {
     DEC_GEM_LEVEL,
     SELECT_GEM,
     WAIT_TOWER,
+    NEW_WAVE,
 } UserAction;
 
 /**
@@ -94,5 +95,7 @@ void add_activegem(Game *game, WindowInfo win, Coord tower);
 void move_shots(Game *game, Timestamp time);
 
 void activegems_fire(Game *game);
+
+void damage_monsters(Game *game);
 
 #endif  // __GAME_H__
