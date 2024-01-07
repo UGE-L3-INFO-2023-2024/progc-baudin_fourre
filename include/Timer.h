@@ -24,4 +24,12 @@ bool is_past_time(Timestamp time);
  */
 double elapsed_since(Timestamp time);
 
+/**
+ * @brief Gets the time left until `time`
+ *
+ * @param time
+ * @return double time left, in seconds
+ */
+double time_to(Timestamp time);
+
 #endif // __TIME_H__

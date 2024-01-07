@@ -102,8 +102,7 @@ int main(void) {
             action = NO_ACTION;
             break;
         case NEW_WAVE:
-            if (!wave_generation(&(game.monsters), game.map))
-                return 1;
+            add_wave(&game);
             action = NO_ACTION;
             break;
         default:
@@ -114,6 +113,8 @@ int main(void) {
         draw_monsters(game.monsters, game.map);
         refresh();
 
+        if (is_past_time(game.next_wave))
+            add_wave(&game);
         move_monsters(&game, cur_time);
         move_shots(&game, cur_time);
         activegems_fire(&game);

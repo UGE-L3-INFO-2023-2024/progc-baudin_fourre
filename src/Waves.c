@@ -58,8 +58,7 @@ static void get_wave_characteristics(WaveType type, int *nb_monsters,
 }
 
 // Generates a random wave and adds the monsters created to the `monster_list`
-int wave_generation(MonsterList *monster_list, Map map) {
-    static int wave_count = 1;
+int wave_generation(MonsterList *monster_list, Map map, int nb_wave) {
 
     Monster *new_monster = NULL;
     int speed, nb_monsters;
@@ -67,9 +66,9 @@ int wave_generation(MonsterList *monster_list, Map map) {
     WaveType type;
     Timestamp monster_start_time;
 
-    type = random_wave(wave_count);
+    type = random_wave(nb_wave);
     get_wave_characteristics(type, &nb_monsters, &speed);
-    hp = HP_MULT * pow(1.2, wave_count);
+    hp = HP_MULT * pow(1.2, nb_wave);
     if (type == BOSS)
         hp *= 12;
 
@@ -81,6 +80,5 @@ int wave_generation(MonsterList *monster_list, Map map) {
         LIST_INSERT_HEAD(monster_list, new_monster, entries);
     }
 
-    wave_count++;
     return 1;
 }

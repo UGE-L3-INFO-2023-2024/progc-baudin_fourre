@@ -7,6 +7,7 @@
 #include "Map.h"
 #include "Monsters.h"
 #include "Timer.h"
+#include "Waves.h"
 #include "Window.h"
 
 #define GEM_LEVEL_MAX 9
@@ -92,11 +93,17 @@ void move_monsters(Game *game, Timestamp time);
  */
 void add_activegem(Game *game, WindowInfo win, Coord tower);
 
+/**
+ * @brief Adds a new wave of monsters to the game
+ *
+ * @param game Address of the Game to modify
+ * @return int 0 if there was an error, 1 otherwise
+ */
+int add_wave(Game *game);
+
 void move_shots(Game *game, Timestamp time);
 
 void activegems_fire(Game *game);
-
-void damage_monsters(Game *game);
 
 void damage_monsters(Game *game);
 

@@ -4,6 +4,7 @@
 
 #include "Gems.h"
 #include "Graphic.h"
+#include "Mana.h"
 #include "Monsters.h"
 #include "Shots.h"
 #include "Timer.h"
@@ -55,7 +56,7 @@ Game init_game(void) {
     game.active_gems.lh_first = NULL;
     game.mana = init_mana();
     game.monsters.lh_first = NULL;
-    game.next_wave = time_now();
+    game.next_wave = time_future(100000);
     game.error = (Error){NULL, time_now()};
     return game;
 }
@@ -70,6 +71,21 @@ void increase_new_gem_level(WindowInfo *win) {
 void decrease_new_gem_level(WindowInfo *win) {
     if (win->new_gem_level > 0)
         win->new_gem_level--;
+}
+
+// Adds a new wave of monsters to the game
+int add_wave(Game *game) {
+    static int wave_count = 1;
+    double t_left;
+    if (!wave_generation(&(game->monsters), game->map, wave_count))
+        return 0;
+    if (wave_count != 1) {
+        t_left = time_to(game->next_wave);
+        mana_new_wave(&(game->mana), t_left);
+    }
+    game->next_wave = time_future(35);
+    wave_count++;
+    return 1;
 }
 
 // Adds the selected gem of the inventory to the `tower` if the coordinates
@@ -95,10 +111,6 @@ void move_shots(Game *game, Timestamp time) {
     }
 }
 
-void reward_kill(Game *game, Monster *monster) {
-    // TODO
-}
-
 void damage_monsters(Game *game) {
     Monster *monster, *next_m;
     LIST_FOREACH_SAFE(monster, &game->monsters, entries, next_m) {
@@ -111,7 +123,7 @@ void damage_monsters(Game *game) {
             free_shot(shot);
             damage_monster(monster, gem);
             if (is_dead_monster(monster)) {
-                reward_kill(game, monster);
+                mana_eliminate_monster(&(game->mana), *monster);
                 LIST_REMOVE(monster, entries);
                 free_monster(monster);
                 break;

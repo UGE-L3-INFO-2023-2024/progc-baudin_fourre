@@ -38,6 +38,14 @@ double elapsed_since(Timestamp time) {
     return (double) (cur_time_nsec - time_nsec) / 1000000000L;
 }
 
+// Returns the number of seconds left until `time`
+double time_to(Timestamp time) {
+    Timestamp cur_time = time_now();
+    double time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
+    double cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
+    return (double) (time_nsec - cur_time_nsec) / 1000000000L;
+}
+
 Timestamp time_future(double seconds) {
     Timestamp now = time_now();
     return time_add_seconds(now, seconds);
