@@ -20,6 +20,7 @@ typedef struct {
     Inventory inventory;
     Mana mana;
     Error error;
+    int defeat;
 } Game;
 
 typedef enum {

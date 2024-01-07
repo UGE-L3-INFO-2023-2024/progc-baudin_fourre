@@ -41,10 +41,19 @@ int new_gem(Game *game, int level) {
 // Move the monsters of the `game` according to their movement since `time`
 void move_monsters(Game *game, Timestamp time) {
     Monster *monster;
+    int x, y;
     double elapsed = elapsed_since(time);
     LIST_FOREACH(monster, &(game->monsters), entries) {
         if (is_past_time(monster->start_time))
             move_monster(game->map, monster, elapsed);
+        x = monster->position.x;
+        y = monster->position.y;
+        if (game->map.cells[x][y].type == HOME) {
+            if (!mana_banish_monster(&(game->mana), *monster))
+                game->defeat = 1;
+            monster->position = coord_to_position(game->map.nest);
+            free_shots(&(monster->shots));
+        }
     }
 }
 
@@ -58,6 +67,7 @@ Game init_game(void) {
     game.monsters.lh_first = NULL;
     game.next_wave = time_future(100000);
     game.error = (Error){NULL, time_now()};
+    game.defeat = 0;
     return game;
 }
 

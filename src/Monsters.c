@@ -102,7 +102,7 @@ static inline double deg_to_rad(int deg) {
 }
 
 void damage_monster(Monster *monster, Gem gem) {
-    const double d = 5.0;
+    const double d = 50.0;
     const int n = gem.level;
     const int t_g = gem.hue;
     const int t_m = monster->hue;

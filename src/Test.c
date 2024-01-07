@@ -67,7 +67,7 @@ int main(void) {
     draw_game(game, action, &win);
 
     cur_time = time_now();
-    while ((event = get_events()).type != QUIT) {
+    while ((event = get_events()).type != QUIT && !game.defeat) {
         action = get_user_action(action, event, win);
 
         switch (action) {
