@@ -36,7 +36,10 @@ typedef enum {
     WAIT_TOWER,
     NEW_WAVE,
     REMOVE_ACTIVEGEM,
+    INC_MANA_LEVEL,
 } UserAction;
+
+// typedef void (*effect)(Game *, Monster monster);
 
 /**
  * @brief Initializes a Game structure with its initial values

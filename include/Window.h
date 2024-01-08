@@ -30,6 +30,7 @@ typedef struct {
     Button inc_gem_level;
     Button dec_gem_level;
     Button inventory;
+    Button increase_mana_level;
 } WindowInfo;
 
 /**

@@ -43,6 +43,8 @@ Element hue_to_element(Hue hue) {
         return NONE;
 }
 
+//
+
 // calls the function producing the effect of the element
 // according to the `monster_residue` and the `shot_element`
 void get_element_effect(Element monster_residue, Element shot_element) {

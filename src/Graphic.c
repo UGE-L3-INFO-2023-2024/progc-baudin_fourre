@@ -270,25 +270,8 @@ static void draw_activegems(ActiveGemList activegems) {
     }
 }
 
-// draws the game int its entirety according the th current UserAction
-// `current_action`
-void draw_game(Game game, UserAction current_action, WindowInfo *win) {
-    Monster *monster;
-    draw_grid(game.map);
-    draw_mana(game.mana);
-    draw_right_bar(win);
-    draw_inventory(game.inventory, win);
-    display_error(game.error, *win);
-    draw_activegems(game.active_gems);
-    LIST_FOREACH(monster, &game.monsters, entries) {
-        draw_shots(monster->shots);
-    }
-    if (current_action == NEW_TOWER)
-        draw_selected_square(win->new_tower);
-}
-
 // Draws the mana bar at the top of the window
-void draw_mana(Mana mana) {
+static void draw_mana(Mana mana, WindowInfo *win) {
     char mana_values[12];
     sprintf(mana_values, "%d/%d", mana.quantity, mana.max);
 
@@ -296,17 +279,23 @@ void draw_mana(Mana mana) {
     draw_bar((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
              (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2, filled,
              MLV_COLOR_CYAN);
-
+    win->increase_mana_level = new_square((MAP_WIDTH * CELL_SIZE) * 4 / 5,
+                                          CELL_SIZE * 1 / 4, CELL_SIZE * 1 / 2);
+    MLV_draw_text_box(win->increase_mana_level.x, win->increase_mana_level.y,
+                      win->increase_mana_level.length,
+                      win->increase_mana_level.size, "+", 0, MLV_COLOR_BLACK,
+                      MLV_COLOR_BLACK, PATH_COLOR, MLV_TEXT_CENTER,
+                      MLV_TEXT_CENTER, MLV_TEXT_CENTER);
     MLV_draw_text_box((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
                       (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2,
                       mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
-                      MLV_rgba(0, 0, 0, 0), MLV_TEXT_CENTER, MLV_TEXT_CENTER,
+                      TRANSPARANT, MLV_TEXT_CENTER, MLV_TEXT_CENTER,
                       MLV_TEXT_CENTER);
 }
 
 // draws the monster `monster` at its position as a circle, having its hue
 // for color
-void draw_monster(Monster monster) {
+static void draw_monster(Monster monster) {
     int radius = CELL_SIZE / 3;
     int x = monster.position.x * CELL_SIZE;
     int y = monster.position.y * CELL_SIZE;
@@ -316,11 +305,29 @@ void draw_monster(Monster monster) {
 }
 
 // draws the list of `monsters` on their position of the `map`
-void draw_monsters(MonsterList monsters, Map map) {
+static void draw_monsters(MonsterList monsters, Map map) {
     Monster *monster;
     LIST_FOREACH(monster, &monsters, entries) {
         if ((int) monster->position.x != map.nest.col
             || (int) monster->position.y != map.nest.line)
             draw_monster(*monster);
     }
+}
+
+// draws the game int its entirety according the th current UserAction
+// `current_action`
+void draw_game(Game game, UserAction current_action, WindowInfo *win) {
+    Monster *monster;
+    draw_grid(game.map);
+    draw_mana(game.mana, win);
+    draw_right_bar(win);
+    draw_inventory(game.inventory, win);
+    draw_monsters(game.monsters, game.map);
+    display_error(game.error, *win);
+    draw_activegems(game.active_gems);
+    LIST_FOREACH(monster, &game.monsters, entries) {
+        draw_shots(monster->shots);
+    }
+    if (current_action == NEW_TOWER)
+        draw_selected_square(win->new_tower);
 }

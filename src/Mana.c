@@ -45,8 +45,10 @@ static void add_mana(Mana *mana, int quantity) {
 // Increases the mana level, returns 1 if it was possible, or else 0
 int increase_mana_level(Mana *mana, Error *error) {
     assert(mana);
-    if (!enough_mana(*mana, mana->max / 4))
+    if (!enough_mana(*mana, mana->max / 4)) {
+        get_mana_error(error);
         return 0;
+    }
 
     mana->quantity -= mana->max / 4;
     mana->level++;

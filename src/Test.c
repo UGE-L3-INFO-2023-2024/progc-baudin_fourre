@@ -14,21 +14,18 @@ UserAction get_user_action(UserAction current_action, Event event,
                            WindowInfo win) {
     if (current_action == NO_ACTION) {
         if (event.type == CLICK) {
-            if (is_click_in_button(event.mouse, win.new_tower)) {
+            if (is_click_in_button(event.mouse, win.new_tower))
                 return NEW_TOWER;
-            }
-            if (is_click_in_button(event.mouse, win.new_gem)) {
+            if (is_click_in_button(event.mouse, win.new_gem))
                 return NEW_GEM;
-            }
-            if (is_click_in_button(event.mouse, win.inc_gem_level)) {
+            if (is_click_in_button(event.mouse, win.inc_gem_level))
                 return INC_GEM_LEVEL;
-            }
-            if (is_click_in_button(event.mouse, win.dec_gem_level)) {
+            if (is_click_in_button(event.mouse, win.dec_gem_level))
                 return DEC_GEM_LEVEL;
-            }
-            if (is_click_in_button(event.mouse, win.inventory)) {
+            if (is_click_in_button(event.mouse, win.inventory))
                 return SELECT_GEM;
-            }
+            if (is_click_in_button(event.mouse, win.increase_mana_level))
+                return INC_MANA_LEVEL;
             if (is_click_in_game(event.mouse))
                 return REMOVE_ACTIVEGEM;
         }
@@ -94,6 +91,10 @@ int main(void) {
             decrease_new_gem_level(&win);
             action = NO_ACTION;
             break;
+        case INC_MANA_LEVEL:
+            increase_mana_level(&(game.mana), &(game.error));
+            action = NO_ACTION;
+            break;
         case SELECT_GEM:
             win.selected_gem = get_selected_inventory_gem(event, win);
             action = WAIT_TOWER;
@@ -120,7 +121,6 @@ int main(void) {
         }
 
         draw_game(game, action, &win);
-        draw_monsters(game.monsters, game.map);
         refresh();
 
         if (is_past_time(game.next_wave))

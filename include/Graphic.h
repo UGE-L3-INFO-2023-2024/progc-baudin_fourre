@@ -10,28 +10,6 @@
 #include "Window.h"
 
 /**
- * @brief draws the Monster `monster` as a circle centered at its position
- *
- * @param monster Monster structure to draw
- */
-void draw_monster(Monster monster);
-
-/**
- * @brief draws the list of `monsters` in the `map`
- *
- * @param monsters
- * @param map
- */
-void draw_monsters(MonsterList monsters, Map map);
-
-/**
- * @brief Draw the mana bar at the top of the window
- *
- * @param mana Mana structure to display
- */
-void draw_mana(Mana mana);
-
-/**
  * @brief draws the game in int entirety according to the current action
  *
  * @param game Game structure to draw
