@@ -13,7 +13,7 @@ void remove_from_inventory(Inventory *inventory, int index) {
 
     inventory->size--;
 
-    for (int i = 0; i > inventory->size; i++) {
+    for (int i = index; i < inventory->size; i++) {
         inventory->gems[i] = inventory->gems[i + 1];
     }
 }
