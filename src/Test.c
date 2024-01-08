@@ -29,6 +29,8 @@ UserAction get_user_action(UserAction current_action, Event event,
             if (is_click_in_button(event.mouse, win.inventory)) {
                 return SELECT_GEM;
             }
+            if (is_click_in_game(event.mouse))
+                return REMOVE_ACTIVEGEM;
         }
         if (event.type == SPACE)
             return NEW_WAVE;
@@ -62,6 +64,7 @@ int main(void) {
     Event event = (Event){NOEVENT, (Coord){0, 0}};
     UserAction action = NO_ACTION;
     WindowInfo win = init_graphic();
+    Coord tower;
 
     clear_window();
     draw_game(game, action, &win);
@@ -99,6 +102,13 @@ int main(void) {
             add_activegem(&game, win,
                           (Coord){event.mouse.col / CELL_SIZE,
                                   event.mouse.line / CELL_SIZE});
+            action = NO_ACTION;
+            break;
+        case REMOVE_ACTIVEGEM:
+            tower = (Coord){event.mouse.col / CELL_SIZE,
+                            event.mouse.line / CELL_SIZE};
+            if (game.map.cells[tower.col][tower.line].type == TOWER)
+                remove_activegem(&game, tower);
             action = NO_ACTION;
             break;
         case NEW_WAVE:

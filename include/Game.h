@@ -35,6 +35,7 @@ typedef enum {
     SELECT_GEM,
     WAIT_TOWER,
     NEW_WAVE,
+    REMOVE_ACTIVEGEM,
 } UserAction;
 
 /**
@@ -101,6 +102,15 @@ void add_activegem(Game *game, WindowInfo win, Coord tower);
  * @return int 0 if there was an error, 1 otherwise
  */
 int add_wave(Game *game);
+
+/**
+ * @brief Removes the activegem from the `tower` and puts it back in the
+ * inventory
+ *
+ * @param game Address of the current Game
+ * @param tower Coordinates of the tower where to remove the ActiveGem
+ */
+void remove_activegem(Game *game, Coord tower);
 
 void move_shots(Game *game, Timestamp time);
 

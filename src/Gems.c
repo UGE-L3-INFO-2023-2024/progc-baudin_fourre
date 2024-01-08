@@ -40,12 +40,14 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
 }
 
 // Adds the `gem` at the head of the `activegem_list`
-int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower) {
+ActiveGem *add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
+                                 Coord tower) {
     ActiveGem *activegem = create_new_activegem(gem, tower);
     if (!activegem)
-        return 0;
+        return NULL;
     LIST_INSERT_HEAD(activegem_list, activegem, entries);
-    return 1;
+
+    return activegem;
 }
 
 // Frees the space allocated for the list of active gems

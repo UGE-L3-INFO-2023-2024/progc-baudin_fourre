@@ -40,12 +40,21 @@ int get_selected_inventory_gem(Event event, WindowInfo win) {
                  / (win.inventory.size / INVENTORY_COLS);
 }
 
-// Returns 1 id the Coord `click` are within the Square `button`, or 0
+// Returns 1 if the Coord `click` are within the Square `button`, or 0
 // otherwise
 int is_click_in_button(Coord click, Square button) {
     if (click.col < button.x || click.col > button.x + button.size)
         return 0;
     if (click.line < button.y || click.line > button.y + button.length)
+        return 0;
+    return 1;
+}
+
+// Returns 1 if the Coord `click` are in the game window, or 0 otherwise
+int is_click_in_game(Coord click) {
+    if (click.col > MAP_WIDTH * CELL_SIZE)
+        return 0;
+    if (click.line > MAP_HEIGHT * CELL_SIZE)
         return 0;
     return 1;
 }

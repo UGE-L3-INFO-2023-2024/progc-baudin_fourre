@@ -46,11 +46,17 @@ static void draw_gem_in_square(Square s, MLV_Color color, int level,
                 s.y + s.size * 7 / 10, s.y + s.size * 9 / 10,
                 s.y + s.size * 7 / 10, s.y + s.size * 3 / 10};
     MLV_draw_filled_polygon(vx, vy, 6, color);
-    if (level != -1 && font) {
-        MLV_draw_text_box_with_font(s.x, s.y, s.size, s.size, level_str, font,
-                                    1, TRANSPARANT, MLV_COLOR_BLACK,
-                                    TRANSPARANT, MLV_TEXT_CENTER,
-                                    MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+    if (level != -1) {
+        if (font)
+            MLV_draw_text_box_with_font(
+                s.x, s.y, s.size, s.size, level_str, font, 1, TRANSPARANT,
+                MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+        else
+            MLV_draw_text_box(s.x, s.y, s.size, s.size, level_str, 1,
+                              TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
+                              MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
+                              MLV_VERTICAL_CENTER);
     }
 }
 
@@ -66,7 +72,9 @@ static void draw_gem_in_tower(ActiveGem gem) {
     Square tower =
         new_square(gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
                    gem.tower.line * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2);
-    draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue), -1, NULL);
+    draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue), gem.gem.level, NULL);
+    if (!is_past_time(gem.start_time))
+        draw_gem_in_square(tower, SELECTED_COLOR, -1, NULL);
 }
 
 // draws the add gem button in the Square `s`, with a current level of

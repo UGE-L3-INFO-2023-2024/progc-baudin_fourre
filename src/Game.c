@@ -20,6 +20,7 @@ int add_tower(Game *game, Coord coord) {
     if (!mana_buy_tower(&game->mana, &(game->error)))
         return 0;
     game->map.cells[coord.col][coord.line].type = TOWER;
+    game->map.cells[coord.col][coord.line].gem = NULL;
     return 1;
 }
 
@@ -101,12 +102,28 @@ int add_wave(Game *game) {
 // Adds the selected gem of the inventory to the `tower` if the coordinates
 // correspond to one
 void add_activegem(Game *game, WindowInfo win, Coord tower) {
+    ActiveGem *new_gem;
     if (tower.col >= MAP_WIDTH || tower.line >= MAP_HEIGHT)
         return;
     if (game->map.cells[tower.col][tower.line].type == TOWER) {
-        add_to_activegemslist(&(game->active_gems),
-                              game->inventory.gems[win.selected_gem], tower);
+        new_gem = add_to_activegemslist(&(game->active_gems),
+                                        game->inventory.gems[win.selected_gem],
+                                        tower);
         remove_from_inventory(&(game->inventory), win.selected_gem);
+        remove_activegem(game, tower);
+        game->map.cells[tower.col][tower.line].gem = new_gem;
+    }
+}
+
+// Removes the ActiveGem in the `tower` and puts it back in the inventory
+void remove_activegem(Game *game, Coord tower) {
+    ActiveGem *last_gem = game->map.cells[tower.col][tower.line].gem;
+    if (last_gem) {
+        LIST_REMOVE(last_gem, entries);
+        game->inventory.gems[game->inventory.size] = last_gem->gem;
+        game->map.cells[tower.col][tower.line].gem = NULL;
+        free(last_gem);
+        game->inventory.size++;
     }
 }
 

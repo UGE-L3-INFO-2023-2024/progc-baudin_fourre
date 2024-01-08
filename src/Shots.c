@@ -20,6 +20,7 @@ void free_shots(ShotList *shots) {
         free_shot(shot);
         shot = next_s;
     }
+    LIST_FIRST(shots) = NULL;
 }
 
 void free_shot(Shot *shot) {

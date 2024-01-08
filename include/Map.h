@@ -22,7 +22,7 @@ typedef struct {
     CellType type;
     Coord coord;
     union {
-        Gem gem;
+        ActiveGem *gem;
         Direction direction;
     };
 } Cell;

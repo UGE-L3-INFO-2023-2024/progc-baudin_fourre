@@ -42,4 +42,12 @@ int get_selected_inventory_gem(Event event, WindowInfo win);
  */
 int is_click_in_button(Coord click, Square button);
 
+/**
+ * @brief Checks if the Coord `click` are in the game window
+ *
+ * @param click Coordinates of the click
+ * @return int 1 if the click is in the Game window, 0 otherwise
+ */
+int is_click_in_game(Coord click);
+
 #endif // __EVENTS_H__

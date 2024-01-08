@@ -38,10 +38,11 @@ Gem generate_pure_gem(int level);
  * @param activegem_list address of the head og the list of active gems
  * @param gem Gem to add to the list
  * @param tower Address of the cell where the active gem will be placed
- * @return int 1 if the gem was properly added, 0 if there was an allocation
+ * @return ActiveGem* the address of the gem created, or NULL if there was an
  * error
  */
-int add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower);
+ActiveGem *add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
+                                 Coord tower);
 
 /**
  * @brief Frees the space allocated for the list of active gems
