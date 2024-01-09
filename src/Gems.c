@@ -18,6 +18,21 @@ Gem generate_pure_gem(int level) {
     return gem;
 }
 
+// Returns the resulting em of the fusion of `first` and `second`
+Gem fuse_gems(Gem first, Gem second) {
+    Gem new_gem;
+    new_gem.hue = (first.hue + second.hue) / 2;
+    new_gem.level = first.level + 1;
+    if (first.type == second.type) {
+        new_gem.type = first.type;
+        new_gem.damage_mult = 1;
+    } else {
+        new_gem.type = NONE;
+        new_gem.damage_mult = rand() % 10 ? 2 : 4;
+    }
+    return new_gem;
+}
+
 // Allocates a new ActiveGem for the `gem`.
 // Returns the address of the ActiveGem allocated, or NULL if there was an
 // error.

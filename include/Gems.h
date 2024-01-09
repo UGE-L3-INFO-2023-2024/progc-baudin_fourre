@@ -51,4 +51,13 @@ ActiveGem *add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
  */
 void free_activegems(ActiveGemList *activegems);
 
+/**
+ * @brief Fuses gems `first` and `second` into a new gem of higher level
+ *
+ * @param first
+ * @param second
+ * @return Gem the resulting Gem of the fusion
+ */
+Gem fuse_gems(Gem first, Gem second);
+
 #endif // __GEMS_H__

@@ -49,10 +49,25 @@ Position get_new_position(Position old_pos, double distance, Vector move);
  */
 int is_position_center(Position position);
 
+/**
+ * @brief Gets the center position of the cell given
+ *
+ * @param coord Coordinates of the cell
+ * @return Position the float center position of the cell
+ */
 Position coord_to_position(Coord coord);
 
 double distance_between_positions(Position pos1, Position pos2);
 
+/**
+ * @brief Checks if the `position` is past the center of the next_cell
+ *
+ * @param position Float position
+ * @param dir Cardinal direction in which the `position` is moving
+ * @param next_cell Coordinates of the `next_cell` the position must past
+ * @return int 1 if the position is past the center of the next cell, 0
+ * otherwise
+ */
 int has_past_center_position(Position position, Direction dir, Coord next_cell);
 
 /**

@@ -37,6 +37,9 @@ typedef enum {
     NEW_WAVE,
     REMOVE_ACTIVEGEM,
     INC_MANA_LEVEL,
+    SELECT_FUSE_GEM,
+    WAIT_FUSE_GEM,
+    WAIT_SECOND_FUSE_GEM,
 } UserAction;
 
 // typedef void (*effect)(Game *, Monster monster);
@@ -120,5 +123,15 @@ void move_shots(Game *game, Timestamp time);
 void activegems_fire(Game *game);
 
 void damage_monsters(Game *game);
+
+/**
+ * @brief Fuses the gems given, removing the latter from the inventory and
+ * adding the resulting one
+ *
+ * @param game Address of the current game
+ * @param gem1 index of the first gem in the inventory of the Game
+ * @param gem2 index of the second gem in the inventory of the Game
+ */
+void game_fuse_gems(Game *game, int gem1, int gem2);
 
 #endif // __GAME_H__

@@ -28,6 +28,8 @@ UserAction get_user_action(UserAction current_action, Event event,
                 return INC_MANA_LEVEL;
             if (is_click_in_game(event.mouse))
                 return REMOVE_ACTIVEGEM;
+            if (is_click_in_button(event.mouse, win.fuse_gem))
+                return WAIT_FUSE_GEM;
         }
         if (event.type == SPACE)
             return NEW_WAVE;
@@ -51,6 +53,28 @@ UserAction get_user_action(UserAction current_action, Event event,
             return NO_ACTION;
     }
 
+    if (current_action == WAIT_FUSE_GEM) {
+        if (event.type == CLICK) {
+            if (is_click_in_button(event.mouse, win.inventory))
+                return SELECT_FUSE_GEM;
+            if (is_click_in_button(event.mouse, win.fuse_gem))
+                return NO_ACTION;
+        }
+        if (event.type == ESCAPE)
+            return NO_ACTION;
+    }
+
+    if (current_action == WAIT_SECOND_FUSE_GEM) {
+        if (event.type == CLICK) {
+            if (is_click_in_button(event.mouse, win.inventory))
+                return FUSE_GEM;
+            if (is_click_in_button(event.mouse, win.fuse_gem))
+                return NO_ACTION;
+        }
+        if (event.type == ESCAPE)
+            return NO_ACTION;
+    }
+
     return current_action;
 }
 
@@ -62,6 +86,7 @@ int main(void) {
     UserAction action = NO_ACTION;
     WindowInfo win = init_graphic();
     Coord tower;
+    int selected_gem;
 
     clear_window();
     draw_game(game, action, &win);
@@ -98,6 +123,15 @@ int main(void) {
         case SELECT_GEM:
             win.selected_gem = get_selected_inventory_gem(event, win);
             action = WAIT_TOWER;
+            break;
+        case SELECT_FUSE_GEM:
+            win.selected_gem = get_selected_inventory_gem(event, win);
+            action = WAIT_SECOND_FUSE_GEM;
+            break;
+        case FUSE_GEM:
+            selected_gem = get_selected_inventory_gem(event, win);
+            game_fuse_gems(&game, win.selected_gem, selected_gem);
+            action = NO_ACTION;
             break;
         case ADD_ACTIVEGEM:
             add_activegem(&game, win,

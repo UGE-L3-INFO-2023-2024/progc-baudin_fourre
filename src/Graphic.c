@@ -233,6 +233,7 @@ void draw_grid(Map map) {
     }
 }
 
+// draws the Shot `shot` as a dot with the color of the shot
 static void draw_shot(Shot shot) {
     int radius = 3;
     MLV_draw_filled_circle(shot.position.x * CELL_SIZE,
@@ -240,6 +241,7 @@ static void draw_shot(Shot shot) {
                            hue_to_rgba(shot.source.hue));
 }
 
+// draws the list of `shots`
 static void draw_shots(ShotList shots) {
     Shot *shot;
     LIST_FOREACH(shot, &shots, entries) {
@@ -330,4 +332,7 @@ void draw_game(Game game, UserAction current_action, WindowInfo *win) {
     }
     if (current_action == NEW_TOWER)
         draw_selected_square(win->new_tower);
+    if (current_action == WAIT_FUSE_GEM
+        || current_action == WAIT_SECOND_FUSE_GEM)
+        draw_selected_square(win->fuse_gem);
 }

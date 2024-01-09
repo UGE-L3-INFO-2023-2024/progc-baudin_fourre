@@ -87,6 +87,7 @@ void decrease_new_gem_level(WindowInfo *win) {
 // Adds a new wave of monsters to the game
 int add_wave(Game *game) {
     static int wave_count = 1;
+    printf("wave_count : %d\n", wave_count);
     double t_left;
     if (!wave_generation(&(game->monsters), game->map, wave_count))
         return 0;
@@ -189,4 +190,28 @@ void activegems_fire(Game *game) {
             }
         }
     }
+}
+
+// Fuses two gems in a new gem
+void game_fuse_gems(Game *game, int gem1, int gem2) {
+    Gem firstGem, secondGem;
+    int tmp;
+
+    if (!mana_fuse_gem(&(game->mana), &(game->error)))
+        return;
+
+    firstGem = game->inventory.gems[gem1];
+    secondGem = game->inventory.gems[gem2];
+    if (firstGem.level != secondGem.level) // TODO : ADD ERROR
+        return;
+    if (gem1 < gem2) {
+        tmp = gem1;
+        gem1 = gem2;
+        gem2 = tmp;
+    }
+    remove_from_inventory(&(game->inventory), gem1);
+    remove_from_inventory(&(game->inventory), gem2);
+    game->inventory.gems[game->inventory.size] =
+        fuse_gems(firstGem, secondGem); // TODO : ADD TO INVENTORY
+    game->inventory.size++;
 }
