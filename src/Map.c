@@ -35,23 +35,7 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
     assert(map);
     assert(cell);
 
-    Coord next_coord = cell->coord;
-    switch (dir) {
-    case NORTH:
-        next_coord.line--;
-        break;
-    case SOUTH:
-        next_coord.line++;
-        break;
-    case EAST:
-        next_coord.col++;
-        break;
-    case WEST:
-        next_coord.col--;
-        break;
-    case NODIR:
-        break;
-    }
+    Coord next_coord = next_cell_coord(cell->coord, dir);
     if (out_of_edges(next_coord, 0)) {
         return NULL;
     }

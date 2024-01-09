@@ -10,12 +10,13 @@
 #define HP_MULT 100
 
 typedef struct Monster {
-    Timestamp start_time;
-    Position position;
     int speed;
-    Hue hue;
     double hp_init;
     double hp;
+    Hue hue;
+    Timestamp start_time;
+    Position position;
+    Coord next_cell;
     Element residue;
     ShotList shots;
     LIST_ENTRY(Monster) entries;

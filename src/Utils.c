@@ -43,6 +43,48 @@ int is_position_center(Position position) {
     return 0;
 }
 
+// Returns 1 if the position is past the center of the `next_cell` according to
+// te `direction`, 0 otherwise
+int has_past_center_position(Position position, Direction dir,
+                             Coord next_cell) {
+    Position next = coord_to_position(next_cell);
+    switch (dir) {
+    case NORTH:
+        return position.y <= next.y;
+    case SOUTH:
+        return position.y >= next.y;
+    case WEST:
+        return position.x <= next.x;
+    case EAST:
+        return position.x >= next.x;
+    default:
+        return 0;
+    }
+}
+
+// Returns the coordinates of the next cell according to
+// the `current_position` and direction `dir
+Coord next_cell_coord(Coord current_position, Direction dir) {
+    Coord next_coord = current_position;
+    switch (dir) {
+    case NORTH:
+        next_coord.line--;
+        break;
+    case SOUTH:
+        next_coord.line++;
+        break;
+    case EAST:
+        next_coord.col++;
+        break;
+    case WEST:
+        next_coord.col--;
+        break;
+    case NODIR:
+        break;
+    }
+    return next_coord;
+}
+
 Position coord_to_position(Coord coord) {
     return (Position){.x = coord.col + 0.5, .y = coord.line + 0.5};
 }

@@ -53,6 +53,18 @@ Position coord_to_position(Coord coord);
 
 double distance_between_positions(Position pos1, Position pos2);
 
+int has_past_center_position(Position position, Direction dir, Coord next_cell);
+
+/**
+ * @brief Gets the coordinates of the next cell on the path
+ *
+ * @param current_position Coordinates of the current position from which to get
+ * the next coordinates
+ * @param dir Cardinal direction in which to get the next coordinates
+ * @return Coord the Coordinates of the next cell calculated
+ */
+Coord next_cell_coord(Coord current_position, Direction dir);
+
 // Distance entre deux points
 // Calcul vecteur de déplacement
 // Calcul nouvelle position à partir de vitesse et vecteur de déplacement
