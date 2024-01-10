@@ -239,10 +239,10 @@ static void draw_cell(CellType type, Coord coord) {
 }
 
 // Draw a blank grid
-void draw_grid(Map map) {
+void draw_grid(const Map *map) {
     for (int i = 0; i < MAP_WIDTH; i++) {
         for (int j = 0; j < MAP_HEIGHT; j++) {
-            draw_cell(map.cells[i][j].type, map.cells[i][j].coord);
+            draw_cell(map->cells[i][j].type, map->cells[i][j].coord);
         }
     }
 }
@@ -321,11 +321,11 @@ static void draw_monster(Monster monster) {
 }
 
 // draws the list of `monsters` on their position of the `map`
-static void draw_monsters(MonsterList monsters, Map map) {
+static void draw_monsters(MonsterList monsters, const Map *map) {
     Monster *monster;
     LIST_FOREACH(monster, &monsters, entries) {
-        if ((int) monster->position.x != map.nest.col
-            || (int) monster->position.y != map.nest.line)
+        if ((int) monster->position.x != map->nest.col
+            || (int) monster->position.y != map->nest.line)
             draw_monster(*monster);
     }
 }
@@ -334,11 +334,11 @@ static void draw_monsters(MonsterList monsters, Map map) {
 // `current_action`
 void draw_game(Game game, UserAction current_action, WindowInfo *win) {
     Monster *monster;
-    draw_grid(game.map);
+    draw_grid(&game.map);
     draw_mana(game.mana, win);
     draw_right_bar(win);
     draw_inventory(game.inventory, win);
-    draw_monsters(game.monsters, game.map);
+    draw_monsters(game.monsters, &game.map);
     display_error(game.error, *win);
     draw_activegems(game.active_gems);
     LIST_FOREACH(monster, &game.monsters, entries) {

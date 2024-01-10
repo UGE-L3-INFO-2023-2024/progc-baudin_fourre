@@ -19,6 +19,6 @@ typedef enum {
  * @param nb_wave number of the wave generated
  * @return int 1 if the wave was generated, 0 if there was an allocation error
  */
-int wave_generation(MonsterList *monster_list, Map map, int nb_wave);
+int wave_generation(MonsterList *monster_list, const Map *map, int nb_wave);
 
 #endif // __WAVES_H__

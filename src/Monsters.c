@@ -18,7 +18,7 @@
 #include "Utils.h"
 
 // Returns the adress of the new Monster created with the given arguments
-Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
+Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
     Monster *monster = (Monster *) malloc(sizeof(Monster));
     if (!monster) {
         fprintf(stderr, "Allocation error\n");
@@ -28,13 +28,13 @@ Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
     monster->hp_init = HP;
 
     monster->hue = random_hue(NONE);
-    monster->position = coord_to_position(map.nest);
+    monster->position = coord_to_position(map->nest);
     monster->residue = NONE;
     LIST_INIT(&(monster->shots));
     monster->speed = speed;
     monster->start_time = start_time;
     monster->direction = get_position_direction(map, monster->position);
-    monster->next_cell = next_cell_coord(map.nest, monster->direction);
+    monster->next_cell = next_cell_coord(map->nest, monster->direction);
     monster->effect = init_element_effect();
 
     return monster;
@@ -93,7 +93,7 @@ static void move_monster_direction(Monster *monster, Direction direction,
 }
 
 // Moves the monster on the `map` for a duration of `time_elapsed`
-void move_monster(Map map, Monster *monster, double time_elapsed) {
+void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
         monster->position = coord_to_position(

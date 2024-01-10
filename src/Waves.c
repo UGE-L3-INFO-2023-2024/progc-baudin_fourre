@@ -58,8 +58,7 @@ static void get_wave_characteristics(WaveType type, int *nb_monsters,
 }
 
 // Generates a random wave and adds the monsters created to the `monster_list`
-int wave_generation(MonsterList *monster_list, Map map, int nb_wave) {
-
+int wave_generation(MonsterList *monster_list, const Map *map, int nb_wave) {
     Monster *new_monster = NULL;
     int speed, nb_monsters;
     int hp;

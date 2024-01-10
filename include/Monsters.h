@@ -36,7 +36,7 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @return Monster* address of the Monster structure allocated,
  * or NULL if there was an allocation error
  */
-Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time);
+Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
 
 /**
  * @brief Frees the space allocated for the list of monsters
@@ -65,7 +65,7 @@ void add_monster_residue(Monster *monster, Hue shot_hue);
  * @param time_elapsed time elapsed during the movement of the monster in
  * seconds
  */
-void move_monster(Map map, Monster *monster, double time_elapsed);
+void move_monster(const Map *map, Monster *monster, double time_elapsed);
 
 /**
  * @brief Gets the value of the damage of the `gem` on the `monster`

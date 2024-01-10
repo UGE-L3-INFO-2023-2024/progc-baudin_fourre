@@ -167,13 +167,13 @@ int is_in_map(Coord coord) {
 }
 
 // Returns the direction of the cell where the `position`is situated
-Direction get_position_direction(Map map, Position position) {
+Direction get_position_direction(const Map *map, Position position) {
     int x = position.x;
     int y = position.y;
-    CellType type = map.cells[x][y].type;
+    CellType type = map->cells[x][y].type;
     if (type != PATH && type != NEST)
         return NODIR;
-    return map.cells[x][y].direction;
+    return map->cells[x][y].direction;
 }
 
 // gcc src/Map.c -Iinclude/ -o TestMap -lMLV

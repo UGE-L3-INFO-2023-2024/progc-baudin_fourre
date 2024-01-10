@@ -34,7 +34,7 @@ typedef struct {
 
 Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir);
 
-Map generate_map();
+Map generate_map(void);
 
 /**
  * @brief Get the direction of the cell below `position`
@@ -44,7 +44,7 @@ Map generate_map();
  * @return Direction cardinal direction of the cell, or NONE if the position is
  * not on a PATH
  */
-Direction get_position_direction(Map map, Position position);
+Direction get_position_direction(const Map *map, Position position);
 
 /**
  * @brief Checks if the `coord` are within the map

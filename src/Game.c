@@ -60,7 +60,7 @@ void move_monsters(Game *game, Timestamp time) {
     double elapsed = elapsed_since(time);
     LIST_FOREACH(monster, &(game->monsters), entries) {
         if (is_past_time(monster->start_time)) {
-            move_monster(game->map, monster, elapsed);
+            move_monster(&game->map, monster, elapsed);
             apply_extra_damage(monster);
         }
         x = monster->position.x;
@@ -127,7 +127,7 @@ void decrease_new_gem_level(WindowInfo *win) {
 int add_wave(Game *game) {
     static int wave_count = 1;
     double t_left;
-    if (!wave_generation(&(game->monsters), game->map, wave_count))
+    if (!wave_generation(&(game->monsters), &game->map, wave_count))
         return 0;
     if (wave_count != 1) {
         t_left = time_to(game->next_wave);
