@@ -6,8 +6,8 @@
 Shot *create_new_shot(Coord tower, Gem gem) {
     Shot *shot = malloc(sizeof(Shot));
     if (!shot) {
-        fprintf(stderr, "Allocation error\n");
-        return NULL;
+        perror("Crash on shot allocation");
+        exit(EXIT_FAILURE);
     }
     *shot = (Shot){.position = coord_to_position(tower), .source = gem};
     return shot;

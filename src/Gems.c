@@ -37,19 +37,20 @@ Gem fuse_gems(Gem first, Gem second) {
 // Returns the address of the ActiveGem allocated, or NULL if there was an
 // error.
 static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
-    Timestamp instant_time;
-    ActiveGem *active_gem = (ActiveGem *) malloc(sizeof(ActiveGem));
+    // Timestamp instant_time;
+    ActiveGem *active_gem = malloc(sizeof(ActiveGem));
     if (!active_gem) {
-        fprintf(stderr, "Allocation error\n");
-        return NULL;
+        perror("Crash on active gem allocation");
+        exit(EXIT_FAILURE);
     }
-
-    active_gem->gem = gem;
-    active_gem->tower = tower;
-    active_gem->start_time = time_future(2);
+    *active_gem = (ActiveGem) {
+        .gem = gem,
+        .tower = tower,
+        .start_time = time_future(2),
+        // Random shot interval between 1 and 2 seconds
+        .shot_interval = ((rand() % 5) + 6) / 10.,
+    };
     active_gem->next_shot = active_gem->start_time;
-    // Random shot interval between 1 and 2 seconds
-    active_gem->shot_interval = ((rand() % 5) + 6) / 10.;
 
     return active_gem;
 }

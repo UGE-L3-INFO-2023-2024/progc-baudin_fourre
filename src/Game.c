@@ -13,16 +13,16 @@
 
 // Returns a Game structure with its initial values
 Game init_game(void) {
-    Game game;
-    game.map = generate_map();
-    game.inventory.size = 0;
-    game.active_gems.lh_first = NULL;
-    game.mana = init_mana();
-    game.monsters.lh_first = NULL;
-    game.next_wave = time_future(100000);
-    game.error = (Error){NULL, time_now()};
-    game.defeat = 0;
-    return game;
+    return (Game) {
+        .map = generate_map(),
+        .inventory.size = 0,
+        .active_gems.lh_first = NULL,
+        .mana = init_mana(),
+        .monsters.lh_first = NULL,
+        .next_wave = time_future(100000),
+        .error = (Error){NULL, time_now()},
+        .defeat = 0,
+    };
 }
 
 // Returns 0 if a tower couldn't be added to the map at the coordinates

@@ -19,23 +19,26 @@
 
 // Returns the adress of the new Monster created with the given arguments
 Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
-    Monster *monster = (Monster *) malloc(sizeof(Monster));
+    Monster *monster = malloc(sizeof(Monster));
     if (!monster) {
-        fprintf(stderr, "Allocation error\n");
-        return NULL;
+        perror("Crash on monster allocation");
+        exit(EXIT_FAILURE);
     }
-    monster->hp = HP;
-    monster->hp_init = HP;
 
-    monster->hue = random_hue(NONE);
-    monster->position = coord_to_position(map->nest);
-    monster->residue = NONE;
+    *monster = (Monster) {
+        .hp = HP,
+        .hp_init = HP,
+        .hue = random_hue(NONE),
+        .position = coord_to_position(map->nest),
+        .residue = NONE,
+        .speed = speed,
+        .start_time = start_time,
+        .effect = init_element_effect(),
+    };
+
     LIST_INIT(&(monster->shots));
-    monster->speed = speed;
-    monster->start_time = start_time;
     monster->direction = get_position_direction(map, monster->position);
     monster->next_cell = next_cell_coord(map->nest, monster->direction);
-    monster->effect = init_element_effect();
 
     return monster;
 }
