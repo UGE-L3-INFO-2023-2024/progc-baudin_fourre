@@ -10,8 +10,8 @@ typedef struct {
 } Coord;
 
 typedef struct {
-    float x;
-    float y;
+    double x;
+    double y;
 } Position, Vector;
 
 typedef enum {

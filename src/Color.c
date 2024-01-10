@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <math.h>
+#include <stdint.h>
 
 #include "Element.h"
 
@@ -17,9 +18,9 @@ static void assign_rgb(double *R, double *G, double *B, double r, double g,
 MLV_Color hue_to_rgba(Hue hue) {
     assert(hue < 360);
     double H = hue / 60.0;
-    double L = 0.6;
-    double S = 1.0;
-    double R, G, B;
+    double L = .6;
+    double S = 1.;
+    double R = 0., G = 0., B = 0.;
     double C = (1 - fabs(2 * L - 1)) * S;
     double X = C * (1 - fabs(fmod(H, 2) - 1));
     double m = L - C / 2;
@@ -42,6 +43,9 @@ MLV_Color hue_to_rgba(Hue hue) {
     case 5:
         assign_rgb(&R, &G, &B, C, 0, X);
         break;
+    default:
+        break;
     }
-    return MLV_rgba((R + m) * 255, (G + m) * 255, (B + m) * 255, 255);
+    return MLV_rgba((uint8_t) ((R + m) * 255), (uint8_t) ((G + m) * 255),
+                    (uint8_t) ((B + m) * 255), 255);
 }

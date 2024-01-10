@@ -26,7 +26,6 @@ typedef struct {
         struct {
             double damage;
             Timestamp next_damage;
-
         } damage;
     };
     Timestamp timeout;

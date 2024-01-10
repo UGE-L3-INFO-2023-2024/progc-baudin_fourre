@@ -8,7 +8,7 @@
 
 typedef struct timespec Timestamp;
 
-Timestamp time_now();
+Timestamp time_now(void);
 
 Timestamp time_add_seconds(Timestamp time, double seconds);
 
