@@ -35,6 +35,7 @@ Monster *create_new_monster(Map map, int speed, int HP, Timestamp start_time) {
     monster->start_time = start_time;
     monster->direction = get_position_direction(map, monster->position);
     monster->next_cell = next_cell_coord(map.nest, monster->direction);
+    monster->effect = init_element_effect();
 
     return monster;
 }
@@ -71,20 +72,22 @@ void add_monster_residue(Monster *monster, Hue shot_hue) {
 }
 
 // Returns a random speed between 0.9 * `speed` and 1.1 * `speed`
-static double rand_speed(int speed) {
+static double rand_speed(double speed) {
     int sign = rand() % 2;
     double var = (rand() % 100) / 1000.0;
     if (sign)
-        return (1.0 - var) * (double) speed;
+        return (1.0 - var) * speed;
     else
-        return (1.0 + var) * (double) speed;
+        return (1.0 + var) * speed;
 }
 
 // Moves the monster along the `direction` for a duration of `time_elapsed`
 static void move_monster_direction(Monster *monster, Direction direction,
                                    double time_elapsed) {
     Vector move = get_direction_vector(direction);
-    double speed = rand_speed(monster->speed);
+    double speed = monster->effect.type != LOWER_SPEED
+                       ? rand_speed(monster->speed)
+                       : rand_speed(monster->effect.speed);
     monster->position = get_new_position(
         monster->position, speed * time_elapsed, move); // TODO time
 }
@@ -108,18 +111,39 @@ static inline double deg_to_rad(int deg) {
     return deg * (M_PI / 180.0);
 }
 
-void damage_monster(Monster *monster, Gem gem) {
+// Returns the damage of the monster by the gem
+double get_damage(Monster monster, Gem gem) {
     const double d = 50.0;
     const int n = gem.level;
     const int t_g = gem.hue;
-    const int t_m = monster->hue;
-    const double damage =
-        d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
-    monster->hp -= damage;
-    // TODO residus
-    monster->residue = gem.type;
+    const int t_m = monster.hue;
+    return d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
+}
+
+void damage_monster(Monster *monster, Gem gem) {
+    const double damage = get_damage(*monster, gem);
+    monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+}
+
+// Applies the extra damage from the element effect of the `monster`, if
+// necessary
+void apply_extra_damage(Monster *monster) {
+    if (monster->effect.type != EXTRA_DAMAGE)
+        return;
+
+    if (is_past_time(monster->effect.timeout)) {
+        monster->effect.type = NO_EFFECT;
+        return;
+    }
+
+    if (is_past_time(monster->effect.damage.next_damage)) {
+        monster->hp = (monster->hp - monster->effect.damage.damage) > 0
+                          ? monster->hp - monster->effect.damage.damage
+                          : 0;
+        monster->effect.damage.next_damage = time_future(0.5);
+    }
 }
 
 bool is_dead_monster(Monster *monster) {
-    return monster->hp <= 0.0;
+    return monster->hp == 0;
 }

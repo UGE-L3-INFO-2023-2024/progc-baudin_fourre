@@ -18,6 +18,7 @@ typedef struct Monster {
     Position position;
     Coord next_cell;
     Element residue;
+    ElementEffect effect;
     ShotList shots;
     LIST_ENTRY(Monster) entries;
     Direction direction;
@@ -66,7 +67,23 @@ void add_monster_residue(Monster *monster, Hue shot_hue);
  */
 void move_monster(Map map, Monster *monster, double time_elapsed);
 
+/**
+ * @brief Gets the value of the damage of the `gem` on the `monster`
+ *
+ * @param monster
+ * @param gem
+ * @return double The value of the damage
+ */
+double get_damage(Monster monster, Gem gem);
+
 void damage_monster(Monster *monster, Gem gem);
+
+/**
+ * @brief Applies the extra_damage attached to the `monster` if there's one
+ *
+ * @param monster Address of the Monster structure
+ */
+void apply_extra_damage(Monster *monster);
 
 bool is_dead_monster(Monster *monster);
 

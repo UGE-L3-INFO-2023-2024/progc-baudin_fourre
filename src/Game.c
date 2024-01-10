@@ -11,6 +11,20 @@
 #include "Utils.h"
 #include "Window.h"
 
+// Returns a Game structure with its initial values
+Game init_game(void) {
+    Game game;
+    game.map = generate_map();
+    game.inventory.size = 0;
+    game.active_gems.lh_first = NULL;
+    game.mana = init_mana();
+    game.monsters.lh_first = NULL;
+    game.next_wave = time_future(100000);
+    game.error = (Error){NULL, time_now()};
+    game.defeat = 0;
+    return game;
+}
+
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
 int add_tower(Game *game, Coord coord) {
@@ -45,31 +59,56 @@ void move_monsters(Game *game, Timestamp time) {
     int x, y;
     double elapsed = elapsed_since(time);
     LIST_FOREACH(monster, &(game->monsters), entries) {
-        if (is_past_time(monster->start_time))
+        if (is_past_time(monster->start_time)) {
             move_monster(game->map, monster, elapsed);
+            apply_extra_damage(monster);
+        }
         x = monster->position.x;
         y = monster->position.y;
         if (game->map.cells[x][y].type == HOME) {
             if (!mana_banish_monster(&(game->mana), *monster))
                 game->defeat = 1;
             monster->position = coord_to_position(game->map.nest);
+            monster->direction =
+                game->map.cells[game->map.nest.col][game->map.nest.line]
+                    .direction;
             free_shots(&(monster->shots));
         }
     }
 }
 
-// Returns a Game structure with its initial values
-Game init_game(void) {
-    Game game;
-    game.map = generate_map();
-    game.inventory.size = 0;
-    game.active_gems.lh_first = NULL;
-    game.mana = init_mana();
-    game.monsters.lh_first = NULL;
-    game.next_wave = time_future(100000);
-    game.error = (Error){NULL, time_now()};
-    game.defeat = 0;
-    return game;
+// Adds the effect of the element of the gem, if there's one, to the `monster`
+// receiving the shot
+static void add_monster_element_effect(Game *game, Monster *monster, Gem gem) {
+    Monster *monster_tmp;
+    double distance, damage;
+    switch (gem.type) {
+    case PYRO:
+        LIST_FOREACH(monster_tmp, &game->monsters, entries) {
+            distance = distance_between_positions(monster_tmp->position,
+                                                  monster->position);
+            if (monster_tmp != monster && distance < 2) {
+                damage = get_damage(*monster_tmp, gem);
+                damage *= 0.15;
+                monster_tmp->hp =
+                    (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+            }
+        }
+        break;
+    case DENDRO:
+        monster->effect.type = EXTRA_DAMAGE;
+        monster->effect.damage.damage = 0.025 * get_damage(*monster, gem);
+        monster->effect.damage.next_damage = time_future(0.5);
+        monster->effect.timeout = time_future(10);
+        break;
+    case HYDRO:
+        monster->effect.type = LOWER_SPEED;
+        monster->effect.speed = monster->speed / 1.5;
+        monster->effect.timeout = time_future(10);
+        break;
+    case NONE:
+        break;
+    }
 }
 
 // Increases the new gem level of `win` by one
@@ -87,7 +126,6 @@ void decrease_new_gem_level(WindowInfo *win) {
 // Adds a new wave of monsters to the game
 int add_wave(Game *game) {
     static int wave_count = 1;
-    printf("wave_count : %d\n", wave_count);
     double t_left;
     if (!wave_generation(&(game->monsters), game->map, wave_count))
         return 0;
@@ -150,6 +188,8 @@ void damage_monsters(Game *game) {
             LIST_REMOVE(shot, entries);
             free_shot(shot);
             damage_monster(monster, gem);
+            add_monster_residue(monster, gem.hue);
+            add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
                 mana_eliminate_monster(&(game->mana), *monster);
                 LIST_REMOVE(monster, entries);

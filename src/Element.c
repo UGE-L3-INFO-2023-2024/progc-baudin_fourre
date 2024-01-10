@@ -43,7 +43,11 @@ Element hue_to_element(Hue hue) {
         return NONE;
 }
 
-//
+// returns an initialized ElementEffect
+ElementEffect init_element_effect(void) {
+    ElementEffect effect = {.type = NO_EFFECT};
+    return effect;
+}
 
 // calls the function producing the effect of the element
 // according to the `monster_residue` and the `shot_element`
