@@ -10,6 +10,8 @@
 #include "Monsters.h"
 #include "Window.h"
 
+#define PI 3.14159265358979323846
+
 // draws a square `square` using the color `bkgd_color`
 static void draw_square(Square square, MLV_Color bkgd_color) {
     MLV_draw_filled_rectangle(square.x, square.y, square.size, square.size,
@@ -33,19 +35,22 @@ static void draw_tower_in_square(Square s) {
                               s.size * 1 / 10, s.size * 1 / 10, BKGD_COLOR);
 }
 
+static void draw_gem(int center_x, int center_y, int size, MLV_Color color) {
+    int vx[6], vy[6];
+    for (int i = 0; i < 6; i++) {
+        vx[i] = center_x + size * cos(i * PI / 3);
+        vy[i] = center_y + size * sin(i * PI / 3);
+    }
+    MLV_draw_filled_polygon(vx, vy, 6, color);
+}
+
 // draws a gem with the color `color` centered in the square `s`
 // prints the gem level if level is different than -1
 static void draw_gem_in_square(Square s, MLV_Color color, int level,
                                MLV_Font *font) {
     char level_str[3];
     sprintf(level_str, "%d", level);
-    int vx[] = {s.x + s.size * 5 / 10,  s.x + s.size * 17 / 20,
-                s.x + s.size * 17 / 20, s.x + s.size * 5 / 10,
-                s.x + s.size * 3 / 20,  s.x + s.size * 3 / 20};
-    int vy[] = {s.y + s.size * 1 / 10, s.y + s.size * 3 / 10,
-                s.y + s.size * 7 / 10, s.y + s.size * 9 / 10,
-                s.y + s.size * 7 / 10, s.y + s.size * 3 / 10};
-    MLV_draw_filled_polygon(vx, vy, 6, color);
+    draw_gem(s.x + s.size / 2, s.y + s.size / 2, 2 * s.size / 5, color);
     if (level != -1) {
         if (font)
             MLV_draw_text_box_with_font(
@@ -113,9 +118,13 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
 }
 
 // draws the fuse_gem_button is the right bar
-static void draw_fuse_gem_button(Square s) {
+static void draw_fuse_gem_button(Square s, MLV_Font *font) {
     int size = RIGHT_BAR_SIZE * 2 / 10;
     draw_square(s, BKGD_COLOR);
+    MLV_draw_text_box_with_font(s.x, s.y - s.size * 2 / 5, s.size, s.size / 3,
+                                "100", font, 0, TRANSPARANT, MLV_COLOR_BLACK,
+                                TRANSPARANT, MLV_TEXT_CENTER,
+                                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
     s.size = RIGHT_BAR_SIZE * 3 / 20;
     // gem.x -= size * 1 / 10;
     s.y += size * 1 / 10;
@@ -166,7 +175,7 @@ static void draw_top_buttons(WindowInfo *win) {
                                 "Cost:", win->right_bar_font, 0, TRANSPARANT,
                                 MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
                                 MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
-    draw_fuse_gem_button(win->fuse_gem);
+    draw_fuse_gem_button(win->fuse_gem, win->right_bar_font);
 }
 
 // draws a bar on the right of the game window
@@ -177,6 +186,7 @@ static void draw_right_bar(WindowInfo *win) {
 // draw the `inventory` in the right bar, drawing the selected gem if there's
 // one
 static void draw_inventory(Inventory inventory, WindowInfo *win) {
+    Square s_gem;
     MLV_draw_text_box_with_font(
         RIGHT_BAR_X + 1, GAME_HEIGHT * 3 / 10, RIGHT_BAR_SIZE,
         GAME_HEIGHT * 1 / 30, "Inventory:", win->right_bar_font, 0, TRANSPARANT,
@@ -188,8 +198,12 @@ static void draw_inventory(Inventory inventory, WindowInfo *win) {
                  (s.size / INVENTORY_COLS) * (INVENTORY_SIZE / INVENTORY_COLS)};
     win->inventory = s;
     for (int i = 0; i < inventory.size; i++) {
-        draw_gem_in_square(get_inventory_gem(inventory, i, *win),
-                           hue_to_rgba(inventory.gems[i].hue),
+        s_gem = get_inventory_gem(inventory, i, *win);
+        if (inventory.gems[i].type != NONE) {
+            draw_gem(s_gem.x + s_gem.size / 2, s_gem.y + s_gem.size / 2,
+                     2 * s_gem.size / 5 + 2, MLV_COLOR_GOLD);
+        }
+        draw_gem_in_square(s_gem, hue_to_rgba(inventory.gems[i].hue),
                            inventory.gems[i].level, win->right_bar_font);
     }
     if (win->selected_gem >= 0 && win->selected_gem < inventory.size)
