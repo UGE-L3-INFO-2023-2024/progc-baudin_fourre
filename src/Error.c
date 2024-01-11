@@ -6,10 +6,11 @@
 
 // Modifies the `error` with the new `message`
 int new_error(Error *error, char *message) {
-    error->message =
+    char *new_message =
         realloc(error->message, (strlen(message) + 1) * sizeof(char));
     if (!error->message)
         return 0;
+    error->message = new_message;
     strcpy(error->message, message);
     error->timeout = time_future(3);
     return 1;

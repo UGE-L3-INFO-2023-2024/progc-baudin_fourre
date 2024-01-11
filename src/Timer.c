@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Timestamp time_now() {
+Timestamp time_now(void) {
     Timestamp time;
     if (clock_gettime(CLOCK_REALTIME, &time) < 0) {
         perror("Clock time error");
@@ -17,7 +17,7 @@ Timestamp time_add_seconds(Timestamp time, double seconds) {
     Timestamp interval;
     interval.tv_sec = (time_t) seconds;
     interval.tv_nsec =
-        (long) (seconds * 1000000000L - interval.tv_sec * 1000000000L);
+        (long) (seconds * 1000000000L) - interval.tv_sec * 1000000000L;
 
     Timestamp new_time = {
         .tv_sec = time.tv_sec + interval.tv_sec,
@@ -33,16 +33,16 @@ Timestamp time_add_seconds(Timestamp time, double seconds) {
 // Returns the number of seconds `elapsed` since `time`
 double elapsed_since(Timestamp time) {
     Timestamp cur_time = time_now();
-    double time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
-    double cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
+    long time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
+    long cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
     return (double) (cur_time_nsec - time_nsec) / 1000000000L;
 }
 
 // Returns the number of seconds left until `time`
 double time_to(Timestamp time) {
     Timestamp cur_time = time_now();
-    double time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
-    double cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
+    long time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
+    long cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;
     return (double) (time_nsec - cur_time_nsec) / 1000000000L;
 }
 

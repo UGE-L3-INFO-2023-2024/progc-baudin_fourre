@@ -63,8 +63,8 @@ void move_monsters(Game *game, Timestamp time) {
             move_monster(&game->map, monster, elapsed);
             apply_extra_damage(monster);
         }
-        x = monster->position.x;
-        y = monster->position.y;
+        x = (int) monster->position.x;
+        y = (int) monster->position.y;
         if (game->map.cells[x][y].type == HOME) {
             if (!mana_banish_monster(&(game->mana), *monster))
                 game->defeat = 1;
@@ -256,7 +256,7 @@ void damage_monsters(Game *game) {
 
 static Monster *find_monster_to_shoot(Coord tower_coord,
                                       MonsterList *monster_list) {
-    const float tower_field_radius = 3.0;
+    const double tower_field_radius = 3.0;
     Monster *monster;
     Monster *monster_fit = NULL;
     LIST_FOREACH(monster, monster_list, entries) {
@@ -290,15 +290,15 @@ void activegems_fire(Game *game) {
 
 // Fuses two gems in a new gem
 void game_fuse_gems(Game *game, int gem1, int gem2) {
-    Gem firstGem, secondGem;
+    Gem first_gem, second_gem;
     int tmp;
 
     if (!mana_fuse_gem(&(game->mana), &(game->error)))
         return;
 
-    firstGem = game->inventory.gems[gem1];
-    secondGem = game->inventory.gems[gem2];
-    if (firstGem.level != secondGem.level) // TODO : ADD ERROR
+    first_gem = game->inventory.gems[gem1];
+    second_gem = game->inventory.gems[gem2];
+    if (first_gem.level != second_gem.level) // TODO : ADD ERROR
         return;
     if (gem1 < gem2) {
         tmp = gem1;
@@ -308,6 +308,6 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
     remove_from_inventory(&(game->inventory), gem1);
     remove_from_inventory(&(game->inventory), gem2);
     game->inventory.gems[game->inventory.size] =
-        fuse_gems(firstGem, secondGem); // TODO : ADD TO INVENTORY
+        fuse_gems(first_gem, second_gem); // TODO : ADD TO INVENTORY
     game->inventory.size++;
 }

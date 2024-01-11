@@ -7,7 +7,7 @@
 
 #include "Mana.h"
 
-static Coord random_nest_coords() {
+static Coord random_nest_coords(void) {
     return (Coord){
         .col = MLV_get_random_integer(0 + MARGIN, MAP_WIDTH - MARGIN),
         .line = MLV_get_random_integer(0 + MARGIN, MAP_HEIGHT - MARGIN)};
@@ -86,7 +86,8 @@ static int weighted_random(int weights[], int size) {
     int random_num = MLV_get_random_integer(0, sum);
     int acc = 0;
     for (int i = 0; i < random_index; i++) {
-        if (random_num < (acc += weights[i])) {
+        acc += weights[i];
+        if (random_num < acc) {
             random_index = i;
             break;
         }
@@ -94,7 +95,7 @@ static int weighted_random(int weights[], int size) {
     return random_index;
 }
 
-Map generate_map() {
+Map generate_map(void) {
     int turns;
     int length;
     int random_length;
@@ -168,8 +169,8 @@ int is_in_map(Coord coord) {
 
 // Returns the direction of the cell where the `position`is situated
 Direction get_position_direction(const Map *map, Position position) {
-    int x = position.x;
-    int y = position.y;
+    int x = (int) position.x;
+    int y = (int) position.y;
     CellType type = map->cells[x][y].type;
     if (type != PATH && type != NEST)
         return NODIR;

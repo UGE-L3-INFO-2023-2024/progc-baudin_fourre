@@ -38,8 +38,8 @@ static void draw_tower_in_square(Square s) {
 static void draw_gem(int center_x, int center_y, double size, MLV_Color color) {
     int vx[6], vy[6];
     for (int i = 0; i < 6; i++) {
-        vx[i] = center_x + size * cos(2 * PI / 6 * i - PI * 0.5);
-        vy[i] = center_y + size * sin(2 * PI / 6 * i - PI * 0.5);
+        vx[i] = (int) (center_x + size * cos(2 * PI / 6 * i - PI * 0.5));
+        vy[i] = (int) (center_y + size * sin(2 * PI / 6 * i - PI * 0.5));
     }
     MLV_draw_filled_polygon(vx, vy, 6, color);
 }
@@ -220,16 +220,14 @@ static void draw_inventory(Inventory inventory, WindowInfo *win) {
 // Draws a cell of coordinates `coord` according to the CellType `type`
 static void draw_cell(CellType type, Coord coord) {
     MLV_Color outline = MLV_COLOR_BLACK;
-    MLV_Color color;
+    MLV_Color color = GRID_COLOR;
 
     if (type == TOWER) {
         draw_tower_in_cell(coord);
         return;
     }
 
-    if (type == EMPTY)
-        color = GRID_COLOR;
-    else if (type == PATH)
+    if (type == PATH)
         color = PATH_COLOR;
     else if (type == NEST)
         color = NEST_COLOR;
@@ -254,8 +252,8 @@ void draw_grid(const Map *map) {
 // draws the Shot `shot` as a dot with the color of the shot
 static void draw_shot(Shot shot) {
     int radius = 3;
-    MLV_draw_filled_circle(shot.position.x * CELL_SIZE,
-                           shot.position.y * CELL_SIZE, radius,
+    MLV_draw_filled_circle((int) (shot.position.x * CELL_SIZE),
+                           (int) (shot.position.y * CELL_SIZE), radius,
                            hue_to_rgba(shot.source.hue));
 }
 
@@ -276,9 +274,10 @@ static void draw_bar(int x, int y, int width, int height, double filled,
     assert(width >= 0 && width < MAP_WIDTH * CELL_SIZE);
     assert(height >= 0 && height < MAP_HEIGHT * CELL_SIZE);
     assert(filled >= 0 && filled <= 100);
-    MLV_draw_filled_rectangle(x, y, width * filled, height, color);
-    MLV_draw_filled_rectangle(x + width * filled, y, width * (1.0 - filled),
-                              height, MLV_COLOR_WHITE);
+    MLV_draw_filled_rectangle(x, y, (int) (width * filled), height, color);
+    MLV_draw_filled_rectangle((int) (x + width * filled), y,
+                              (int) (width * (1.0 - filled)), height,
+                              MLV_COLOR_WHITE);
     MLV_draw_rectangle(x, y, width, height, MLV_COLOR_BLACK);
 }
 
@@ -305,23 +304,24 @@ static void draw_mana(Mana mana, WindowInfo *win) {
                       win->increase_mana_level.length,
                       win->increase_mana_level.size, "+", 0, MLV_COLOR_BLACK,
                       MLV_COLOR_BLACK, PATH_COLOR, MLV_TEXT_CENTER,
-                      MLV_TEXT_CENTER, MLV_TEXT_CENTER);
+                      MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
     MLV_draw_text_box((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
                       (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2,
                       mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
-                      TRANSPARANT, MLV_TEXT_CENTER, MLV_TEXT_CENTER,
-                      MLV_TEXT_CENTER);
+                      TRANSPARANT, MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
+                      MLV_VERTICAL_CENTER);
 }
 
 // draws the monster `monster` at its position as a circle, having its hue
 // for color
 static void draw_monster(Monster monster) {
     int radius = CELL_SIZE / 3;
-    int x = monster.position.x * CELL_SIZE;
-    int y = monster.position.y * CELL_SIZE;
+    int x = (int) (monster.position.x * CELL_SIZE);
+    int y = (int) (monster.position.y * CELL_SIZE);
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
-    draw_bar(x - radius * 1.5, y - radius * 1.5, radius * 3, radius / 2,
-             (double) monster.hp / monster.hp_init, MLV_COLOR_GREEN);
+    draw_bar((int) (x - radius * 1.5), (int) (y - radius * 1.5), radius * 3,
+             radius / 2, (double) monster.hp / monster.hp_init,
+             MLV_COLOR_GREEN);
 }
 
 // draws the list of `monsters` on their position of the `map`

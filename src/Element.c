@@ -66,5 +66,7 @@ void get_element_effect(Element monster_residue, Element shot_element) {
         break;
     case HYDRO | DENDRO:
         break;
+    default:
+        break;
     }
 }

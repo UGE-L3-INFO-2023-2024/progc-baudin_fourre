@@ -52,14 +52,14 @@ int increase_mana_level(Mana *mana, Error *error) {
 
     mana->quantity -= mana->max / 4;
     mana->level++;
-    mana->max *= 1.4;
+    mana->max = (int) (mana->max * 1.4);
     return 1;
 }
 
 // Increases the mana quantity with the mana won by eliminating a monster
 void mana_eliminate_monster(Mana *mana, Monster monster) {
     assert(mana);
-    add_mana(mana, (monster.hp_init * 0.1) * pow(1.3, mana->level));
+    add_mana(mana, (int) ((monster.hp_init * 0.1) * pow(1.3, mana->level)));
 }
 
 // Decreases the mana quanityt by `required` if possible.
@@ -75,7 +75,7 @@ static int mana_remove_required(Mana *mana, int required) {
 // Decreases the mana quantity, if possible, in order to banish a monster
 int mana_banish_monster(Mana *mana, Monster monster) {
     assert(mana);
-    int required = (monster.hp_init * 0.15) * pow(1.3, mana->level);
+    int required = (int) ((monster.hp_init * 0.15) * pow(1.3, mana->level));
     if (!mana_remove_required(mana, required)) {
         return 0;
     }
@@ -88,7 +88,7 @@ int mana_required_tower(int add) {
     int required = 0;
 
     if (nb_tower >= 3)
-        required = 100 * pow(2, nb_tower - 3);
+        required = (int) (100 * pow(2, nb_tower - 3));
     if (add)
         nb_tower++;
     return required;
@@ -110,7 +110,7 @@ int mana_buy_tower(Mana *mana, Error *error) {
 // `level`
 int mana_buy_gem(Mana *mana, int level, Error *error) {
     assert(mana);
-    int required = 100 * pow(2, level);
+    int required = (int) (100 * pow(2, level));
     if (!mana_remove_required(mana, required)) {
         get_mana_error(error);
         return 0;
@@ -131,5 +131,5 @@ int mana_fuse_gem(Mana *mana, Error *error) {
 // Adds mana if the time_left before the newt wave is superior to zero
 void mana_new_wave(Mana *mana, double t_left) {
     if (t_left > 0)
-        add_mana(mana, (t_left / 100.) * mana->max);
+        add_mana(mana, (int) ((t_left / 100.) * mana->max));
 }

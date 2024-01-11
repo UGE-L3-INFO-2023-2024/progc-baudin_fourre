@@ -54,7 +54,7 @@ Square new_square(int x, int y, int size);
  * @brief Waits according to the set framerate
  *
  */
-void wait_framerate();
+void wait_framerate(void);
 
 /**
  * @brief Refreshes the graphic window with the changes made

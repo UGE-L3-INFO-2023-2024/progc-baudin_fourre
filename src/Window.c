@@ -24,7 +24,7 @@ void clear_window(void) {
 }
 
 // Waits according to the framerate
-void wait_framerate() {
+void wait_framerate(void) {
     MLV_delay_according_to_frame_rate();
 }
 
