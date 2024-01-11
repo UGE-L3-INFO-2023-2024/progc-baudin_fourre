@@ -81,7 +81,13 @@ void move_monster(const Map *map, Monster *monster, double time_elapsed);
  */
 double get_damage(Monster monster, Gem gem);
 
-void damage_monster(Monster *monster, Gem gem);
+/**
+ * @brief Applies the `damage` to the `monster`
+ *
+ * @param monster Address of the Monster to apply the damage to
+ * @param damage quantity of damage to apply
+ */
+void apply_damage(Monster *monster, double damage);
 
 /**
  * @brief Applies the extra_damage attached to the `monster` if there's one
@@ -91,5 +97,19 @@ void damage_monster(Monster *monster, Gem gem);
 void apply_extra_damage(Monster *monster);
 
 bool is_dead_monster(Monster *monster);
+
+/**
+ * @brief Get the next monster in the radius of pos
+ *
+ * @param monsters list of monsters to initialize the first monster
+ * @param pos Position arounnd which the radius is checked
+ * @param radius
+ * @param start true to initialize the first monster, false to return the next
+ * monster in radius
+ * @return Monster* the address of the next monster in radius, or NULL if the
+ * list has reached its end
+ */
+Monster *get_next_monster_in_radius(MonsterList *monsters, Position pos,
+                                    double radius, bool start);
 
 #endif // __MONSTERS_H__

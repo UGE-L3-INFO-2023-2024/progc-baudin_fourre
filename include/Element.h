@@ -23,6 +23,7 @@ typedef enum {
 typedef struct {
     double speed_mult;
     double damage;
+    double damage_interval;
     Timestamp next_damage;
     Timestamp timeout;
 } ElementEffect;
@@ -52,11 +53,12 @@ Hue random_hue(Element element);
 Element hue_to_element(Hue hue);
 
 /**
- * @brief
+ * @brief Gets the ElementEffect according to its type
  *
- * @param monster_residue
- * @param shot_element
+ * @param type type of the effect to return
+ * @param damage Current damage of the shot producing the ElementEffect
+ * @return ElementEffect the effect produced
  */
-void get_element_effect(Element monster_residue, Element shot_element);
+ElementEffect get_element_effect(EffectType type, double damage);
 
 #endif // __ELEMENT_H__

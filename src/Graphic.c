@@ -35,6 +35,7 @@ static void draw_tower_in_square(Square s) {
                               s.size * 0.1, s.size * 0.1, BKGD_COLOR);
 }
 
+// Draws a gem of color `color` with its center coordinates and size
 static void draw_gem(int center_x, int center_y, double size, MLV_Color color) {
     int vx[6], vy[6];
     for (int i = 0; i < 6; i++) {

@@ -3,7 +3,7 @@ IndentWidth: 4
 BreakBeforeBraces: Attach
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortFunctionsOnASingleLine: None
-IndentCaseLabels: false
+IndentCaseLabels: true
 ColumnLimit: 80
 AlignConsecutiveMacros: true
 SpacesInParentheses: false

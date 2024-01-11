@@ -96,62 +96,62 @@ int main(void) {
         action = get_user_action(action, event, win);
 
         switch (action) {
-        case NO_ACTION:
-            win.selected_gem = -1;
-            break;
-        case ADD_TOWER:
-            add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
-                                     event.mouse.line / CELL_SIZE});
-            action = NO_ACTION;
-            break;
-        case NEW_GEM:
-            new_gem(&game, win.new_gem_level);
-            action = NO_ACTION;
-            break;
-        case INC_GEM_LEVEL:
-            increase_new_gem_level(&win);
-            action = NO_ACTION;
-            break;
-        case DEC_GEM_LEVEL:
-            decrease_new_gem_level(&win);
-            action = NO_ACTION;
-            break;
-        case INC_MANA_LEVEL:
-            increase_mana_level(&(game.mana), &(game.error));
-            action = NO_ACTION;
-            break;
-        case SELECT_GEM:
-            win.selected_gem = get_selected_inventory_gem(event, win);
-            action = WAIT_TOWER;
-            break;
-        case SELECT_FUSE_GEM:
-            win.selected_gem = get_selected_inventory_gem(event, win);
-            action = WAIT_SECOND_FUSE_GEM;
-            break;
-        case FUSE_GEM:
-            selected_gem = get_selected_inventory_gem(event, win);
-            game_fuse_gems(&game, win.selected_gem, selected_gem);
-            action = NO_ACTION;
-            break;
-        case ADD_ACTIVEGEM:
-            add_activegem(&game, win,
-                          (Coord){event.mouse.col / CELL_SIZE,
-                                  event.mouse.line / CELL_SIZE});
-            action = NO_ACTION;
-            break;
-        case REMOVE_ACTIVEGEM:
-            tower = (Coord){event.mouse.col / CELL_SIZE,
-                            event.mouse.line / CELL_SIZE};
-            if (game.map.cells[tower.col][tower.line].type == TOWER)
-                remove_activegem(&game, tower);
-            action = NO_ACTION;
-            break;
-        case NEW_WAVE:
-            add_wave(&game);
-            action = NO_ACTION;
-            break;
-        default:
-            break;
+            case NO_ACTION:
+                win.selected_gem = -1;
+                break;
+            case ADD_TOWER:
+                add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
+                                         event.mouse.line / CELL_SIZE});
+                action = NO_ACTION;
+                break;
+            case NEW_GEM:
+                new_gem(&game, win.new_gem_level);
+                action = NO_ACTION;
+                break;
+            case INC_GEM_LEVEL:
+                increase_new_gem_level(&win);
+                action = NO_ACTION;
+                break;
+            case DEC_GEM_LEVEL:
+                decrease_new_gem_level(&win);
+                action = NO_ACTION;
+                break;
+            case INC_MANA_LEVEL:
+                increase_mana_level(&(game.mana), &(game.error));
+                action = NO_ACTION;
+                break;
+            case SELECT_GEM:
+                win.selected_gem = get_selected_inventory_gem(event, win);
+                action = WAIT_TOWER;
+                break;
+            case SELECT_FUSE_GEM:
+                win.selected_gem = get_selected_inventory_gem(event, win);
+                action = WAIT_SECOND_FUSE_GEM;
+                break;
+            case FUSE_GEM:
+                selected_gem = get_selected_inventory_gem(event, win);
+                game_fuse_gems(&game, win.selected_gem, selected_gem);
+                action = NO_ACTION;
+                break;
+            case ADD_ACTIVEGEM:
+                add_activegem(&game, win,
+                              (Coord){event.mouse.col / CELL_SIZE,
+                                      event.mouse.line / CELL_SIZE});
+                action = NO_ACTION;
+                break;
+            case REMOVE_ACTIVEGEM:
+                tower = (Coord){event.mouse.col / CELL_SIZE,
+                                event.mouse.line / CELL_SIZE};
+                if (game.map.cells[tower.col][tower.line].type == TOWER)
+                    remove_activegem(&game, tower);
+                action = NO_ACTION;
+                break;
+            case NEW_WAVE:
+                add_wave(&game);
+                action = NO_ACTION;
+                break;
+            default:
+                break;
         }
 
         draw_game(game, action, &win);

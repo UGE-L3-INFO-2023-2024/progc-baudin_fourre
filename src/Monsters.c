@@ -9,6 +9,7 @@
 #include "Monsters.h"
 
 #include <math.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -111,8 +112,8 @@ static void move_monster_direction(Monster *monster, Direction direction,
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
-        // monster->position = coord_to_position(
-        //     (Coord){(int) monster->position.x, (int) monster->position.y});
+        monster->position = coord_to_position(
+            (Coord){(int) monster->position.x, (int) monster->position.y});
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
             (Coord){(int) monster->position.x, (int) monster->position.y},
@@ -135,25 +136,47 @@ double get_damage(Monster monster, Gem gem) {
     return d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
 }
 
-void damage_monster(Monster *monster, Gem gem) {
-    const double damage = get_damage(*monster, gem);
+// Applies the `damage` to the `monster`
+void apply_damage(Monster *monster, double damage) {
     monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
 }
 
 // Applies the extra damage from the element effect of the `monster`, if
 // necessary
 void apply_extra_damage(Monster *monster) {
-    double damage;
     for (int i = 0; i < 4; i++) {
-        damage = monster->effects.type[i].damage;
         if (is_past_time(monster->effects.type[i].timeout)) {
             continue;
         }
         if (is_past_time(monster->effects.type[i].next_damage)) {
-            monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
-            monster->effects.type[i].next_damage = time_future(0.5);
+            apply_damage(monster, monster->effects.type[i].damage);
+            monster->effects.type[i].next_damage =
+                time_future(monster->effects.type[i].damage_interval);
         }
     }
+}
+
+// Returns the address of the next monster in the `radius` of `pos` if start is
+// `false`,otherwise the first monster is initialized with the list of monsters
+Monster *get_next_monster_in_radius(MonsterList *monsters, Position pos,
+                                    double radius, bool start) {
+    static Monster *monster = NULL;
+    Monster *tmp;
+    if (start) {
+        monster = LIST_FIRST(monsters);
+        return NULL;
+    }
+
+    while (monster
+           && ((!is_past_time(monster->start_time))
+               || distance_between_positions(monster->position, pos) > radius))
+        monster = LIST_NEXT(monster, entries);
+    if (!monster)
+        return NULL;
+
+    tmp = monster;
+    monster = LIST_NEXT(monster, entries);
+    return tmp;
 }
 
 bool is_dead_monster(Monster *monster) {

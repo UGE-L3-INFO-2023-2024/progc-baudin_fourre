@@ -46,27 +46,42 @@ Element hue_to_element(Hue hue) {
 // returns an initialized ElementEffect
 ElementEffect init_element_effect(void) {
     ElementEffect effect = {
-        .speed_mult = 1, .damage = 0, .timeout = time_now()};
+        .speed_mult = 1,
+        .damage = 0,
+        .damage_interval = 0,
+        .timeout = time_now(),
+    };
     return effect;
 }
 
-// calls the function producing the effect of the element
-// according to the `monster_residue` and the `shot_element`
-void get_element_effect(Element monster_residue, Element shot_element) {
-    switch (monster_residue | shot_element) {
-    case PYRO:
+// Returns the ElementEffect associated to the EffectType `type`, according to
+// the `damage` done by the shot
+ElementEffect get_element_effect(EffectType type, double damage) {
+    ElementEffect effect = {
+        .speed_mult = 1,
+        .damage = 0,
+        .next_damage = time_now(),
+        .damage_interval = 0,
+    };
+    switch (type) {
+    case HYDRO_EFFECT:
+        effect.speed_mult = 1 / 1.5;
+        effect.timeout = time_future(10);
         break;
-    case DENDRO:
+    case DENDRO_EFFECT:
+        effect.damage = 0.025 * damage;
+        effect.timeout = time_future(10);
+        effect.damage_interval = 0.5;
+        effect.next_damage = time_future(effect.damage_interval);
         break;
-    case HYDRO:
+    case HYDRO_PYRO_EFFECT:
+        effect.speed_mult = 1 / 1.25;
+        effect.timeout = time_future(5);
         break;
-    case PYRO | DENDRO:
-        break;
-    case PYRO | HYDRO:
-        break;
-    case HYDRO | DENDRO:
-        break;
-    default:
+    case DENDRO_HYDRO_EFFECT:
+        effect.speed_mult = 0;
+        effect.timeout = time_future(3);
         break;
     }
+    return effect;
 }
