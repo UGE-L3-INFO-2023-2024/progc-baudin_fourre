@@ -14,21 +14,16 @@ typedef enum {
 } Element;
 
 typedef enum {
-    NO_EFFECT,
-    EXTRA_DAMAGE,
-    LOWER_SPEED,
+    HYDRO_EFFECT = 0,
+    DENDRO_EFFECT = 1,
+    HYDRO_PYRO_EFFECT = 2,
+    DENDRO_HYDRO_EFFECT = 3,
 } EffectType;
 
 typedef struct {
-    EffectType type;
-    union {
-        double speed;
-        struct {
-            double damage;
-            Timestamp next_damage;
-
-        } damage;
-    };
+    double speed_mult;
+    double damage;
+    Timestamp next_damage;
     Timestamp timeout;
 } ElementEffect;
 

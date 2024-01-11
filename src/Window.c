@@ -4,7 +4,7 @@
 WindowInfo init_graphic(void) {
     WindowInfo win;
     MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
-    win.right_bar_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 7 / 10);
+    win.right_bar_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 0.7);
     win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
     win.new_gem_level = 0;
     win.selected_gem = -1;

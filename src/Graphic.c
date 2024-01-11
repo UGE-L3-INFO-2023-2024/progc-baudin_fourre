@@ -23,23 +23,23 @@ static void draw_square(Square square, MLV_Color bkgd_color) {
 // draws a tower in a square `s`
 static void draw_tower_in_square(Square s) {
     draw_square(s, BKGD_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 1 / 10, s.y + s.size * 1 / 10,
-                              s.size * 8 / 10, s.size * 2 / 10, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 2 / 10, s.y + s.size * 3 / 10,
-                              s.size * 6 / 10, s.size * 5 / 10, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 1 / 10, s.y + s.size * 8 / 10,
-                              s.size * 8 / 10, s.size * 1 / 10, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 3 / 10, s.y + s.size * 1 / 10,
-                              s.size * 1 / 10, s.size * 1 / 10, BKGD_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 6 / 10, s.y + s.size * 1 / 10,
-                              s.size * 1 / 10, s.size * 1 / 10, BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.1, s.y + s.size * 0.1,
+                              s.size * 0.8, s.size * 0.2, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.2, s.y + s.size * 0.2,
+                              s.size * 0.6, s.size * 0.5, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.1, s.y + s.size * 0.7,
+                              s.size * 0.8, s.size * 0.2, TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.3, s.y + s.size * 0.1,
+                              s.size * 0.1, s.size * 0.1, BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.6, s.y + s.size * 0.1,
+                              s.size * 0.1, s.size * 0.1, BKGD_COLOR);
 }
 
-static void draw_gem(int center_x, int center_y, int size, MLV_Color color) {
+static void draw_gem(int center_x, int center_y, double size, MLV_Color color) {
     int vx[6], vy[6];
     for (int i = 0; i < 6; i++) {
-        vx[i] = center_x + size * cos(i * PI / 3);
-        vy[i] = center_y + size * sin(i * PI / 3);
+        vx[i] = center_x + size * cos(2 * PI / 6 * i - PI * 0.5);
+        vy[i] = center_y + size * sin(2 * PI / 6 * i - PI * 0.5);
     }
     MLV_draw_filled_polygon(vx, vy, 6, color);
 }
@@ -48,20 +48,24 @@ static void draw_gem(int center_x, int center_y, int size, MLV_Color color) {
 // prints the gem level if level is different than -1
 static void draw_gem_in_square(Square s, MLV_Color color, int level,
                                MLV_Font *font) {
-    char level_str[3];
+    int text_w, text_h;
+    char level_str[2];
     sprintf(level_str, "%d", level);
-    draw_gem(s.x + s.size / 2, s.y + s.size / 2, 2 * s.size / 5, color);
+    draw_gem(s.x + s.size / 2, s.y + s.size / 2, s.size * 0.45, color);
     if (level != -1) {
-        if (font)
-            MLV_draw_text_box_with_font(
-                s.x, s.y, s.size, s.size, level_str, font, 1, TRANSPARANT,
-                MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
-                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
-        else
-            MLV_draw_text_box(s.x, s.y, s.size, s.size, level_str, 1,
-                              TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
-                              MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
-                              MLV_VERTICAL_CENTER);
+        if (font) {
+            MLV_get_size_of_text_with_font(level_str, &text_w, &text_h, font);
+            MLV_draw_adapted_text_box_with_font(
+                s.x + s.size / 2 - text_w / 2, s.y + s.size / 2 - text_h / 2,
+                level_str, font, 1, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
+                MLV_TEXT_CENTER);
+        } else {
+            MLV_get_size_of_text(level_str, &text_w, &text_h);
+            MLV_draw_adapted_text_box(s.x + (s.size - text_w) * 0.5,
+                                      s.y + (s.size - text_h) * 0.5, level_str,
+                                      1, TRANSPARANT, MLV_COLOR_BLACK,
+                                      TRANSPARANT, MLV_TEXT_CENTER);
+        }
     }
 }
 
@@ -74,9 +78,9 @@ static void draw_tower_in_cell(Coord coord) {
 
 // draws the ActiveGem `gem` in its tower
 static void draw_gem_in_tower(ActiveGem gem) {
-    Square tower =
-        new_square(gem.tower.col * CELL_SIZE + CELL_SIZE / 4,
-                   gem.tower.line * CELL_SIZE + CELL_SIZE / 4, CELL_SIZE / 2);
+    Square tower = new_square(gem.tower.col * CELL_SIZE + CELL_SIZE / 5,
+                              gem.tower.line * CELL_SIZE + CELL_SIZE / 5,
+                              3 * CELL_SIZE / 5);
     draw_gem_in_square(tower, hue_to_rgba(gem.gem.hue), gem.gem.level, NULL);
     if (!is_past_time(gem.start_time))
         draw_gem_in_square(tower, SELECTED_COLOR, -1, NULL);

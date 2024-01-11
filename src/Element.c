@@ -45,7 +45,8 @@ Element hue_to_element(Hue hue) {
 
 // returns an initialized ElementEffect
 ElementEffect init_element_effect(void) {
-    ElementEffect effect = {.type = NO_EFFECT};
+    ElementEffect effect = {
+        .speed_mult = 1, .damage = 0, .timeout = time_now()};
     return effect;
 }
 

@@ -17,15 +17,25 @@
 #include "Queue.h"
 #include "Utils.h"
 
+// Returns an initialized Effects structure
+static Effects init_monster_effects(void) {
+    Effects effects;
+    for (int i = 0; i < 4; i++) {
+        effects.type[i] = init_element_effect();
+    }
+    return effects;
+}
+
 // Returns the adress of the new Monster created with the given arguments
-Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
+Monster *create_new_monster(const Map *map, int speed, int HP,
+                            Timestamp start_time) {
     Monster *monster = malloc(sizeof(Monster));
     if (!monster) {
         perror("Crash on monster allocation");
         exit(EXIT_FAILURE);
     }
 
-    *monster = (Monster) {
+    *monster = (Monster){
         .hp = HP,
         .hp_init = HP,
         .hue = random_hue(NONE),
@@ -33,7 +43,7 @@ Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_t
         .residue = NONE,
         .speed = speed,
         .start_time = start_time,
-        .effect = init_element_effect(),
+        .effects = init_monster_effects(),
     };
 
     LIST_INIT(&(monster->shots));
@@ -88,19 +98,21 @@ static double rand_speed(double speed) {
 static void move_monster_direction(Monster *monster, Direction direction,
                                    double time_elapsed) {
     Vector move = get_direction_vector(direction);
-    double speed = monster->effect.type != LOWER_SPEED
-                       ? rand_speed(monster->speed)
-                       : rand_speed(monster->effect.speed);
-    monster->position = get_new_position(
-        monster->position, speed * time_elapsed, move); // TODO time
+    double speed = rand_speed(monster->speed);
+    for (int i = 0; i < 4; i++) {
+        if (!is_past_time(monster->effects.type[i].timeout))
+            speed *= monster->effects.type[i].speed_mult;
+    }
+    monster->position =
+        get_new_position(monster->position, speed * time_elapsed, move);
 }
 
 // Moves the monster on the `map` for a duration of `time_elapsed`
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
-        monster->position = coord_to_position(
-            (Coord){(int) monster->position.x, (int) monster->position.y});
+        // monster->position = coord_to_position(
+        //     (Coord){(int) monster->position.x, (int) monster->position.y});
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
             (Coord){(int) monster->position.x, (int) monster->position.y},
@@ -131,19 +143,16 @@ void damage_monster(Monster *monster, Gem gem) {
 // Applies the extra damage from the element effect of the `monster`, if
 // necessary
 void apply_extra_damage(Monster *monster) {
-    if (monster->effect.type != EXTRA_DAMAGE)
-        return;
-
-    if (is_past_time(monster->effect.timeout)) {
-        monster->effect.type = NO_EFFECT;
-        return;
-    }
-
-    if (is_past_time(monster->effect.damage.next_damage)) {
-        monster->hp = (monster->hp - monster->effect.damage.damage) > 0
-                          ? monster->hp - monster->effect.damage.damage
-                          : 0;
-        monster->effect.damage.next_damage = time_future(0.5);
+    double damage;
+    for (int i = 0; i < 4; i++) {
+        damage = monster->effects.type[i].damage;
+        if (is_past_time(monster->effects.type[i].timeout)) {
+            continue;
+        }
+        if (is_past_time(monster->effects.type[i].next_damage)) {
+            monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+            monster->effects.type[i].next_damage = time_future(0.5);
+        }
     }
 }
 

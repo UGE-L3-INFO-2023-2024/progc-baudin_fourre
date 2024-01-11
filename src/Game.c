@@ -13,7 +13,7 @@
 
 // Returns a Game structure with its initial values
 Game init_game(void) {
-    return (Game) {
+    return (Game){
         .map = generate_map(),
         .inventory.size = 0,
         .active_gems.lh_first = NULL,
@@ -77,35 +77,89 @@ void move_monsters(Game *game, Timestamp time) {
     }
 }
 
+// static void apply_effect_if_in_radius(Game *game, Monster *monster, int
+// radius, ElementEffect effect) {}
+
 // Adds the effect of the element of the gem, if there's one, to the `monster`
 // receiving the shot
 static void add_monster_element_effect(Game *game, Monster *monster, Gem gem) {
-    Monster *monster_tmp;
+    Monster *monster_tmp = NULL;
     double distance, damage;
-    switch (gem.type) {
+    int elements = 0;
+
+    if (gem.type == NONE)
+        return;
+
+    if (monster->residue == NONE) {
+        monster->residue = gem.type;
+        elements = gem.type;
+    } else {
+        elements = gem.type | monster->residue;
+        monster->residue = NONE;
+    }
+    switch (elements) {
     case PYRO:
         LIST_FOREACH(monster_tmp, &game->monsters, entries) {
+            if (!is_past_time(monster_tmp->start_time))
+                continue;
             distance = distance_between_positions(monster_tmp->position,
                                                   monster->position);
             if (monster_tmp != monster && distance < 2) {
                 damage = get_damage(*monster_tmp, gem);
                 damage *= 0.15;
-                monster_tmp->hp =
-                    (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+                monster_tmp->hp = (monster_tmp->hp - damage) > 0
+                                      ? monster_tmp->hp - damage
+                                      : 0;
             }
         }
         break;
     case DENDRO:
-        monster->effect.type = EXTRA_DAMAGE;
-        monster->effect.damage.damage = 0.025 * get_damage(*monster, gem);
-        monster->effect.damage.next_damage = time_future(0.5);
-        monster->effect.timeout = time_future(10);
+        monster->effects.type[DENDRO_EFFECT] = (ElementEffect){
+            .damage = 0.025 * get_damage(*monster, gem),
+            .speed_mult = 1,
+            .timeout = time_future(10),
+            .next_damage = time_future(0.5),
+        };
         break;
     case HYDRO:
-        monster->effect.type = LOWER_SPEED;
-        monster->effect.speed = monster->speed / 1.5;
-        monster->effect.timeout = time_future(10);
+        monster->effects.type[HYDRO_EFFECT] = (ElementEffect){
+            .speed_mult = 1 / 1.5,
+            .timeout = time_future(10),
+        };
         break;
+    case PYRO | DENDRO:
+        damage = get_damage(*monster, gem);
+        damage *= 2;
+        monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+        break;
+    case PYRO | HYDRO:
+        LIST_FOREACH(monster_tmp, &game->monsters, entries) {
+            if (!is_past_time(monster_tmp->start_time))
+                continue;
+            distance = distance_between_positions(monster_tmp->position,
+                                                  monster->position);
+            if (monster_tmp != monster && distance < 3.5) {
+                damage = get_damage(*monster_tmp, gem);
+                damage *= 0.05;
+                monster_tmp->hp = (monster_tmp->hp - damage) > 0
+                                      ? monster_tmp->hp - damage
+                                      : 0;
+                monster->effects.type[HYDRO_PYRO_EFFECT] = (ElementEffect){
+                    .speed_mult = 1 / 1.25,
+                    .damage = 0,
+                    .next_damage = time_future(3),
+                    .timeout = time_future(5),
+                };
+            }
+        }
+        break;
+    case HYDRO | DENDRO:
+        monster->effects.type[DENDRO_HYDRO_EFFECT] = (ElementEffect){
+            .speed_mult = 0,
+            .damage = 0,
+            .next_damage = time_future(3),
+            .timeout = time_future(3),
+        };
     case NONE:
         break;
     }
@@ -188,7 +242,7 @@ void damage_monsters(Game *game) {
             LIST_REMOVE(shot, entries);
             free_shot(shot);
             damage_monster(monster, gem);
-            add_monster_residue(monster, gem.hue);
+            // add_monster_residue(monster, gem.hue);
             add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
                 mana_eliminate_monster(&(game->mana), *monster);
@@ -206,6 +260,8 @@ static Monster *find_monster_to_shoot(Coord tower_coord,
     Monster *monster;
     Monster *monster_fit = NULL;
     LIST_FOREACH(monster, monster_list, entries) {
+        if (!is_past_time(monster->start_time))
+            continue;
         if (distance_between_positions(monster->position,
                                        coord_to_position(tower_coord))
             < tower_field_radius) {

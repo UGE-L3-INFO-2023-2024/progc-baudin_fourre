@@ -9,6 +9,10 @@
 
 #define HP_MULT 100
 
+typedef struct {
+    ElementEffect type[4];
+} Effects;
+
 typedef struct Monster {
     int speed;
     double hp_init;
@@ -18,7 +22,7 @@ typedef struct Monster {
     Position position;
     Coord next_cell;
     Element residue;
-    ElementEffect effect;
+    Effects effects;
     ShotList shots;
     LIST_ENTRY(Monster) entries;
     Direction direction;
@@ -36,7 +40,8 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @return Monster* address of the Monster structure allocated,
  * or NULL if there was an allocation error
  */
-Monster *create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
+Monster *create_new_monster(const Map *map, int speed, int HP,
+                            Timestamp start_time);
 
 /**
  * @brief Frees the space allocated for the list of monsters
