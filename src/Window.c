@@ -1,4 +1,6 @@
 #include "Window.h"
+#include "Inventory.h"
+#include <MLV/MLV_all.h>
 
 // Initializes the graphic window
 WindowInfo init_graphic(void) {
@@ -10,11 +12,6 @@ WindowInfo init_graphic(void) {
     win.selected_gem = -1;
     MLV_change_frame_rate(60);
     return win;
-}
-
-// Creates and returns a new Square structure with the given arguments
-Square new_square(int x, int y, int size) {
-    return (Square){x, y, size, size};
 }
 
 // Clears the window

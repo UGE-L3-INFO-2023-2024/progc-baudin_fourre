@@ -34,11 +34,11 @@ Error init_error(void);
 void new_error(Error *error, ErrorType type);
 
 /**
- * @brief Displays the error in the right bar of the window
+ * @brief Get the error message from its type
  *
- * @param error Error containing the type of the message to display
- * @param win information of the current window
+ * @param error Error to get the message from
+ * @return char* the message associated to the error type
  */
-void display_error(Error *error, WindowInfo win);
+char *get_error_message(Error error);
 
 #endif

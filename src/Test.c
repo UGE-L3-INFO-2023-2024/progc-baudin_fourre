@@ -91,7 +91,7 @@ int main(void) {
     int selected_gem;
 
     clear_window();
-    draw_game(game, action, &win);
+    draw_game(&game, action, &win);
 
     cur_time = time_now();
     while ((event = get_events()).type != QUIT && !game.defeat) {
@@ -164,7 +164,7 @@ int main(void) {
                 break;
         }
 
-        draw_game(game, action, &win);
+        draw_game(&game, action, &win);
         refresh();
 
         if (is_past_time(game.next_wave))

@@ -3,6 +3,7 @@
 
 #include <MLV/MLV_all.h>
 
+#include "Graphic_Utils.h"
 #include "Map.h"
 
 #define CELL_SIZE      36
@@ -11,13 +12,6 @@
 #define RIGHT_BAR_SIZE (10 * CELL_SIZE)
 #define RIGHT_BAR_X    (MAP_WIDTH * CELL_SIZE)
 #define INVENTORY_COLS 4
-
-typedef struct {
-    int x;
-    int y;
-    int size;
-    int length;
-} Square, Button;
 
 typedef struct {
     int new_gem_level;
