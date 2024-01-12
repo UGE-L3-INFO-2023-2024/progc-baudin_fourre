@@ -206,7 +206,7 @@ static void draw_inventory(Inventory inventory, WindowInfo *win) {
         s_gem = get_inventory_gem(inventory, i, *win);
         if (inventory.gems[i].type != NONE) {
             draw_gem(s_gem.x + s_gem.size / 2, s_gem.y + s_gem.size / 2,
-                     2 * s_gem.size / 5 + 2, MLV_COLOR_GOLD);
+                     s_gem.size * 0.45 + CELL_SIZE * 0.1, MLV_COLOR_GOLD);
         }
         draw_gem_in_square(s_gem, hue_to_rgba(inventory.gems[i].hue),
                            inventory.gems[i].level, win->right_bar_font);
@@ -344,7 +344,7 @@ void draw_game(Game game, UserAction current_action, WindowInfo *win) {
     draw_right_bar(win);
     draw_inventory(game.inventory, win);
     draw_monsters(game.monsters, &game.map);
-    display_error(game.error, *win);
+    display_error(&(game.error), *win);
     draw_activegems(game.active_gems);
     LIST_FOREACH(monster, &game.monsters, entries) {
         draw_shots(monster->shots);

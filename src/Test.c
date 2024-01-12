@@ -57,7 +57,8 @@ UserAction get_user_action(UserAction current_action, Event event,
         if (event.type == CLICK) {
             if (is_click_in_button(event.mouse, win.inventory))
                 return SELECT_FUSE_GEM;
-            if (is_click_in_button(event.mouse, win.fuse_gem))
+            // if (is_click_in_button(event.mouse, win.fuse_gem))
+            else
                 return NO_ACTION;
         }
         if (event.type == ESCAPE)
@@ -68,7 +69,8 @@ UserAction get_user_action(UserAction current_action, Event event,
         if (event.type == CLICK) {
             if (is_click_in_button(event.mouse, win.inventory))
                 return FUSE_GEM;
-            if (is_click_in_button(event.mouse, win.fuse_gem))
+            // if (is_click_in_button(event.mouse, win.fuse_gem))
+            else
                 return NO_ACTION;
         }
         if (event.type == ESCAPE)
@@ -126,12 +128,20 @@ int main(void) {
                 break;
             case SELECT_FUSE_GEM:
                 win.selected_gem = get_selected_inventory_gem(event, win);
-                action = WAIT_SECOND_FUSE_GEM;
+                if (win.selected_gem >= game.inventory.size)
+                    action = WAIT_FUSE_GEM;
+                else
+                    action = WAIT_SECOND_FUSE_GEM;
                 break;
             case FUSE_GEM:
                 selected_gem = get_selected_inventory_gem(event, win);
-                game_fuse_gems(&game, win.selected_gem, selected_gem);
-                action = NO_ACTION;
+                if (selected_gem >= game.inventory.size
+                    || selected_gem == win.selected_gem)
+                    action = WAIT_SECOND_FUSE_GEM;
+                else {
+                    game_fuse_gems(&game, win.selected_gem, selected_gem);
+                    action = NO_ACTION;
+                }
                 break;
             case ADD_ACTIVEGEM:
                 add_activegem(&game, win,

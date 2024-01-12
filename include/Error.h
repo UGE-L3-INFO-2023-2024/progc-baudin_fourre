@@ -4,26 +4,41 @@
 #include "Timer.h"
 #include "Window.h"
 
+#define ERROR_TIMEOUT 3
+
+typedef enum {
+    NO_ERROR,
+    MISSING_MANA,
+    INVENTORY_MAX,
+    SAME_LEVEL_GEM,
+} ErrorType;
+
 typedef struct {
-    char *message;
+    ErrorType type;
     Timestamp timeout;
 } Error;
 
 /**
- * @brief Displays the error in the right bar of the window
+ * @brief Initializes an Error structure with type : NO_ERROR
  *
- * @param error Error containing the message to display
- * @param win information of the current window
+ * @return Error
  */
-void display_error(Error error, WindowInfo win);
+Error init_error(void);
 
 /**
- * @brief Creates a new error with the given message
+ * @brief Modifies the `error` with the new `type`
  *
- * @param error address of the Error to modify
- * @param message message describing the error
- * @return int 1 if the error was correctly created, 0 otherwise
+ * @param error
+ * @param type
  */
-int new_error(Error *error, char *message);
+void new_error(Error *error, ErrorType type);
+
+/**
+ * @brief Displays the error in the right bar of the window
+ *
+ * @param error Error containing the type of the message to display
+ * @param win information of the current window
+ */
+void display_error(Error *error, WindowInfo win);
 
 #endif
