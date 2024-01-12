@@ -38,27 +38,27 @@ static WaveType random_wave(int wave_count) {
 static void get_wave_characteristics(WaveType type, int *nb_monsters,
                                      int *speed) {
     switch (type) {
-    case NORMAL:
-        *nb_monsters = 12;
-        *speed = 1;
-        break;
-    case CROWD:
-        *nb_monsters = 24;
-        *speed = 1;
-        break;
-    case AGILE:
-        *nb_monsters = 12;
-        *speed = 2;
-        break;
-    case BOSS:
-        *nb_monsters = 2;
-        *speed = 1;
-        break;
+        case NORMAL:
+            *nb_monsters = 12;
+            *speed = 1;
+            break;
+        case CROWD:
+            *nb_monsters = 24;
+            *speed = 1;
+            break;
+        case AGILE:
+            *nb_monsters = 12;
+            *speed = 2;
+            break;
+        case BOSS:
+            *nb_monsters = 2;
+            *speed = 1;
+            break;
     }
 }
 
 // Generates a random wave and adds the monsters created to the `monster_list`
-int wave_generation(MonsterList *monster_list, const Map *map, int nb_wave) {
+void wave_generation(MonsterList *monster_list, const Map *map, int nb_wave) {
     Monster *new_monster = NULL;
     int speed, nb_monsters;
     int hp;
@@ -74,10 +74,6 @@ int wave_generation(MonsterList *monster_list, const Map *map, int nb_wave) {
     for (int i = 0; i < nb_monsters; i++) {
         monster_start_time = time_future(i * (1.0 / speed));
         new_monster = create_new_monster(map, speed, hp, monster_start_time);
-        if (!new_monster)
-            return 0;
         LIST_INSERT_HEAD(monster_list, new_monster, entries);
     }
-
-    return 1;
 }

@@ -40,14 +40,14 @@ Monster *create_new_monster(const Map *map, int speed, int HP,
         .hp = HP,
         .hp_init = HP,
         .hue = random_hue(NONE),
-        .position = coord_to_position(map->nest),
+        .position = coord_to_center_position(map->nest),
         .residue = NONE,
         .speed = speed,
         .start_time = start_time,
         .effects = init_monster_effects(),
     };
 
-    LIST_INIT(&(monster->shots));
+    LIST_INIT(&monster->shots);
     monster->direction = get_position_direction(map, monster->position);
     monster->next_cell = next_cell_coord(map->nest, monster->direction);
 
@@ -68,21 +68,6 @@ void free_monsters(MonsterList *monsters) {
 void free_monster(Monster *monster) {
     free_shots(&monster->shots);
     free(monster);
-}
-
-// Adds, if necessary, an element to the field `residue` of the monster,
-// according to the `shot_hue`
-void add_monster_residue(Monster *monster, Hue shot_hue) {
-    Element shot_element = hue_to_element(shot_hue);
-    if (shot_element == NONE)
-        return;
-
-    if (monster->residue == NONE)
-        monster->residue = shot_element;
-    else {
-        get_element_effect(monster->residue, shot_element);
-        monster->residue = NONE;
-    }
 }
 
 // Returns a random speed between 0.9 * `speed` and 1.1 * `speed`
@@ -112,12 +97,11 @@ static void move_monster_direction(Monster *monster, Direction direction,
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
-        monster->position = coord_to_position(
-            (Coord){(int) monster->position.x, (int) monster->position.y});
+        monster->position =
+            coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
-            (Coord){(int) monster->position.x, (int) monster->position.y},
-            monster->direction);
+            position_to_coord(monster->position), monster->direction);
     }
     if (monster->direction != NODIR)
         move_monster_direction(monster, monster->direction, time_elapsed);
@@ -128,11 +112,11 @@ static inline double deg_to_rad(int deg) {
 }
 
 // Returns the damage of the monster by the gem
-double get_damage(Monster monster, Gem gem) {
+double get_damage(const Monster *monster, Gem gem) {
     const double d = 50.0;
     const int n = gem.level;
     const int t_g = gem.hue;
-    const int t_m = monster.hue;
+    const int t_m = monster->hue;
     return d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
 }
 

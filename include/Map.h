@@ -9,6 +9,7 @@
 #include "Utils.h"
 
 #define CI(x) (x).col][(x).line
+#define CI_RAW_POS(p) ((int) ((p).x))][((int) ((p).y))
 
 typedef enum {
     EMPTY = 0,

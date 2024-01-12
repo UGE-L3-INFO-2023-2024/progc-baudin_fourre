@@ -55,7 +55,7 @@ int is_position_center(Position position);
  * @param coord Coordinates of the cell
  * @return Position the float center position of the cell
  */
-Position coord_to_position(Coord coord);
+Position coord_to_center_position(Coord coord);
 
 double distance_between_positions(Position pos1, Position pos2);
 
@@ -83,5 +83,7 @@ Coord next_cell_coord(Coord current_position, Direction dir);
 // Distance entre deux points
 // Calcul vecteur de déplacement
 // Calcul nouvelle position à partir de vitesse et vecteur de déplacement
+
+Coord position_to_coord(Position position);
 
 #endif // __UTILS_H__

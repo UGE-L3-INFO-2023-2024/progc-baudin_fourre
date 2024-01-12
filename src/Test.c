@@ -119,7 +119,7 @@ int main(void) {
                 action = NO_ACTION;
                 break;
             case INC_MANA_LEVEL:
-                increase_mana_level(&(game.mana), &(game.error));
+                increase_mana_level(&game.mana, &game.error);
                 action = NO_ACTION;
                 break;
             case SELECT_GEM:
@@ -152,7 +152,7 @@ int main(void) {
             case REMOVE_ACTIVEGEM:
                 tower = (Coord){event.mouse.col / CELL_SIZE,
                                 event.mouse.line / CELL_SIZE};
-                if (game.map.cells[tower.col][tower.line].type == TOWER)
+                if (game.map.cells[CI(tower)].type == TOWER)
                     remove_activegem(&game, tower);
                 action = NO_ACTION;
                 break;
