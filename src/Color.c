@@ -25,26 +25,26 @@ MLV_Color hue_to_rgba(Hue hue) {
     double X = C * (1 - fabs(fmod(H, 2) - 1));
     double m = L - C / 2;
     switch (hue / 60) {
-    case 0:
-        assign_rgb(&R, &G, &B, C, X, 0);
-        break;
-    case 1:
-        assign_rgb(&R, &G, &B, X, C, 0);
-        break;
-    case 2:
-        assign_rgb(&R, &G, &B, 0, C, X);
-        break;
-    case 3:
-        assign_rgb(&R, &G, &B, 0, X, C);
-        break;
-    case 4:
-        assign_rgb(&R, &G, &B, X, 0, C);
-        break;
-    case 5:
-        assign_rgb(&R, &G, &B, C, 0, X);
-        break;
-    default:
-        break;
+        case 0:
+            assign_rgb(&R, &G, &B, C, X, 0);
+            break;
+        case 1:
+            assign_rgb(&R, &G, &B, X, C, 0);
+            break;
+        case 2:
+            assign_rgb(&R, &G, &B, 0, C, X);
+            break;
+        case 3:
+            assign_rgb(&R, &G, &B, 0, X, C);
+            break;
+        case 4:
+            assign_rgb(&R, &G, &B, X, 0, C);
+            break;
+        case 5:
+            assign_rgb(&R, &G, &B, C, 0, X);
+            break;
+        default:
+            break;
     }
     return MLV_rgba((uint8_t) ((R + m) * 255), (uint8_t) ((G + m) * 255),
                     (uint8_t) ((B + m) * 255), 255);

@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "Error.h"
 #include "Gems.h"
 #include "Graphic.h"
 #include "Mana.h"
@@ -20,7 +21,7 @@ Game init_game(void) {
         .mana = init_mana(),
         .monsters.lh_first = NULL,
         .next_wave = time_future(100000),
-        .error = (Error){NULL, time_now()},
+        .error = init_error(),
         .defeat = 0,
     };
 }
@@ -41,15 +42,11 @@ int add_tower(Game *game, Coord coord) {
 // Creates a new pure gem, adding it to the inventory
 // Returns 1 if the gem could be created, 0 otherwise
 int new_gem(Game *game, int level) {
-    if (game->inventory.size == INVENTORY_SIZE) {
-        fprintf(stderr, "Inventory size exceeded\n");
-        return 0;
-    }
     if (!mana_buy_gem(&game->mana, level, &game->error))
         return 0;
     Gem new_gem = generate_pure_gem(level);
-    game->inventory.gems[game->inventory.size] = new_gem;
-    game->inventory.size++;
+    if (!add_to_inventory(&(game->inventory), new_gem, &(game->error)))
+        add_mana(&(game->mana), (int) (100 * pow(2, level)));
     return 1;
 }
 
@@ -63,7 +60,7 @@ void move_monsters(Game *game, Timestamp time) {
             apply_extra_damage(monster);
         }
         if (game->map.cells[CI_RAW_POS(monster->position)].type == HOME) {
-            if (!mana_banish_monster(&game->mana, *monster))
+            if (!mana_banish_monster(&game->mana, *monster, &game->error))
                 game->defeat = 1;
             monster->position = coord_to_center_position(game->map.nest);
             monster->direction = game->map.cells[CI(game->map.nest)].direction;
@@ -190,9 +187,8 @@ void add_activegem(Game *game, WindowInfo win, Coord tower) {
     if (tower.col >= MAP_WIDTH || tower.line >= MAP_HEIGHT)
         return;
     if (game->map.cells[tower.col][tower.line].type == TOWER) {
-        new_gem = add_to_activegemslist(&game->active_gems,
-                                        game->inventory.gems[win.selected_gem],
-                                        tower);
+        new_gem = add_to_activegemslist(
+            &game->active_gems, game->inventory.gems[win.selected_gem], tower);
         remove_from_inventory(&game->inventory, win.selected_gem);
         remove_activegem(game, tower);
         game->map.cells[tower.col][tower.line].gem = new_gem;
@@ -249,11 +245,12 @@ static Monster *find_monster_to_shoot(Coord tower_coord,
     const double tower_field_radius = 3.0;
     Monster *monster;
     Monster *monster_fit = NULL;
-    get_next_monster_in_radius(monster_list, coord_to_center_position(tower_coord),
+    get_next_monster_in_radius(monster_list,
+                               coord_to_center_position(tower_coord),
                                tower_field_radius, true);
-    while ((monster = get_next_monster_in_radius(monster_list,
-                                                 coord_to_center_position(tower_coord),
-                                                 tower_field_radius, false))) {
+    while ((monster = get_next_monster_in_radius(
+                monster_list, coord_to_center_position(tower_coord),
+                tower_field_radius, false))) {
         if (!monster_fit || monster_fit->hp < monster->hp) {
             monster_fit = monster;
         }
@@ -286,8 +283,10 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
 
     first_gem = game->inventory.gems[gem1];
     second_gem = game->inventory.gems[gem2];
-    if (first_gem.level != second_gem.level) // TODO : ADD ERROR
+    if (first_gem.level != second_gem.level) {
+        new_error(&(game->error), SAME_LEVEL_GEM);
         return;
+    }
     if (gem1 < gem2) {
         tmp = gem1;
         gem1 = gem2;
@@ -295,7 +294,6 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
     }
     remove_from_inventory(&game->inventory, gem1);
     remove_from_inventory(&game->inventory, gem2);
-    game->inventory.gems[game->inventory.size] =
-        fuse_gems(first_gem, second_gem); // TODO : ADD TO INVENTORY
-    game->inventory.size++;
+    add_to_inventory(&game->inventory, fuse_gems(first_gem, second_gem),
+                     &game->error);
 }

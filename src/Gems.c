@@ -43,7 +43,7 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
         perror("Crash on active gem allocation");
         exit(EXIT_FAILURE);
     }
-    *active_gem = (ActiveGem) {
+    *active_gem = (ActiveGem){
         .gem = gem,
         .tower = tower,
         .start_time = time_future(2),

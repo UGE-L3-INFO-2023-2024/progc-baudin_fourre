@@ -9,16 +9,16 @@
 // Returns the vector associated to the cardinal Direction given
 Vector get_direction_vector(Direction direction) {
     switch (direction) {
-    case NORTH:
-        return (Vector){0, -1};
-    case SOUTH:
-        return (Vector){0, 1};
-    case WEST:
-        return (Vector){-1, 0};
-    case EAST:
-        return (Vector){1, 0};
-    case NODIR:
-        return (Vector){0, 0};
+        case NORTH:
+            return (Vector){0, -1};
+        case SOUTH:
+            return (Vector){0, 1};
+        case WEST:
+            return (Vector){-1, 0};
+        case EAST:
+            return (Vector){1, 0};
+        case NODIR:
+            return (Vector){0, 0};
     }
     return (Vector){0, 0};
 }
@@ -49,16 +49,16 @@ int has_past_center_position(Position position, Direction dir,
                              Coord next_cell) {
     Position next = coord_to_center_position(next_cell);
     switch (dir) {
-    case NORTH:
-        return position.y <= next.y;
-    case SOUTH:
-        return position.y >= next.y;
-    case WEST:
-        return position.x <= next.x;
-    case EAST:
-        return position.x >= next.x;
-    default:
-        return 0;
+        case NORTH:
+            return position.y <= next.y;
+        case SOUTH:
+            return position.y >= next.y;
+        case WEST:
+            return position.x <= next.x;
+        case EAST:
+            return position.x >= next.x;
+        default:
+            return 0;
     }
 }
 
@@ -67,20 +67,20 @@ int has_past_center_position(Position position, Direction dir,
 Coord next_cell_coord(Coord current_position, Direction dir) {
     Coord next_coord = current_position;
     switch (dir) {
-    case NORTH:
-        next_coord.line--;
-        break;
-    case SOUTH:
-        next_coord.line++;
-        break;
-    case EAST:
-        next_coord.col++;
-        break;
-    case WEST:
-        next_coord.col--;
-        break;
-    case NODIR:
-        break;
+        case NORTH:
+            next_coord.line--;
+            break;
+        case SOUTH:
+            next_coord.line++;
+            break;
+        case EAST:
+            next_coord.col++;
+            break;
+        case WEST:
+            next_coord.col--;
+            break;
+        case NODIR:
+            break;
     }
     return next_coord;
 }

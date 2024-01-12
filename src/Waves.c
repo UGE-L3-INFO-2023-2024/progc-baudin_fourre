@@ -38,22 +38,22 @@ static WaveType random_wave(int wave_count) {
 static void get_wave_characteristics(WaveType type, int *nb_monsters,
                                      int *speed) {
     switch (type) {
-    case NORMAL:
-        *nb_monsters = 12;
-        *speed = 1;
-        break;
-    case CROWD:
-        *nb_monsters = 24;
-        *speed = 1;
-        break;
-    case AGILE:
-        *nb_monsters = 12;
-        *speed = 2;
-        break;
-    case BOSS:
-        *nb_monsters = 2;
-        *speed = 1;
-        break;
+        case NORMAL:
+            *nb_monsters = 12;
+            *speed = 1;
+            break;
+        case CROWD:
+            *nb_monsters = 24;
+            *speed = 1;
+            break;
+        case AGILE:
+            *nb_monsters = 12;
+            *speed = 2;
+            break;
+        case BOSS:
+            *nb_monsters = 2;
+            *speed = 1;
+            break;
     }
 }
 

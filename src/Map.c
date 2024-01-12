@@ -162,7 +162,8 @@ Map generate_map(void) {
 
 // Returns 1 if the coordinates `coord` are within the map, or 0 otherwise
 int is_in_map(Coord coord) {
-    return coord.col >= 0 && coord.line >= 0 && coord.col < MAP_WIDTH && coord.line < MAP_HEIGHT;
+    return coord.col >= 0 && coord.line >= 0 && coord.col < MAP_WIDTH
+           && coord.line < MAP_HEIGHT;
 }
 
 // Returns the direction of the cell where the `position`is situated
