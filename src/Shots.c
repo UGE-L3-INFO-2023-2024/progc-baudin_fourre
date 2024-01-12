@@ -9,7 +9,7 @@ Shot *create_new_shot(Coord tower, Gem gem) {
         perror("Crash on shot allocation");
         exit(EXIT_FAILURE);
     }
-    *shot = (Shot){.position = coord_to_position(tower), .source = gem};
+    *shot = (Shot){.position = coord_to_center_position(tower), .source = gem};
     return shot;
 }
 

@@ -117,7 +117,7 @@ int main(void) {
                 action = NO_ACTION;
                 break;
             case INC_MANA_LEVEL:
-                increase_mana_level(&(game.mana), &(game.error));
+                increase_mana_level(&game.mana, &game.error);
                 action = NO_ACTION;
                 break;
             case SELECT_GEM:

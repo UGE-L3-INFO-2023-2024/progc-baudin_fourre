@@ -162,19 +162,15 @@ Map generate_map(void) {
 
 // Returns 1 if the coordinates `coord` are within the map, or 0 otherwise
 int is_in_map(Coord coord) {
-    assert(coord.col >= 0);
-    assert(coord.line >= 0);
-    return (coord.col < MAP_WIDTH && coord.line < MAP_HEIGHT);
+    return coord.col >= 0 && coord.line >= 0 && coord.col < MAP_WIDTH && coord.line < MAP_HEIGHT;
 }
 
 // Returns the direction of the cell where the `position`is situated
 Direction get_position_direction(const Map *map, Position position) {
-    int x = (int) position.x;
-    int y = (int) position.y;
-    CellType type = map->cells[x][y].type;
-    if (type != PATH && type != NEST)
+    Cell cell = map->cells[CI_RAW_POS(position)];
+    if (cell.type != PATH && cell.type != NEST)
         return NODIR;
-    return map->cells[x][y].direction;
+    return cell.direction;
 }
 
 // gcc src/Map.c -Iinclude/ -o TestMap -lMLV

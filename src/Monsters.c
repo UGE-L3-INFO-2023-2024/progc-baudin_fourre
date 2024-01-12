@@ -40,14 +40,14 @@ Monster *create_new_monster(const Map *map, int speed, int HP,
         .hp = HP,
         .hp_init = HP,
         .hue = random_hue(NONE),
-        .position = coord_to_position(map->nest),
+        .position = coord_to_center_position(map->nest),
         .residue = NONE,
         .speed = speed,
         .start_time = start_time,
         .effects = init_monster_effects(),
     };
 
-    LIST_INIT(&(monster->shots));
+    LIST_INIT(&monster->shots);
     monster->direction = get_position_direction(map, monster->position);
     monster->next_cell = next_cell_coord(map->nest, monster->direction);
 
@@ -110,14 +110,10 @@ static void move_monster_direction(Monster *monster, Direction direction,
 
 // Moves the monster on the `map` for a duration of `time_elapsed`
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
-    if (has_past_center_position(monster->position, monster->direction,
-                                 monster->next_cell)) {
-        monster->position = coord_to_position(
-            (Coord){(int) monster->position.x, (int) monster->position.y});
+    if (has_past_center_position(monster->position, monster->direction, monster->next_cell)) {
+        monster->position = coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
-        monster->next_cell = next_cell_coord(
-            (Coord){(int) monster->position.x, (int) monster->position.y},
-            monster->direction);
+        monster->next_cell = next_cell_coord(position_to_coord(monster->position), monster->direction);
     }
     if (monster->direction != NODIR)
         move_monster_direction(monster, monster->direction, time_elapsed);

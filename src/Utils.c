@@ -47,7 +47,7 @@ int is_position_center(Position position) {
 // te `direction`, 0 otherwise
 int has_past_center_position(Position position, Direction dir,
                              Coord next_cell) {
-    Position next = coord_to_position(next_cell);
+    Position next = coord_to_center_position(next_cell);
     switch (dir) {
     case NORTH:
         return position.y <= next.y;
@@ -85,8 +85,15 @@ Coord next_cell_coord(Coord current_position, Direction dir) {
     return next_coord;
 }
 
-Position coord_to_position(Coord coord) {
+Position coord_to_center_position(Coord coord) {
     return (Position){.x = coord.col + 0.5, .y = coord.line + 0.5};
+}
+
+Coord position_to_coord(Position position) {
+    return (Coord){
+        .col = (int) position.x,
+        .line = (int) position.y,
+    };
 }
 
 double distance_between_positions(Position pos1, Position pos2) {
