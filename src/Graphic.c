@@ -90,8 +90,8 @@ static void draw_gem_in_tower(ActiveGem gem) {
 // draws the add gem button in the Square `s`, with a current level of
 // `cur_level`
 static void draw_add_gem_button(Square s, WindowInfo *win) {
-    char gem_level[3];
-    char cost[5];
+    char gem_level[64];
+    char cost[64];
     sprintf(gem_level, "%d", win->new_gem_level);
     sprintf(cost, "%d", (int) (100 * pow(2, win->new_gem_level)));
 
@@ -140,9 +140,9 @@ static void draw_fuse_gem_button(Square s, MLV_Font *font) {
 
 // draw the new tower button in the Square `s`
 static void draw_new_tower_button(Square s, MLV_Font *font) {
-    char cost[5];
+    char cost[64];
     draw_tower_in_square(s);
-    sprintf(cost, "%d", mana_required_tower(0));
+    sprintf(cost, "%ld", mana_required_tower(0));
     MLV_draw_text_box_with_font(s.x, s.y - s.size * 2 / 5, s.size, s.size / 3,
                                 cost, font, 0, TRANSPARANT, MLV_COLOR_BLACK,
                                 TRANSPARANT, MLV_TEXT_CENTER,
@@ -292,9 +292,8 @@ static void draw_activegems(ActiveGemList activegems) {
 
 // Draws the mana bar at the top of the window
 static void draw_mana(Mana mana, WindowInfo *win) {
-    char mana_values[12];
-    sprintf(mana_values, "%d/%d", mana.quantity, mana.max);
-
+    char mana_values[64];
+    sprintf(mana_values, "%ld/%ld", mana.quantity, mana.max);
     double filled = (double) mana.quantity / (double) mana.max;
     draw_bar((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
              (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2, filled,
@@ -315,13 +314,13 @@ static void draw_mana(Mana mana, WindowInfo *win) {
 
 // draws the monster `monster` at its position as a circle, having its hue
 // for color
-static void draw_monster(Monster monster) {
+static void draw_monster(const Monster *monster) {
     int radius = CELL_SIZE / 3;
-    int x = (int) (monster.position.x * CELL_SIZE);
-    int y = (int) (monster.position.y * CELL_SIZE);
-    MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
+    int x = (int) (monster->position.x * CELL_SIZE);
+    int y = (int) (monster->position.y * CELL_SIZE);
+    MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster->hue));
     draw_bar((int) (x - radius * 1.5), (int) (y - radius * 1.5), radius * 3,
-             radius / 2, (double) monster.hp / monster.hp_init,
+             radius / 2, (double) monster->hp / monster->hp_init,
              MLV_COLOR_GREEN);
 }
 
@@ -331,7 +330,7 @@ static void draw_monsters(MonsterList monsters, const Map *map) {
     LIST_FOREACH(monster, &monsters, entries) {
         if ((int) monster->position.x != map->nest.col
             || (int) monster->position.y != map->nest.line)
-            draw_monster(*monster);
+            draw_monster(monster);
     }
 }
 

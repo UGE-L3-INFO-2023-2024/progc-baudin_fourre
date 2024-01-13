@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include <stdint.h>
 #include <stdio.h>
 
 #include "Error.h"
@@ -29,13 +30,12 @@ Game init_game(void) {
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
 int add_tower(Game *game, Coord coord) {
-    if (!is_in_map(coord)
-        || game->map.cells[coord.col][coord.line].type != EMPTY)
+    if (!is_in_map(coord) || game->map.cells[CI(coord)].type != EMPTY)
         return 0;
     if (!mana_buy_tower(&game->mana, &game->error))
         return 0;
-    game->map.cells[coord.col][coord.line].type = TOWER;
-    game->map.cells[coord.col][coord.line].gem = NULL;
+    game->map.cells[CI(coord)].type = TOWER;
+    game->map.cells[CI(coord)].gem = NULL;
     return 1;
 }
 
@@ -45,8 +45,8 @@ int new_gem(Game *game, int level) {
     if (!mana_buy_gem(&game->mana, level, &game->error))
         return 0;
     Gem new_gem = generate_pure_gem(level);
-    if (!add_to_inventory(&(game->inventory), new_gem, &(game->error)))
-        add_mana(&(game->mana), (int) (100 * pow(2, level)));
+    if (!add_to_inventory(&game->inventory, new_gem, &game->error))
+        add_mana(&game->mana, (int) (100 * pow(2, level)));
     return 1;
 }
 
@@ -60,7 +60,7 @@ void move_monsters(Game *game, Timestamp time) {
             apply_extra_damage(monster);
         }
         if (game->map.cells[CI_RAW_POS(monster->position)].type == HOME) {
-            if (!mana_banish_monster(&game->mana, *monster, &game->error))
+            if (!mana_banish_monster(&game->mana, monster, &game->error))
                 game->defeat = 1;
             monster->position = coord_to_center_position(game->map.nest);
             monster->direction = game->map.cells[CI(game->map.nest)].direction;
@@ -76,7 +76,7 @@ static void apply_pyro_effect(Game *game, Monster *monster, Gem gem) {
     while ((monster_tmp = get_next_monster_in_radius(
                 &game->monsters, monster->position, 2, false))) {
         if (monster_tmp != monster)
-            apply_damage(monster_tmp, 0.15 * get_damage(*monster_tmp, gem));
+            apply_damage(monster_tmp, 0.15 * get_damage(monster_tmp, gem));
     }
 }
 
@@ -88,7 +88,7 @@ static void apply_hydro_effect(Monster *monster) {
 // Applies the dendro effect to the `monster`
 static void apply_dendro_effect(Monster *monster, Gem gem) {
     monster->effects.type[DENDRO_EFFECT] =
-        get_element_effect(DENDRO_EFFECT, get_damage(*monster, gem));
+        get_element_effect(DENDRO_EFFECT, get_damage(monster, gem));
 }
 
 // Applies the combination of pyro and hydro effect to the `monster`
@@ -98,7 +98,7 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
     while ((monster_tmp = get_next_monster_in_radius(
                 &game->monsters, monster->position, 3.5, false))) {
         if (monster_tmp != monster) {
-            apply_damage(monster_tmp, 0.05 * get_damage(*monster_tmp, gem));
+            apply_damage(monster_tmp, 0.05 * get_damage(monster_tmp, gem));
             monster->effects.type[HYDRO_PYRO_EFFECT] =
                 get_element_effect(HYDRO_PYRO_EFFECT, 0);
         }
@@ -107,7 +107,7 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
 
 // Applies the combination of pyro and dendro effect to the `monster`
 static void apply_pyro_dendro_effect(Monster *monster, Gem gem) {
-    apply_damage(monster, 2 * get_damage(*monster, gem));
+    apply_damage(monster, 2 * get_damage(monster, gem));
 }
 
 // Applies the combination of hydro and dendro effect to the `monster`
@@ -166,18 +166,20 @@ void decrease_new_gem_level(WindowInfo *win) {
 }
 
 // Adds a new wave of monsters to the game
-int add_wave(Game *game) {
+void add_wave(Game *game) {
     static int wave_count = 1;
-    double t_left;
-    if (!wave_generation(&game->monsters, &game->map, wave_count))
-        return 0;
-    if (wave_count != 1) {
-        t_left = time_to(game->next_wave);
+    double t_left = time_to(game->next_wave);
+    if (wave_count > 1 && t_left > 25.) {
+        // TODO: on introduit un temps minimum de 10 secondes (35 - 25)
+        // entre chaque vague
+        return;
+    }
+    wave_generation(&game->monsters, &game->map, wave_count);
+    if (wave_count > 1) {
         mana_new_wave(&game->mana, t_left);
     }
     game->next_wave = time_future(35);
     wave_count++;
-    return 1;
 }
 
 // Adds the selected gem of the inventory to the `tower` if the coordinates
@@ -186,22 +188,22 @@ void add_activegem(Game *game, WindowInfo win, Coord tower) {
     ActiveGem *new_gem;
     if (tower.col >= MAP_WIDTH || tower.line >= MAP_HEIGHT)
         return;
-    if (game->map.cells[tower.col][tower.line].type == TOWER) {
+    if (game->map.cells[CI(tower)].type == TOWER) {
         new_gem = add_to_activegemslist(
             &game->active_gems, game->inventory.gems[win.selected_gem], tower);
         remove_from_inventory(&game->inventory, win.selected_gem);
         remove_activegem(game, tower);
-        game->map.cells[tower.col][tower.line].gem = new_gem;
+        game->map.cells[CI(tower)].gem = new_gem;
     }
 }
 
 // Removes the ActiveGem in the `tower` and puts it back in the inventory
 void remove_activegem(Game *game, Coord tower) {
-    ActiveGem *last_gem = game->map.cells[tower.col][tower.line].gem;
+    ActiveGem *last_gem = game->map.cells[CI(tower)].gem;
     if (last_gem) {
         LIST_REMOVE(last_gem, entries);
         game->inventory.gems[game->inventory.size] = last_gem->gem;
-        game->map.cells[tower.col][tower.line].gem = NULL;
+        game->map.cells[CI(tower)].gem = NULL;
         free(last_gem);
         game->inventory.size++;
     }
@@ -228,10 +230,10 @@ void damage_monsters(Game *game) {
             Gem gem = shot->source;
             LIST_REMOVE(shot, entries);
             free_shot(shot);
-            apply_damage(monster, get_damage(*monster, gem));
+            apply_damage(monster, get_damage(monster, gem));
             add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
-                mana_eliminate_monster(&game->mana, *monster);
+                mana_eliminate_monster(&game->mana, monster);
                 LIST_REMOVE(monster, entries);
                 free_monster(monster);
                 break;
@@ -284,7 +286,7 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
     first_gem = game->inventory.gems[gem1];
     second_gem = game->inventory.gems[gem2];
     if (first_gem.level != second_gem.level) {
-        new_error(&(game->error), SAME_LEVEL_GEM);
+        new_error(&game->error, SAME_LEVEL_GEM);
         return;
     }
     if (gem1 < gem2) {

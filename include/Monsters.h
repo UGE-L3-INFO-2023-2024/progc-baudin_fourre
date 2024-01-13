@@ -53,15 +53,6 @@ void free_monsters(MonsterList *monsters);
 void free_monster(Monster *monster);
 
 /**
- * @brief Adds, if necessary, an element to the field `residue` of the monster,
- * according to the `shot_hue`
- *
- * @param monster Address of the Monster structure to modify
- * @param shot_hue Hue of the shot targeting the monster
- */
-void add_monster_residue(Monster *monster, Hue shot_hue);
-
-/**
  * @brief Moves the monster on the map for a duration of
  * `time_elapsed`
  *
@@ -79,7 +70,7 @@ void move_monster(const Map *map, Monster *monster, double time_elapsed);
  * @param gem
  * @return double The value of the damage
  */
-double get_damage(Monster monster, Gem gem);
+double get_damage(const Monster *monster, Gem gem);
 
 /**
  * @brief Applies the `damage` to the `monster`

@@ -105,9 +105,8 @@ void add_activegem(Game *game, WindowInfo win, Coord tower);
  * @brief Adds a new wave of monsters to the game
  *
  * @param game Address of the Game to modify
- * @return int 0 if there was an error, 1 otherwise
  */
-int add_wave(Game *game);
+void add_wave(Game *game);
 
 /**
  * @brief Removes the activegem from the `tower` and puts it back in the

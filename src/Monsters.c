@@ -70,21 +70,6 @@ void free_monster(Monster *monster) {
     free(monster);
 }
 
-// Adds, if necessary, an element to the field `residue` of the monster,
-// according to the `shot_hue`
-void add_monster_residue(Monster *monster, Hue shot_hue) {
-    Element shot_element = hue_to_element(shot_hue);
-    if (shot_element == NONE)
-        return;
-
-    if (monster->residue == NONE)
-        monster->residue = shot_element;
-    else {
-        get_element_effect(monster->residue, shot_element);
-        monster->residue = NONE;
-    }
-}
-
 // Returns a random speed between 0.9 * `speed` and 1.1 * `speed`
 static double rand_speed(double speed) {
     int sign = rand() % 2;
@@ -127,11 +112,11 @@ static inline double deg_to_rad(int deg) {
 }
 
 // Returns the damage of the monster by the gem
-double get_damage(Monster monster, Gem gem) {
+double get_damage(const Monster *monster, Gem gem) {
     const double d = 50.0;
     const int n = gem.level;
     const int t_g = gem.hue;
-    const int t_m = monster.hue;
+    const int t_m = monster->hue;
     return d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
 }
 
