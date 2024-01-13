@@ -1,6 +1,7 @@
 #include "Display_Buttons.h"
 
 #include "Color.h"
+#include "Display_Info.h"
 #include "Display_Map.h"
 #include "Graphic_Utils.h"
 #include "Inventory.h"
@@ -15,7 +16,7 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
     char gem_level[5];
     char cost[33];
     sprintf(gem_level, "%d", win->new_gem_level);
-    sprintf(cost, "%ld", (uint64_t) (100 * pow(2, win->new_gem_level)));
+    get_string_from_number((uint64_t) (100 * pow(2, win->new_gem_level)), cost);
     MLV_get_size_of_text_with_font(cost, &w, &h, win->small_font);
 
     draw_square(s, BKGD_COLOR);
@@ -68,7 +69,7 @@ static void draw_new_tower_button(Square s, int nb_tower, MLV_Font *font) {
     int w, h;
     char cost[33];
     draw_tower_in_square(s);
-    sprintf(cost, "%ld", mana_required_tower(nb_tower));
+    get_string_from_number(mana_required_tower(nb_tower), cost);
     MLV_get_size_of_text_with_font(cost, &w, &h, font);
     MLV_draw_adapted_text_box_with_font(
         s.x - (w - s.size) * 0.5, s.y - s.size * 2 / 5, cost, font, 0,

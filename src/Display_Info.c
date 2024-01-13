@@ -7,6 +7,30 @@
 #include "Window.h"
 #include <MLV/MLV_all.h>
 
+// Returns the shortened string associated to the `number`
+void get_string_from_number(uint64_t number, char *nb_str) {
+    char suffix = 0;
+    uint64_t tmp;
+    int float_nb = 0;
+    if (number / 1000) {
+        suffix = 'k';
+        float_nb = (number % 1000) / 100;
+        tmp = number / 1000;
+        if (tmp / 1000) {
+            suffix = 'M';
+            float_nb = (tmp % 1000) / 100;
+            tmp /= 1000;
+            if (tmp / 1000) {
+                suffix = 'G';
+                float_nb = (tmp % 1000) / 100;
+                tmp /= 1000;
+            }
+        }
+        sprintf(nb_str, "%ld,%d%c", tmp, float_nb, suffix);
+    } else
+        sprintf(nb_str, "%ld", number);
+}
+
 // Displays the error in the right bar of the window
 void display_error(Error *error, WindowInfo win) {
 

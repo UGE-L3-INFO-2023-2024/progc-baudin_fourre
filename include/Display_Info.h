@@ -7,6 +7,15 @@
 #include "Window.h"
 
 /**
+ * @brief Get the shortened string associated to the `number`
+ *
+ * @param number
+ * @param nb_str address of the string to put the string obtained from the
+ * number
+ */
+void get_string_from_number(uint64_t number, char *nb_str);
+
+/**
  * @brief Displays the error in the right bar of the window
  *
  * @param error Error containing the type of the message to display

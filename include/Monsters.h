@@ -7,7 +7,7 @@
 #include "Shots.h"
 #include "Timer.h"
 
-#define HP_MULT 100
+#define HP_MULT 10
 
 typedef struct {
     ElementEffect type[4];

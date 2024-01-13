@@ -113,7 +113,7 @@ static inline double deg_to_rad(int deg) {
 
 // Returns the damage of the monster by the gem
 double get_damage(const Monster *monster, Gem gem) {
-    const double d = 50.0;
+    const double d = 5.0;
     const int n = gem.level;
     const int t_g = gem.hue;
     const int t_m = monster->hue;
