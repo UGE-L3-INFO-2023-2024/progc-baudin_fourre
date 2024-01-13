@@ -20,8 +20,9 @@ Game init_game(void) {
         .inventory.size = 0,
         .active_gems.lh_first = NULL,
         .mana = init_mana(),
+        .wave_count = 1,
         .monsters.lh_first = NULL,
-        .next_wave = time_future(100000),
+        .next_wave = time_now(),
         .error = init_error(),
         .defeat = 0,
     };
@@ -29,13 +30,16 @@ Game init_game(void) {
 
 // Returns 0 if a tower couldn't be added to the map at the coordinates
 // `coord`, or 1 otherwise
-int add_tower(Game *game, Coord coord) {
+int add_tower(Game *game, WindowInfo *win, Coord coord) {
+    if (win->nb_towers > NB_TOWERS_MAX)
+        new_error(&game->error, MAX_TOWER_COUNT);
     if (!is_in_map(coord) || game->map.cells[CI(coord)].type != EMPTY)
         return 0;
-    if (!mana_buy_tower(&game->mana, &game->error))
+    if (!mana_buy_tower(&game->mana, win->nb_towers, &game->error))
         return 0;
     game->map.cells[CI(coord)].type = TOWER;
     game->map.cells[CI(coord)].gem = NULL;
+    win->nb_towers += 1;
     return 1;
 }
 
@@ -167,19 +171,18 @@ void decrease_new_gem_level(WindowInfo *win) {
 
 // Adds a new wave of monsters to the game
 void add_wave(Game *game) {
-    static int wave_count = 1;
     double t_left = time_to(game->next_wave);
-    if (wave_count > 1 && t_left > 25.) {
+    if (game->wave_count > 1 && t_left > 25.) {
         // TODO: on introduit un temps minimum de 10 secondes (35 - 25)
         // entre chaque vague
         return;
     }
-    wave_generation(&game->monsters, &game->map, wave_count);
-    if (wave_count > 1) {
+    wave_generation(&game->monsters, &game->map, game->wave_count);
+    if (game->wave_count > 1) {
         mana_new_wave(&game->mana, t_left);
     }
     game->next_wave = time_future(35);
-    wave_count++;
+    game->wave_count++;
 }
 
 // Adds the selected gem of the inventory to the `tower` if the coordinates

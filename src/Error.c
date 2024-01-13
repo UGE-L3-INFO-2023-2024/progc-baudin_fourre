@@ -22,6 +22,8 @@ char *get_error_message(Error error) {
             return "Inventory full";
         case SAME_LEVEL_GEM:
             return "Gems must have same\n levels for fusion";
+        case MAX_TOWER_COUNT:
+            return "Maximum number of \n towers reached";
         default:
             return "";
     }

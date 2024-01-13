@@ -57,7 +57,6 @@ UserAction get_user_action(UserAction current_action, Event event,
         if (event.type == CLICK) {
             if (is_click_in_button(event.mouse, win.inventory))
                 return SELECT_FUSE_GEM;
-            // if (is_click_in_button(event.mouse, win.fuse_gem))
             else
                 return NO_ACTION;
         }
@@ -69,7 +68,6 @@ UserAction get_user_action(UserAction current_action, Event event,
         if (event.type == CLICK) {
             if (is_click_in_button(event.mouse, win.inventory))
                 return FUSE_GEM;
-            // if (is_click_in_button(event.mouse, win.fuse_gem))
             else
                 return NO_ACTION;
         }
@@ -102,8 +100,9 @@ int main(void) {
                 win.selected_gem = -1;
                 break;
             case ADD_TOWER:
-                add_tower(&game, (Coord){event.mouse.col / CELL_SIZE,
-                                         event.mouse.line / CELL_SIZE});
+                add_tower(&game, &win,
+                          (Coord){event.mouse.col / CELL_SIZE,
+                                  event.mouse.line / CELL_SIZE});
                 action = NO_ACTION;
                 break;
             case NEW_GEM:
@@ -167,7 +166,7 @@ int main(void) {
         draw_game(&game, action, &win);
         refresh();
 
-        if (is_past_time(game.next_wave))
+        if (game.wave_count > 1 && is_past_time(game.next_wave))
             add_wave(&game);
         move_monsters(&game, cur_time);
         move_shots(&game, cur_time);

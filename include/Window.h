@@ -16,6 +16,7 @@
 typedef struct {
     int new_gem_level;
     int selected_gem;
+    int nb_towers;
     MLV_Font *right_bar_font;
     MLV_Font *small_font;
     Button new_tower;

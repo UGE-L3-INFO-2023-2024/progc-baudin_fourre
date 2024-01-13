@@ -3,6 +3,7 @@
 #include "Color.h"
 #include "Error.h"
 #include "Mana.h"
+#include "Timer.h"
 #include "Window.h"
 #include <MLV/MLV_all.h>
 
@@ -23,24 +24,37 @@ void display_error(Error *error, WindowInfo win) {
 }
 
 // Draws the mana bar at the top of the window
-void draw_mana(Mana mana, WindowInfo *win) {
-    char mana_values[12];
-    sprintf(mana_values, "%d/%d", mana.quantity, mana.max);
-
+void draw_mana(Mana mana, WindowInfo win) {
+    char mana_values[130];
+    sprintf(mana_values, "%ld/%ld", mana.quantity, mana.max);
     double filled = (double) mana.quantity / (double) mana.max;
     draw_bar((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
              (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2, filled,
              MLV_COLOR_CYAN);
-    win->increase_mana_level = new_square((MAP_WIDTH * CELL_SIZE) * 4 / 5,
-                                          CELL_SIZE * 1 / 4, CELL_SIZE * 1 / 2);
-    MLV_draw_text_box(win->increase_mana_level.x, win->increase_mana_level.y,
-                      win->increase_mana_level.length,
-                      win->increase_mana_level.size, "+", 0, MLV_COLOR_BLACK,
-                      MLV_COLOR_BLACK, PATH_COLOR, MLV_TEXT_CENTER,
-                      MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+
     MLV_draw_text_box((MAP_WIDTH * CELL_SIZE) * 1 / 5, CELL_SIZE * 1 / 4,
                       (MAP_WIDTH * CELL_SIZE) * 3 / 5, CELL_SIZE * 1 / 2,
                       mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
                       TRANSPARANT, MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
                       MLV_VERTICAL_CENTER);
+}
+
+// draws information on the game in the window
+void draw_game_information(Timestamp next_wave, WindowInfo win) {
+    int w, h;
+    char time_to_wave[3];
+    MLV_Color color;
+    MLV_Color bkgd = MLV_rgba(255, 255, 255, 230);
+    int t_left = (int) time_to(next_wave);
+    sprintf(time_to_wave, "%d", t_left);
+
+    MLV_get_size_of_text_with_font("Next wave : ", &w, &h, win.right_bar_font);
+    MLV_draw_adapted_text_box_with_font(
+        0, MAP_HEIGHT * CELL_SIZE - h, "Next wave : ", win.right_bar_font, 1,
+        TRANSPARANT, MLV_COLOR_BLACK, bkgd, MLV_TEXT_CENTER);
+
+    color = t_left >= 25 ? MLV_rgba(100, 100, 100, 255) : MLV_COLOR_BLACK;
+    MLV_draw_adapted_text_box_with_font(
+        w, MAP_HEIGHT * CELL_SIZE - h, time_to_wave, win.right_bar_font, 1,
+        TRANSPARANT, color, bkgd, MLV_TEXT_CENTER);
 }

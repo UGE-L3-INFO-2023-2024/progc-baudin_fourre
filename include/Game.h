@@ -10,11 +10,12 @@
 #include "Waves.h"
 #include "Window.h"
 
-#define GEM_LEVEL_MAX 9
+#define GEM_LEVEL_MAX 32
 
 typedef struct {
     Map map;
     Timestamp next_wave;
+    int wave_count;
     MonsterList monsters;
     ActiveGemList active_gems;
     Inventory inventory;
@@ -55,10 +56,12 @@ Game init_game(void);
  * @brief Adds a tower to the coordinates given, if possible
  *
  * @param game Address of the Game where the tower is added
+ * @param win Address of the WindowInfo containing the information on the
+ * current window
  * @param coord Coordinates of the map where the tower is added
  * @return int 1 if the tower could be added, 0 otherwise
  */
-int add_tower(Game *game, Coord coord);
+int add_tower(Game *game, WindowInfo *win, Coord coord);
 
 /**
  * @brief increases the new gem level by one

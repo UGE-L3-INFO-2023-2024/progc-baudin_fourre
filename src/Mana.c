@@ -70,27 +70,22 @@ bool mana_banish_monster(Mana *mana, const Monster *monster, Error *error) {
 }
 
 // Returns the required amount of mana to buy a new tower
-uint64_t mana_required_tower(bool add) {
-    static int nb_tower = 0;
+uint64_t mana_required_tower(int nb_tower) {
     uint64_t required = 0;
 
     if (nb_tower >= 3)
         required = 100 * (1L << (nb_tower - 3));
 
-    if (add)
-        nb_tower++;
-
     return required;
 }
 
 // Decreases the mana quantity, if possible, in order to buy a tower
-bool mana_buy_tower(Mana *mana, Error *error) {
+bool mana_buy_tower(Mana *mana, int nb_tower, Error *error) {
     assert(mana);
-    uint64_t required = mana_required_tower(false);
+    uint64_t required = mana_required_tower(nb_tower);
     if (!mana_remove_required(mana, required, error)) {
         return false;
     }
-    mana_required_tower(true);
     return true;
 }
 

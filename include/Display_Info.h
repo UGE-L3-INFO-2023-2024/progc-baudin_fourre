@@ -3,6 +3,7 @@
 
 #include "Error.h"
 #include "Mana.h"
+#include "Timer.h"
 #include "Window.h"
 
 /**
@@ -19,6 +20,14 @@ void display_error(Error *error, WindowInfo win);
  * @param mana Mana to draw
  * @param win WindowInfo containing information on the current window
  */
-void draw_mana(Mana mana, WindowInfo *win);
+void draw_mana(Mana mana, WindowInfo win);
+
+/**
+ * @brief Draws information on the game in the window
+ *
+ * @param next_wave Timestamp indicating the time at which the next wave starts
+ * @param win WindowInfo containing information on the current window
+ */
+void draw_game_information(Timestamp next_wave, WindowInfo win);
 
 #endif // __DISPLAY_INFO_H__

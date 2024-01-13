@@ -10,6 +10,7 @@ WindowInfo init_graphic(void) {
     win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
     win.new_gem_level = 0;
     win.selected_gem = -1;
+    win.nb_towers = 0;
     MLV_change_frame_rate(60);
     return win;
 }

@@ -40,6 +40,8 @@ double elapsed_since(Timestamp time) {
 
 // Returns the number of seconds left until `time`
 double time_to(Timestamp time) {
+    if (is_past_time(time))
+        return 0;
     Timestamp cur_time = time_now();
     long time_nsec = (time.tv_sec * 1000000000L) + time.tv_nsec;
     long cur_time_nsec = (cur_time.tv_sec * 1000000000L) + cur_time.tv_nsec;

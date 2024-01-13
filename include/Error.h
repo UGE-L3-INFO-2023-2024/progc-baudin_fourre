@@ -11,6 +11,7 @@ typedef enum {
     MISSING_MANA,
     INVENTORY_MAX,
     SAME_LEVEL_GEM,
+    MAX_TOWER_COUNT,
 } ErrorType;
 
 typedef struct {
