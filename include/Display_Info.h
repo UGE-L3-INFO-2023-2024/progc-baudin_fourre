@@ -39,4 +39,11 @@ void draw_mana(Mana mana, WindowInfo win);
  */
 void draw_game_information(Timestamp next_wave, WindowInfo win);
 
+/**
+ * @brief Displays that the game is over in the center of the window
+ *
+ * @param win WindowInfo containing information on the current window
+ */
+void display_game_over(WindowInfo win);
+
 #endif // __DISPLAY_INFO_H__

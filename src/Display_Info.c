@@ -82,3 +82,13 @@ void draw_game_information(Timestamp next_wave, WindowInfo win) {
         w, MAP_HEIGHT * CELL_SIZE - h, time_to_wave, win.right_bar_font, 1,
         TRANSPARANT, color, bkgd, MLV_TEXT_CENTER);
 }
+
+// Displays that the game is over in the center of the window
+void display_game_over(WindowInfo win) {
+    int w, h;
+    MLV_get_size_of_text_with_font("GAME OVER", &w, &h, win.right_bar_font);
+    MLV_draw_adapted_text_box_with_font(
+        (MAP_WIDTH * CELL_SIZE - w) * 0.5, MAP_HEIGHT * CELL_SIZE * 0.5 - h,
+        "GAME OVER", win.right_bar_font, 1, TRANSPARANT, MLV_COLOR_BLACK,
+        MLV_rgba(255, 255, 255, 230), MLV_TEXT_CENTER);
+}

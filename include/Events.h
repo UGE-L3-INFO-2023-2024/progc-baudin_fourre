@@ -1,8 +1,9 @@
 #ifndef __EVENTS_H__
 #define __EVENTS_H__
 
-#include "Graphic.h"
+#include "Graphic_Utils.h"
 #include "Utils.h"
+#include "Window.h"
 
 typedef enum {
     NOEVENT,

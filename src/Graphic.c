@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <math.h>
 
+#include "Action.h"
 #include "Display_Buttons.h"
 #include "Display_Info.h"
 #include "Display_Map.h"
@@ -35,11 +36,13 @@ void draw_game(Game *game, UserAction current_action, WindowInfo *win) {
     Monster *monster;
     draw_map(&game->map);
     draw_right_bar(game, current_action, win);
-    draw_game_information(game->next_wave, *win);
     draw_mana(game->mana, *win);
     draw_monsters(game->monsters, &game->map);
     draw_activegems(game->active_gems);
     LIST_FOREACH(monster, &game->monsters, entries) {
         draw_shots(monster->shots);
     }
+    draw_game_information(game->next_wave, *win);
+    if (game->defeat)
+        display_game_over(*win);
 }

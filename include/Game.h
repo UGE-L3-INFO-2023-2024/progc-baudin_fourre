@@ -24,25 +24,6 @@ typedef struct {
     int defeat;
 } Game;
 
-typedef enum {
-    NO_ACTION,
-    NEW_TOWER,
-    ADD_TOWER,
-    FUSE_GEM,
-    NEW_GEM,
-    ADD_ACTIVEGEM,
-    INC_GEM_LEVEL,
-    DEC_GEM_LEVEL,
-    SELECT_GEM,
-    WAIT_TOWER,
-    NEW_WAVE,
-    REMOVE_ACTIVEGEM,
-    INC_MANA_LEVEL,
-    SELECT_FUSE_GEM,
-    WAIT_FUSE_GEM,
-    WAIT_SECOND_FUSE_GEM,
-} UserAction;
-
 // typedef void (*effect)(Game *, Monster monster);
 
 /**
@@ -135,5 +116,13 @@ void damage_monsters(Game *game);
  * @param gem2 index of the second gem in the inventory of the Game
  */
 void game_fuse_gems(Game *game, int gem1, int gem2);
+
+/**
+ * @brief  Updates the `game` according to the time the game was last updated
+ *
+ * @param game Address of the Game to update
+ * @param cur_time time of the last update
+ */
+void update_game(Game *game, Timestamp prev_time);
 
 #endif // __GAME_H__

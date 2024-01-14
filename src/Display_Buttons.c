@@ -17,7 +17,7 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
     char cost[33];
     sprintf(gem_level, "%d", win->new_gem_level);
     get_string_from_number((uint64_t) (100 * pow(2, win->new_gem_level)), cost);
-    MLV_get_size_of_text_with_font(cost, &w, &h, win->small_font);
+    MLV_get_size_of_text_with_font(cost, &w, &h, win->right_bar_font);
 
     draw_square(s, BKGD_COLOR);
     draw_gem_color_in_square(s, MLV_COLOR_CYAN);
@@ -41,9 +41,9 @@ static void draw_add_gem_button(Square s, WindowInfo *win) {
         MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
         MLV_VERTICAL_CENTER);
     MLV_draw_adapted_text_box_with_font(
-        s.x - (w - s.size) * 0.5, s.y - s.size * 2 / 5, cost, win->small_font,
-        1, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
-        MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+        s.x - (w - s.size) * 0.5, s.y - s.size * 2 / 5, cost,
+        win->right_bar_font, 1, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
+        MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
 }
 
 // draws the fuse_gem_button is the right bar
@@ -87,13 +87,13 @@ void draw_top_buttons(WindowInfo *win) {
 
     win->new_tower = new_square(RIGHT_BAR_X + RIGHT_BAR_SIZE * 1 / 10,
                                 GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
-    draw_new_tower_button(win->new_tower, win->nb_towers, win->small_font);
+    draw_new_tower_button(win->new_tower, win->nb_towers, win->right_bar_font);
     win->new_gem = new_square(RIGHT_BAR_X + (RIGHT_BAR_SIZE * 4 / 10),
                               GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
     draw_add_gem_button(win->new_gem, win);
     win->fuse_gem = new_square(RIGHT_BAR_X + (RIGHT_BAR_SIZE * 7 / 10),
                                GAME_HEIGHT * 1 / 10, RIGHT_BAR_SIZE * 2 / 10);
-    draw_fuse_gem_button(win->fuse_gem, win->small_font);
+    draw_fuse_gem_button(win->fuse_gem, win->right_bar_font);
 
     win->increase_mana_level = new_square((MAP_WIDTH * CELL_SIZE) * 4 / 5,
                                           CELL_SIZE * 1 / 4, CELL_SIZE * 1 / 2);

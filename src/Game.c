@@ -302,3 +302,14 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
     add_to_inventory(&game->inventory, fuse_gems(first_gem, second_gem),
                      &game->error);
 }
+
+// Updates the `game` sinc the last update at `prev_time`
+void update_game(Game *game, Timestamp prev_time) {
+
+    if (game->wave_count > 1 && is_past_time(game->next_wave))
+        add_wave(game);
+    damage_monsters(game);
+    move_monsters(game, prev_time);
+    move_shots(game, prev_time);
+    activegems_fire(game);
+}
