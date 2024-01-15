@@ -6,14 +6,16 @@
 #include "Graphic_Utils.h"
 #include "Map.h"
 
-#define CELL_SIZE      36
-#define GAME_WIDTH     (CELL_SIZE * MAP_WIDTH)
-#define GAME_HEIGHT    (CELL_SIZE * MAP_HEIGHT)
-#define RIGHT_BAR_SIZE (10 * CELL_SIZE)
-#define RIGHT_BAR_X    (MAP_WIDTH * CELL_SIZE)
+// #define CELL_SIZE      36
+// #define GAME_WIDTH     (CELL_SIZE * MAP_WIDTH)
+// #define GAME_HEIGHT    (CELL_SIZE * MAP_HEIGHT)
+#define RIGHT_BAR_COLS 10
+// #define RIGHT_BAR_SIZE (RIGHT_BAR_COLS * CELL_SIZE)
+// #define RIGHT_BAR_X    (MAP_WIDTH * CELL_SIZE)
 #define INVENTORY_COLS 4
 
 typedef struct {
+    int cell_size;
     int new_gem_level;
     int selected_gem;
     int nb_towers;
@@ -60,8 +62,10 @@ void refresh(void);
 /**
  * @brief Clears the window (displays a grey rectangle over the window)
  *
+ * @param win Address of the WindowInfo containing information on the window to
+ * quit
  */
-void clear_window(void);
+void clear_window(WindowInfo win);
 
 /**
  * @brief Quits and frees the window

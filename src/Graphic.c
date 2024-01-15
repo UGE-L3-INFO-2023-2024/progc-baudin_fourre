@@ -18,8 +18,9 @@
 // draws a bar on the right of the game window
 static void draw_right_bar(Game *game, UserAction current_action,
                            WindowInfo *win) {
-    MLV_draw_filled_rectangle(RIGHT_BAR_X, 0, RIGHT_BAR_SIZE, GAME_HEIGHT,
-                              RIGHT_BAR_COLOR);
+    MLV_draw_filled_rectangle(MAP_WIDTH * win->cell_size, 0,
+                              RIGHT_BAR_COLS * win->cell_size,
+                              MAP_HEIGHT * win->cell_size, RIGHT_BAR_COLOR);
     draw_top_buttons(win);
     draw_inventory(game->inventory, win);
     display_error(&game->error, *win);
@@ -35,13 +36,13 @@ static void draw_right_bar(Game *game, UserAction current_action,
 // `current_action`
 void draw_game(Game *game, UserAction current_action, WindowInfo *win) {
     Monster *monster;
-    draw_map(&game->map);
+    draw_map(&game->map, win->cell_size);
     draw_right_bar(game, current_action, win);
     draw_mana(game->mana, *win);
-    draw_monsters(game->monsters, &game->map);
-    draw_activegems(game->active_gems);
+    draw_monsters(game->monsters, &game->map, win->cell_size);
+    draw_activegems(game->active_gems, win->cell_size);
     LIST_FOREACH(monster, &game->monsters, entries) {
-        draw_shots(monster->shots);
+        draw_shots(monster->shots, win->cell_size);
     }
     draw_game_information(game->next_wave, *win);
     if (game->defeat)

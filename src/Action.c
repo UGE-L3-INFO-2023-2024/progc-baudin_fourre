@@ -19,7 +19,7 @@ static UserAction get_action_no_action(Event event, WindowInfo win) {
             return SELECT_GEM;
         if (is_click_in_button(event.mouse, win.increase_mana_level))
             return INC_MANA_LEVEL;
-        if (is_click_in_game(event.mouse))
+        if (is_click_in_game(event.mouse, win.cell_size))
             return REMOVE_ACTIVEGEM;
         if (is_click_in_button(event.mouse, win.fuse_gem))
             return WAIT_FUSE_GEM;
@@ -115,8 +115,8 @@ void perform_user_action(UserAction *action, Event event, Game *game,
             break;
         case ADD_TOWER:
             add_tower(game, win,
-                      (Coord){event.mouse.col / CELL_SIZE,
-                              event.mouse.line / CELL_SIZE});
+                      (Coord){event.mouse.col / win->cell_size,
+                              event.mouse.line / win->cell_size});
             *action = NO_ACTION;
             break;
         case NEW_GEM:
@@ -158,13 +158,13 @@ void perform_user_action(UserAction *action, Event event, Game *game,
             break;
         case ADD_ACTIVEGEM:
             add_activegem(game, *win,
-                          (Coord){event.mouse.col / CELL_SIZE,
-                                  event.mouse.line / CELL_SIZE});
+                          (Coord){event.mouse.col / win->cell_size,
+                                  event.mouse.line / win->cell_size});
             *action = NO_ACTION;
             break;
         case REMOVE_ACTIVEGEM:
-            tower = (Coord){event.mouse.col / CELL_SIZE,
-                            event.mouse.line / CELL_SIZE};
+            tower = (Coord){event.mouse.col / win->cell_size,
+                            event.mouse.line / win->cell_size};
             if (game->map.cells[CI(tower)].type == TOWER)
                 remove_activegem(game, tower);
             *action = NO_ACTION;

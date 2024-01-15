@@ -51,10 +51,10 @@ int is_click_in_button(Coord click, Square button) {
 }
 
 // Returns 1 if the Coord `click` are in the game window, or 0 otherwise
-int is_click_in_game(Coord click) {
-    if (click.col > MAP_WIDTH * CELL_SIZE)
+int is_click_in_game(Coord click, int cell_size) {
+    if (click.col > MAP_WIDTH * cell_size)
         return 0;
-    if (click.line > MAP_HEIGHT * CELL_SIZE)
+    if (click.line > MAP_HEIGHT * cell_size)
         return 0;
     return 1;
 }

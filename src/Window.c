@@ -3,11 +3,26 @@
 #include "Inventory.h"
 #include <MLV/MLV_all.h>
 
+// Returns the cell size according to the user desktop size
+static void get_cell_size(int *cell_size, unsigned int *w, unsigned int *h) {
+    int w_cell_size, h_cell_size;
+    MLV_get_desktop_size(w, h);
+    w_cell_size = *w / (MAP_WIDTH + RIGHT_BAR_COLS);
+    h_cell_size = *h / MAP_HEIGHT;
+    printf("%d, %d\n", w_cell_size, h_cell_size);
+    *cell_size = w_cell_size <= h_cell_size ? w_cell_size : h_cell_size;
+}
+
 // Initializes the graphic window
 void init_graphic(WindowInfo *win) {
-    MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
-    win->right_bar_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 0.7);
-    win->small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
+    unsigned int w, h;
+    get_cell_size(&win->cell_size, &w, &h);
+    MLV_create_window("Test", "", w, h);
+    MLV_clear_window(RIGHT_BAR_COLOR);
+    win->right_bar_font =
+        MLV_load_font("fonts/calling.ttf", win->cell_size * 0.7);
+    win->small_font =
+        MLV_load_font("fonts/calling.ttf", win->cell_size * 1 / 2);
     win->new_gem_level = 0;
     win->selected_gem = -1;
     win->nb_towers = 0;
@@ -15,9 +30,9 @@ void init_graphic(WindowInfo *win) {
 }
 
 // Clears the window
-void clear_window(void) {
-    MLV_draw_filled_rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT,
-                              MLV_COLOR_LIGHT_GREY);
+void clear_window(WindowInfo win) {
+    MLV_draw_filled_rectangle(0, 0, MAP_WIDTH * win.cell_size,
+                              MAP_HEIGHT * win.cell_size, MLV_COLOR_LIGHT_GREY);
 }
 
 // Waits according to the framerate

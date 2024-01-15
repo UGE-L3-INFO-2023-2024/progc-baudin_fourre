@@ -37,15 +37,17 @@ void draw_gem_in_square(Square s, Gem gem, MLV_Font *font);
  * @brief draws the list of activegems by drawing gems in the correct towers
  *
  * @param activegems
+ * @param cell_size size of a cell
  */
-void draw_activegems(ActiveGemList activegems);
+void draw_activegems(ActiveGemList activegems, int cell_size);
 
 /**
  * @brief Draws the list of shots on the map
  *
  * @param shots the list of shots to draw
+ * @param cell_size size of a cell
  */
-void draw_shots(ShotList shots);
+void draw_shots(ShotList shots, int cell_size);
 
 // draws the list of `monsters` on their position of the `map`
 /**
@@ -53,14 +55,16 @@ void draw_shots(ShotList shots);
  *
  * @param monsters List of monsters to draw
  * @param map Map on which the monsters move
+ * @param cell_size size of a cell
  */
-void draw_monsters(MonsterList monsters, const Map *map);
+void draw_monsters(MonsterList monsters, const Map *map, int cell_size);
 
 /**
  * @brief Draws the grid of the map, according to the type of each cell
  *
  * @param map address of the Map to draw
+ * @param cell_size size of a cell
  */
-void draw_map(const Map *map);
+void draw_map(const Map *map, int cell_size);
 
 #endif // __DISPLAY_MAP_H__
