@@ -1,3 +1,12 @@
+/**
+ * @file Window.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to initialize and manage graphic windows of
+ * the MLV library
+ * @date 2023-12-25
+ *
+ */
+
 #ifndef __WINDOW_H__
 #define __WINDOW_H__
 
@@ -6,12 +15,7 @@
 #include "Graphic_Utils.h"
 #include "Map.h"
 
-// #define CELL_SIZE      36
-// #define GAME_WIDTH     (CELL_SIZE * MAP_WIDTH)
-// #define GAME_HEIGHT    (CELL_SIZE * MAP_HEIGHT)
 #define RIGHT_BAR_COLS 10
-// #define RIGHT_BAR_SIZE (RIGHT_BAR_COLS * CELL_SIZE)
-// #define RIGHT_BAR_X    (MAP_WIDTH * CELL_SIZE)
 #define INVENTORY_COLS 4
 
 typedef struct {

@@ -1,3 +1,12 @@
+/**
+ * @file Display_Info.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to display information (as text) in the window
+ * of the game using the MLV library
+ * @date 2024-01-12
+ *
+ */
+
 #include "Display_Info.h"
 
 #include "Color.h"

@@ -1,8 +1,9 @@
 /**
  * @file Monsters.c
  * @author Anaelle Fourré & Florian Baudin
- * @brief
- * @date 2023-11-25
+ * @brief Provides functions allowing the creation and management of Monsters
+ * along the game (movement, damage, effects)
+ * @date 2023-11-27
  *
  */
 
@@ -97,8 +98,8 @@ static void move_monster_direction(Monster *monster, Direction direction,
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
-        monster->position =
-            coord_to_center_position(position_to_coord(monster->position));
+        // monster->position =
+        //     coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
             position_to_coord(monster->position), monster->direction);

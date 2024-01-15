@@ -1,3 +1,11 @@
+/**
+ * @file Map.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the generation and reading of the game map
+ * @date 2023-12-11
+ *
+ */
+
 #include "Map.h"
 
 #include <MLV/MLV_random.h>

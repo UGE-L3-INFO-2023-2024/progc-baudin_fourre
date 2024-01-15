@@ -1,3 +1,12 @@
+/**
+ * @file Mana.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation management of mana according
+ * to the different possible addition and removal of mana in the game
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __MANA_H__
 #define __MANA_H__
 

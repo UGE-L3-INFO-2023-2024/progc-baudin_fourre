@@ -1,3 +1,12 @@
+/**
+ * @file Mana.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation management of mana according
+ * to the different possible addition and removal of mana in the game
+ * @date 2023-12-12
+ *
+ */
+
 #include "Mana.h"
 
 #include <assert.h>

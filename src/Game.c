@@ -1,3 +1,12 @@
+/**
+ * @file Game.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions defining the game play, allowing the creation and
+ * update of the Game structure
+ * @date 2023-12-13
+ *
+ */
+
 #include "Game.h"
 
 #include <stdint.h>

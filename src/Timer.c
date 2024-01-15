@@ -1,3 +1,11 @@
+/**
+ * @file Timer.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing to retrieve the current time and manage it
+ * @date 2024-01-03
+ *
+ */
+
 #include "Timer.h"
 
 #include <stdbool.h>
@@ -58,21 +66,3 @@ bool is_past_time(Timestamp time) {
     return (time.tv_sec == now.tv_sec) ? (time.tv_nsec < now.tv_nsec)
                                        : (time.tv_sec < now.tv_sec);
 }
-
-// gcc src/Time.c -Iinclude/ -o TestTime
-/*
-int main(int argc, char const *argv[])
-{
-    printf("Bonjour\n");
-
-    Timestamp sec4 = time_future(4.0);
-
-    while (!is_past_time(sec4)) {
-        continue;
-    }
-
-    printf("Quatre secondes plus tard\n");
-
-    return 0;
-}
-*/

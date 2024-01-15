@@ -1,3 +1,12 @@
+/**
+ * @file Elements.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Elements
+ * and their effects (ElementEffect)
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __ELEMENT_H__
 #define __ELEMENT_H__
 

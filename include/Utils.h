@@ -1,3 +1,12 @@
+/**
+ * @file Utils.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the management of Positions, Coords,
+ * Directions, and Vectors, used for movements
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __UTILS_H__
 #define __UTILS_H__
 

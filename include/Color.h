@@ -1,3 +1,12 @@
+/**
+ * @file Color.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing to create and manages colors from the MLV
+ * library (MLV_Color)
+ * @date 2023-12-25
+ *
+ */
+
 #ifndef __COLOR_H__
 #define __COLOR_H__
 

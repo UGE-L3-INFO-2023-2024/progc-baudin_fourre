@@ -1,3 +1,12 @@
+/**
+ * @file Monsters.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Monsters
+ * along the game (movement, damage, effects)
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __MONSTERS_H__
 #define __MONSTERS_H__
 

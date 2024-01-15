@@ -1,3 +1,12 @@
+/**
+ * @file Events.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief  Provides functions allowing create and manage Events using the events
+ * retrived with the MLV library
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __EVENTS_H__
 #define __EVENTS_H__
 

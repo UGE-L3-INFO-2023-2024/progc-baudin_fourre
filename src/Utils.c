@@ -1,3 +1,12 @@
+/**
+ * @file Utils.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the management of Positions, Coords,
+ * Directions, and Vectors, used for movements
+ * @date 2023-12-11
+ *
+ */
+
 #include "Utils.h"
 
 #include "Timer.h"

@@ -1,3 +1,12 @@
+/**
+ * @file Graphic-Utils.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to display basic
+ * shapes in the window using the MLV library
+ * @date 2024-01-12
+ *
+ */
+
 #ifndef __GRAPHIC_UTILS_H__
 #define __GRAPHIC_UTILS_H__
 

@@ -1,3 +1,12 @@
+/**
+ * @file Elements.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Elements
+ * and their effects (ElementEffect)
+ * @date 2023-11-27
+ *
+ */
+
 #include "Element.h"
 
 #include <stdio.h>

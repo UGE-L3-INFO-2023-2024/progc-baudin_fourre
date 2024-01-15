@@ -1,3 +1,12 @@
+
+/**
+ * @file Error.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of the various
+ * user Errors that can occur in the game
+ * @date 2024-01-03
+ *
+ */
 #ifndef __ERROR_H__
 #define __ERROR_H__
 

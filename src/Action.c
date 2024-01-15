@@ -1,3 +1,12 @@
+/**
+ * @file Action.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing to create and manage actions retrieved
+ * from the user
+ * @date 2024-01-14
+ *
+ */
+
 #include "Action.h"
 #include "Events.h"
 #include "Game.h"

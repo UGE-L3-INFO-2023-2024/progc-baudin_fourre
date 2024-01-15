@@ -1,3 +1,12 @@
+/**
+ * @file Gems.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Gems and
+ * ActiveGems
+ * @date 2023-11-27
+ *
+ */
+
 #include "Gems.h"
 
 #include <stdio.h>

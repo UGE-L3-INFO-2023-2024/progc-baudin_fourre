@@ -1,3 +1,12 @@
+/**
+ * @file Events.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief  Provides functions allowing create and manage Events using the events
+ * retrived with the MLV library
+ * @date 2023-12-13
+ *
+ */
+
 #include "Events.h"
 
 #include <MLV/MLV_all.h>

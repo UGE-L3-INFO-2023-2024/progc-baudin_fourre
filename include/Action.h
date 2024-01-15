@@ -1,3 +1,12 @@
+/**
+ * @file Action.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing to create and manage actions retrieved
+ * from the user
+ * @date 2024-01-14
+ *
+ */
+
 #ifndef __ACTION_H__
 #define __ACTION_H__
 
@@ -5,6 +14,7 @@
 #include "Game.h"
 #include "Window.h"
 
+// Enumerates the various possible actions of the user
 typedef enum {
     NO_ACTION,
     NEW_TOWER,

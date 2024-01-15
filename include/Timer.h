@@ -1,3 +1,11 @@
+/**
+ * @file Timer.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing to retrieve the current time and manage it
+ * @date 2024-01-03
+ *
+ */
+
 #ifndef __TIME_H__
 #define __TIME_H__
 

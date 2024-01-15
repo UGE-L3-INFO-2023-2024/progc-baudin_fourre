@@ -1,3 +1,12 @@
+/**
+ * @file Window.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to initialize and manage graphic windows of
+ * the MLV library
+ * @date 2023-12-25
+ *
+ */
+
 #include "Window.h"
 #include "Color.h"
 #include "Inventory.h"
@@ -9,7 +18,6 @@ static void get_cell_size(int *cell_size, unsigned int *w, unsigned int *h) {
     MLV_get_desktop_size(w, h);
     w_cell_size = *w / (MAP_WIDTH + RIGHT_BAR_COLS);
     h_cell_size = *h / MAP_HEIGHT;
-    printf("%d, %d\n", w_cell_size, h_cell_size);
     *cell_size = w_cell_size <= h_cell_size ? w_cell_size : h_cell_size;
 }
 

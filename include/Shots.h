@@ -1,3 +1,12 @@
+/**
+ * @file Shots.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Shots and
+ * ShotLists
+ * @date 2024-11-16
+ *
+ */
+
 #ifndef __SHOTS_H__
 #define __SHOTS_H__
 

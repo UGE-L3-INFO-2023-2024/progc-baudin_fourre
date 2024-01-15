@@ -1,3 +1,12 @@
+/**
+ * @file Display_Map.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to display the various elements of the game
+ * play using the MLV library
+ * @date 2023-01-12
+ *
+ */
+
 #include "Display_Map.h"
 
 #include <MLV/MLV_all.h>

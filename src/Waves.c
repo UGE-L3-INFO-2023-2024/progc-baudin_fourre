@@ -1,8 +1,8 @@
 /**
  * @file Waves.c
  * @author Anaelle Fourré & Florian Baudin
- * @brief
- * @date 2023-11-25
+ * @brief Provides functions used to generate Waves of Monsters
+ * @date 2023-11-27
  *
  */
 

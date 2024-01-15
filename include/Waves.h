@@ -1,3 +1,11 @@
+/**
+ * @file Waves.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to generate Waves of Monsters
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __WAVES_H__
 #define __WAVES_H__
 

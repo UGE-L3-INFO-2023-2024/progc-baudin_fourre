@@ -1,14 +1,17 @@
-#include "Graphic.h"
+/**
+ * @file Graphic.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to display the entirety of the game
+ * @date 2023-11-29
+ *
+ */
 
-#include <MLV/MLV_all.h>
-#include <assert.h>
-#include <math.h>
+#include "Graphic.h"
 
 #include "Action.h"
 #include "Display_Buttons.h"
 #include "Display_Info.h"
 #include "Display_Map.h"
-#include "Element.h"
 #include "Game.h"
 #include "Graphic_Utils.h"
 #include "Map.h"

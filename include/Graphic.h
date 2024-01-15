@@ -1,3 +1,11 @@
+/**
+ * @file Graphic.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to display the entirety of the game
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __GRAPHIC_H__
 #define __GRAPHIC_H__
 

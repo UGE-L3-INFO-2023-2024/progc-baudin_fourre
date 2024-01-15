@@ -1,3 +1,12 @@
+/**
+ * @file Gems.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the creation and management of Gems and
+ * ActiveGems
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __GEMS_H__
 #define __GEMS_H__
 

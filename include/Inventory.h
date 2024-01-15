@@ -1,3 +1,12 @@
+/**
+ * @file Inventory.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions used to manage the addition and removal of Gems in
+ * an Inventory
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __INVENTORY_H__
 #define __INVENTORY_H__
 

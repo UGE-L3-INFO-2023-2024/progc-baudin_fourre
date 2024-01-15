@@ -1,3 +1,14 @@
+/**
+ * @file TowerDefense.c
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Main loop of the game, retrieving the events from the user, performing
+ * the associated action, and updating the game, in terms of structure and
+ * graphic. This module is where the Game and the graphic window are intialized
+ * and freed.
+ * @date 2024-01-14
+ *
+ */
+
 #include <stdlib.h>
 #include <time.h>
 
@@ -5,10 +16,7 @@
 #include "Events.h"
 #include "Game.h"
 #include "Graphic.h"
-#include "Map.h"
-#include "Monsters.h"
 #include "Timer.h"
-#include "Waves.h"
 
 int main(void) {
     Timestamp cur_time;

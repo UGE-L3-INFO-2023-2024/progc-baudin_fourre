@@ -1,3 +1,11 @@
+/**
+ * @file Map.h
+ * @author Anaelle Fourré & Florian Baudin
+ * @brief Provides functions allowing the generation and reading of the game map
+ * @date 2023-11-16
+ *
+ */
+
 #ifndef __MAP_H__
 #define __MAP_H__
 
