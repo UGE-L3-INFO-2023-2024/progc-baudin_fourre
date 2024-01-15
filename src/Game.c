@@ -308,8 +308,14 @@ void update_game(Game *game, Timestamp prev_time) {
 
     if (game->wave_count > 1 && is_past_time(game->next_wave))
         add_wave(game);
-    damage_monsters(game);
     move_monsters(game, prev_time);
     move_shots(game, prev_time);
     activegems_fire(game);
+    damage_monsters(game);
+}
+
+// Frees the allocated values of the Game
+void free_game(Game *game) {
+    free_monsters(&game->monsters);
+    free_activegems(&game->active_gems);
 }

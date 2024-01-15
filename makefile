@@ -4,7 +4,7 @@ CFLAGS = -Wall -std=c17 -pedantic -g -g3 -MMD
 LDLIBS = -lMLV -lm
 SRCS = $(wildcard src/*.c) 
 OBJS = $(SRCS:src/%.c=obj/%.o)
-EXEC = Test
+EXEC = TowerDefense
 
 $(EXEC): $(OBJS)
 	gcc -Iinclude -o $@ $^ $(LDLIBS)

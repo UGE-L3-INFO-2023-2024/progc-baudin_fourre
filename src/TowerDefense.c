@@ -22,7 +22,7 @@ int main(void) {
     game = init_game();
     event = (Event){NOEVENT, (Coord){0, 0}};
     action = NO_ACTION;
-    win = init_graphic();
+    init_graphic(&win);
     cur_time = time_now();
 
     draw_game(&game, action, &win);
@@ -39,10 +39,10 @@ int main(void) {
 
         draw_game(&game, action, &win);
         refresh();
-
         wait_framerate();
     }
-    quit();
+    free_game(&game);
+    quit(&win);
 
     return 0;
 }

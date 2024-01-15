@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "Window.h"
 #include <MLV/MLV_all.h>
+#include <math.h>
 
 // Returns the shortened string associated to the `number`
 void get_string_from_number(uint64_t number, char *nb_str) {
@@ -61,6 +62,57 @@ void draw_mana(Mana mana, WindowInfo win) {
                       mana_values, 1, MLV_COLOR_BLACK, MLV_COLOR_BLACK,
                       TRANSPARANT, MLV_TEXT_CENTER, MLV_HORIZONTAL_CENTER,
                       MLV_VERTICAL_CENTER);
+}
+
+// displays the cost of adding a new tower over the new tower button
+static void display_new_tower_cost(WindowInfo win) {
+    int w, h;
+    char cost[33];
+    get_string_from_number(mana_required_tower(win.nb_towers), cost);
+    MLV_get_size_of_text_with_font(cost, &w, &h, win.right_bar_font);
+    MLV_draw_adapted_text_box_with_font(
+        win.new_tower.x - (w - win.new_tower.size) * 0.5,
+        win.new_tower.y - win.new_tower.size * 2 / 5, cost, win.right_bar_font,
+        0, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+        MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+}
+
+// displays the cost of adding a new gem over the new gem button
+static void display_new_gem_cost(WindowInfo win) {
+    int w, h;
+    char cost[33];
+    get_string_from_number((uint64_t) (100 * pow(2, win.new_gem_level)), cost);
+    MLV_get_size_of_text_with_font(cost, &w, &h, win.right_bar_font);
+    MLV_draw_adapted_text_box_with_font(
+        win.new_gem.x - (w - win.new_gem.size) * 0.5,
+        win.new_gem.y - win.new_gem.size * 2 / 5, cost, win.right_bar_font, 1,
+        TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+        MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+}
+
+// displays the cost of fusing two gems over the fuse gems button
+static void display_fuse_gem_cost(WindowInfo win) {
+    int w, h;
+    MLV_get_size_of_text_with_font("100", &w, &h, win.right_bar_font);
+    MLV_draw_adapted_text_box_with_font(
+        win.fuse_gem.x - (w - win.fuse_gem.size) * 0.5,
+        win.fuse_gem.y - win.fuse_gem.size * 2 / 5, "100", win.right_bar_font,
+        0, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+        MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+}
+
+// Displays the costs of the actions of the game at the top of the right bar
+// window
+void display_cost(WindowInfo win) {
+    MLV_draw_text_box_with_font(RIGHT_BAR_X + 1, GAME_HEIGHT * 1 / 40,
+                                RIGHT_BAR_SIZE, GAME_HEIGHT * 1 / 30,
+                                "Cost:", win.right_bar_font, 0, TRANSPARANT,
+                                MLV_COLOR_BLACK, TRANSPARANT, MLV_TEXT_CENTER,
+                                MLV_HORIZONTAL_CENTER, MLV_VERTICAL_CENTER);
+
+    display_new_tower_cost(win);
+    display_new_gem_cost(win);
+    display_fuse_gem_cost(win);
 }
 
 // draws information on the game in the window

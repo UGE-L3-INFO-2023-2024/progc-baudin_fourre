@@ -31,9 +31,9 @@ typedef struct {
 /**
  * @brief Initializes the graphic window
  *
- * @return WindowInfo structure containing information about the window created
+ * @param win Address of the WindowInfo structure to intialize
  */
-WindowInfo init_graphic(void);
+void init_graphic(WindowInfo *win);
 
 /**
  * @brief Creates a new Square with the given arguments
@@ -66,8 +66,9 @@ void clear_window(void);
 /**
  * @brief Quits and frees the window
  *
- * @param image image of the game to free
+ * @param win Address of the WindowInfo containing information on the window to
+ * quit
  */
-void quit(void);
+void quit(WindowInfo *win);
 
 #endif

@@ -125,4 +125,11 @@ void game_fuse_gems(Game *game, int gem1, int gem2);
  */
 void update_game(Game *game, Timestamp prev_time);
 
+/**
+ * @brief Frees the allocated values of the Game
+ *
+ * @param game Address of the Game to free
+ */
+void free_game(Game *game);
+
 #endif // __GAME_H__

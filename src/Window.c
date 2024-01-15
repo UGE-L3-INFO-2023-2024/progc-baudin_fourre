@@ -1,18 +1,17 @@
 #include "Window.h"
+#include "Color.h"
 #include "Inventory.h"
 #include <MLV/MLV_all.h>
 
 // Initializes the graphic window
-WindowInfo init_graphic(void) {
-    WindowInfo win;
+void init_graphic(WindowInfo *win) {
     MLV_create_window("Test", "", GAME_WIDTH + RIGHT_BAR_SIZE, GAME_HEIGHT);
-    win.right_bar_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 0.7);
-    win.small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
-    win.new_gem_level = 0;
-    win.selected_gem = -1;
-    win.nb_towers = 0;
+    win->right_bar_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 0.7);
+    win->small_font = MLV_load_font("fonts/calling.ttf", CELL_SIZE * 1 / 2);
+    win->new_gem_level = 0;
+    win->selected_gem = -1;
+    win->nb_towers = 0;
     MLV_change_frame_rate(60);
-    return win;
 }
 
 // Clears the window
@@ -32,6 +31,8 @@ void refresh(void) {
 }
 
 // Quits and frees the window
-void quit(void) {
+void quit(WindowInfo *win) {
+    MLV_free_font(win->right_bar_font);
+    MLV_free_font(win->small_font);
     MLV_free_window();
 }

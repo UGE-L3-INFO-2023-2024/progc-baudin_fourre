@@ -90,6 +90,9 @@ void draw_activegems(ActiveGemList activegems) {
     ActiveGem *activegem;
     LIST_FOREACH(activegem, &activegems, entries) {
         draw_activegem(*activegem);
+        MLV_draw_circle((activegem->tower.col + 0.5) * CELL_SIZE,
+                        (activegem->tower.line + 0.5) * CELL_SIZE,
+                        3 * CELL_SIZE, MLV_COLOR_BLACK);
     }
 }
 

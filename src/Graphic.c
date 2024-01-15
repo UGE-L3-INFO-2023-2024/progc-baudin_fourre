@@ -23,6 +23,7 @@ static void draw_right_bar(Game *game, UserAction current_action,
     draw_top_buttons(win);
     draw_inventory(game->inventory, win);
     display_error(&game->error, *win);
+    display_cost(*win);
     if (current_action == NEW_TOWER)
         draw_selected_square(win->new_tower);
     if (current_action == WAIT_FUSE_GEM
