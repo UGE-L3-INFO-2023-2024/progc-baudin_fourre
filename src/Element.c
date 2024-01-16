@@ -14,6 +14,14 @@
 
 #include "Monsters.h"
 
+// Returns the median hue between `hue1` and `hue2`
+Hue get_median_hue(Hue hue1, Hue hue2) {
+    Hue median1, median2;
+    median1 = (hue2 + hue1) / 2;
+    median2 = (median1 + 180) % 360;
+    return abs(median2 - hue1) < abs(median1 - hue1) ? median2 : median1;
+}
+
 // Generates a random hue in the range of the `element`
 Hue random_hue(Element element) {
     int start, interval;
@@ -36,7 +44,6 @@ Hue random_hue(Element element) {
             break;
     }
     int r = (rand() % interval + start) % 360;
-    // printf("%d\n", r);
     return r;
 }
 

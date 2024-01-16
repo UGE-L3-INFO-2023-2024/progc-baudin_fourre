@@ -38,6 +38,15 @@ typedef struct {
 } ElementEffect;
 
 /**
+ * @brief Get the median hue between `hue1` and `hue2`
+ *
+ * @param hue1
+ * @param hue2
+ * @return Hue the median
+ */
+Hue get_median_hue(Hue hue1, Hue hue2);
+
+/**
  * @brief Initializes an ElementEffect
  *
  * @return ElementEffect the structure initialized

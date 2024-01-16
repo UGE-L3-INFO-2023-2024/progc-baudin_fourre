@@ -96,20 +96,20 @@ static void move_monster_direction(Monster *monster, Direction direction,
 
 // Moves the monster on the `map` for a duration of `time_elapsed`
 void move_monster(const Map *map, Monster *monster, double time_elapsed) {
+    if (monster->direction != NODIR)
+        move_monster_direction(monster, monster->direction, time_elapsed);
     if (has_past_center_position(monster->position, monster->direction,
                                  monster->next_cell)) {
-        // monster->position =
-        //     coord_to_center_position(position_to_coord(monster->position));
+        monster->position =
+            coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
             position_to_coord(monster->position), monster->direction);
     }
-    if (monster->direction != NODIR)
-        move_monster_direction(monster, monster->direction, time_elapsed);
 }
 
 static inline double deg_to_rad(int deg) {
-    return deg * (M_PI / 180.0);
+    return deg * (PI / 180.0);
 }
 
 // Returns the damage of the monster by the gem
@@ -118,7 +118,7 @@ double get_damage(const Monster *monster, Gem gem) {
     const int n = gem.level;
     const int t_g = gem.hue;
     const int t_m = monster->hue;
-    return d * (1 << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
+    return d * (1L << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
 }
 
 // Applies the `damage` to the `monster`

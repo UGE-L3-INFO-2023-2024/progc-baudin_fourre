@@ -30,7 +30,7 @@ Gem generate_pure_gem(int level) {
 // Returns the resulting em of the fusion of `first` and `second`
 Gem fuse_gems(Gem first, Gem second) {
     Gem new_gem;
-    new_gem.hue = (first.hue + second.hue) / 2;
+    new_gem.hue = get_median_hue(first.hue, second.hue);
     new_gem.level = first.level + 1;
     if (first.type == second.type) {
         new_gem.type = first.type;

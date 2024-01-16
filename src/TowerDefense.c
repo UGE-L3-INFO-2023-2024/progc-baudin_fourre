@@ -49,8 +49,9 @@ int main(void) {
         refresh();
         wait_framerate();
     }
-    free_game(&game);
-    quit(&win);
+    // free_game(&game);
+    // quit(&win);
+    abort();
 
     return 0;
 }

@@ -161,8 +161,7 @@ static void draw_monster(Monster monster, int cell_size) {
     int y = (int) (monster.position.y * cell_size);
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
     draw_bar((int) (x - radius * 1.5), (int) (y - radius * 1.5), radius * 3,
-             radius / 2, (double) monster.hp / monster.hp_init,
-             MLV_COLOR_GREEN);
+             radius / 2, monster.hp / monster.hp_init, MLV_COLOR_GREEN);
 }
 
 // draws the list of `monsters` on their position of the `map`

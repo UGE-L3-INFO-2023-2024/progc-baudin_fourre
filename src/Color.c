@@ -9,6 +9,7 @@
 
 #include "Color.h"
 
+#include <MLV/MLV_all.h>
 #include <assert.h>
 #include <math.h>
 #include <stdint.h>
