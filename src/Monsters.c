@@ -81,31 +81,26 @@ static double rand_speed(double speed) {
         return (1.0 + var) * speed;
 }
 
-// Moves the monster along the `direction` for a duration of `time_elapsed`
-static void move_monster_direction(Monster *monster, Direction direction,
-                                   double time_elapsed) {
-    Vector move = get_direction_vector(direction);
+// Moves the monster on the `map` for a duration of `time_elapsed`
+void move_monster(const Map *map, Monster *monster, double time_elapsed) {
+    Vector move = get_direction_vector(monster->direction);
+    Position new_pos;
     double speed = rand_speed(monster->speed);
     for (int i = 0; i < 4; i++) {
         if (!is_past_time(monster->effects.type[i].timeout))
             speed *= monster->effects.type[i].speed_mult;
     }
-    monster->position =
-        get_new_position(monster->position, speed * time_elapsed, move);
-}
 
-// Moves the monster on the `map` for a duration of `time_elapsed`
-void move_monster(const Map *map, Monster *monster, double time_elapsed) {
-    if (monster->direction != NODIR)
-        move_monster_direction(monster, monster->direction, time_elapsed);
-    if (has_past_center_position(monster->position, monster->direction,
+    new_pos = get_new_position(monster->position, speed * time_elapsed, move);
+    if (has_past_center_position(new_pos, monster->direction,
                                  monster->next_cell)) {
         monster->position =
             coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
         monster->next_cell = next_cell_coord(
             position_to_coord(monster->position), monster->direction);
-    }
+    } else if (monster->direction != NODIR)
+        monster->position = new_pos;
 }
 
 static inline double deg_to_rad(int deg) {
