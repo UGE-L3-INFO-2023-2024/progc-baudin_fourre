@@ -28,14 +28,14 @@ Mana init_mana(void) {
 
 // Returns 1 if the quantity of mana is superior to the amount `required`, or
 // else 0;
-static bool enough_mana(const Mana *mana, uint64_t required) {
+static bool enough_mana(const Mana *mana, double required) {
     assert(required >= 0);
     return required <= mana->quantity;
 }
 
 // Decreases the mana quanityt by `required` if possible.
 // Returns 1 if it was possible, else 0.
-static bool mana_remove_required(Mana *mana, uint64_t required, Error *error) {
+static bool mana_remove_required(Mana *mana, double required, Error *error) {
     assert(required >= 0);
     if (!enough_mana(mana, required)) {
         new_error(error, MISSING_MANA);
@@ -46,7 +46,7 @@ static bool mana_remove_required(Mana *mana, uint64_t required, Error *error) {
 }
 
 // Adds, if possible, `quantity` mana to the mana reserve pointed by `mana`
-void add_mana(Mana *mana, uint64_t quantity) {
+void add_mana(Mana *mana, double quantity) {
     if (mana->quantity + quantity > mana->max)
         mana->quantity = mana->max;
     else
@@ -70,23 +70,23 @@ void mana_eliminate_monster(Mana *mana, const Monster *monster) {
 
 // Decreases the mana quantity, if possible, in order to banish a monster
 bool mana_banish_monster(Mana *mana, const Monster *monster, Error *error) {
-    uint64_t required = (monster->hp_init * 0.15) * pow(1.3, mana->level);
+    double required = (monster->hp_init * 0.15) * pow(1.3, mana->level);
     return mana_remove_required(mana, required, error);
 }
 
 // Returns the required amount of mana to buy a new tower
-uint64_t mana_required_tower(int nb_tower) {
-    uint64_t required = 0;
+double mana_required_tower(int nb_tower) {
+    double required = 0;
 
     if (nb_tower >= 3)
-        required = 100 * (1L << (nb_tower - 3));
+        required = 100 * pow(2, nb_tower - 3);
 
     return required;
 }
 
 // Decreases the mana quantity, if possible, in order to buy a tower
 bool mana_buy_tower(Mana *mana, int nb_tower, Error *error) {
-    uint64_t required = mana_required_tower(nb_tower);
+    double required = mana_required_tower(nb_tower);
     if (!mana_remove_required(mana, required, error)) {
         return false;
     }
@@ -95,8 +95,8 @@ bool mana_buy_tower(Mana *mana, int nb_tower, Error *error) {
 
 // Decreases the mana quantity, if possible, in order to buy a gem of level
 // `level`
-bool mana_buy_gem(Mana *mana, uint64_t level, Error *error) {
-    uint64_t required = 100 * (1L << level);
+bool mana_buy_gem(Mana *mana, double level, Error *error) {
+    double required = 100 * pow(2, level);
     return mana_remove_required(mana, required, error);
 }
 

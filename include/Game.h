@@ -31,6 +31,7 @@ typedef struct {
     Mana mana;
     Error error;
     int defeat;
+    double total_damage;
 } Game;
 
 // typedef void (*effect)(Game *, Monster monster);

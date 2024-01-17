@@ -87,14 +87,14 @@ double get_damage(const Monster *monster, Gem gem);
  * @param monster Address of the Monster to apply the damage to
  * @param damage quantity of damage to apply
  */
-void apply_damage(Monster *monster, double damage);
+void apply_damage(Monster *monster, double damage, double *add_damage);
 
 /**
  * @brief Applies the extra_damage attached to the `monster` if there's one
  *
  * @param monster Address of the Monster structure
  */
-void apply_extra_damage(Monster *monster);
+void apply_extra_damage(Monster *monster, double *add_damage);
 
 bool is_dead_monster(Monster *monster);
 

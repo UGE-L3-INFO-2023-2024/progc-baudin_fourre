@@ -34,6 +34,7 @@ Game init_game(void) {
         .next_wave = time_now(),
         .error = init_error(),
         .defeat = 0,
+        .total_damage = 0,
     };
 }
 
@@ -70,7 +71,7 @@ void move_monsters(Game *game, Timestamp time) {
     LIST_FOREACH(monster, &game->monsters, entries) {
         if (is_past_time(monster->start_time)) {
             move_monster(&game->map, monster, elapsed);
-            apply_extra_damage(monster);
+            apply_extra_damage(monster, &game->total_damage); // TODO : pas convaincu
         }
         if (game->map.cells[CI_RAW_POS(monster->position)].type == HOME) {
             if (!mana_banish_monster(&game->mana, monster, &game->error))
@@ -89,7 +90,7 @@ static void apply_pyro_effect(Game *game, Monster *monster, Gem gem) {
     while ((monster_tmp = get_next_monster_in_radius(
                 &game->monsters, monster->position, 2, false))) {
         if (monster_tmp != monster)
-            apply_damage(monster_tmp, 0.15 * get_damage(monster_tmp, gem));
+            apply_damage(monster_tmp, 0.15 * get_damage(monster_tmp, gem), &game->total_damage);
     }
 }
 
@@ -111,7 +112,7 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
     while ((monster_tmp = get_next_monster_in_radius(
                 &game->monsters, monster->position, 3.5, false))) {
         if (monster_tmp != monster) {
-            apply_damage(monster_tmp, 0.05 * get_damage(monster_tmp, gem));
+            apply_damage(monster_tmp, 0.05 * get_damage(monster_tmp, gem), &game->total_damage);
             monster->effects.type[HYDRO_PYRO_EFFECT] =
                 get_element_effect(HYDRO_PYRO_EFFECT, 0);
         }
@@ -119,8 +120,8 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
 }
 
 // Applies the combination of pyro and dendro effect to the `monster`
-static void apply_pyro_dendro_effect(Monster *monster, Gem gem) {
-    apply_damage(monster, 2 * get_damage(monster, gem));
+static void apply_pyro_dendro_effect(Monster *monster, Gem gem, double *add_damage) {
+    apply_damage(monster, 2 * get_damage(monster, gem), add_damage);
 }
 
 // Applies the combination of hydro and dendro effect to the `monster`
@@ -153,7 +154,7 @@ static void add_monster_element_effect(Game *game, Monster *monster, Gem gem) {
             apply_hydro_effect(monster);
             break;
         case PYRO | DENDRO:
-            apply_pyro_dendro_effect(monster, gem);
+            apply_pyro_dendro_effect(monster, gem, &game->total_damage);
             break;
         case PYRO | HYDRO:
             apply_pyro_hydro_effect(game, monster, gem);
@@ -242,7 +243,7 @@ void damage_monsters(Game *game) {
             Gem gem = shot->source;
             LIST_REMOVE(shot, entries);
             free_shot(shot);
-            apply_damage(monster, get_damage(monster, gem));
+            apply_damage(monster, get_damage(monster, gem), &game->total_damage);
             add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
                 mana_eliminate_monster(&game->mana, monster);

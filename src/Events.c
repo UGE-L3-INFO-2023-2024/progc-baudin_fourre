@@ -24,19 +24,22 @@ Event get_events(void) {
     MLV_Event mlv_event;
     MLV_Button_state state;
     event.type = NOEVENT;
-    mlv_event = MLV_get_event(&key, NULL, NULL, NULL, NULL, &event.mouse.col,
-                              &event.mouse.line, &button, &state);
-    if (mlv_event == MLV_MOUSE_BUTTON && button == MLV_BUTTON_LEFT
-        && state == MLV_PRESSED)
-        event.type = CLICK;
-    if (mlv_event == MLV_KEY && state == MLV_PRESSED) {
-        if (key == MLV_KEYBOARD_q)
-            event.type = QUIT;
-        if (key == MLV_KEYBOARD_ESCAPE)
-            event.type = ESCAPE;
-        if (key == MLV_KEYBOARD_SPACE)
-            event.type = SPACE;
-    }
+    do {
+        mlv_event =
+            MLV_get_event(&key, NULL, NULL, NULL, NULL, &event.mouse.col,
+                          &event.mouse.line, &button, &state);
+        if (mlv_event == MLV_MOUSE_BUTTON && button == MLV_BUTTON_LEFT
+            && state == MLV_PRESSED)
+            event.type = CLICK;
+        if (mlv_event == MLV_KEY && state == MLV_PRESSED) {
+            if (key == MLV_KEYBOARD_q)
+                event.type = QUIT;
+            if (key == MLV_KEYBOARD_ESCAPE)
+                event.type = ESCAPE;
+            if (key == MLV_KEYBOARD_SPACE)
+                event.type = SPACE;
+        }
+    } while (mlv_event != MLV_NONE && event.type == NOEVENT);
     return event;
 }
 

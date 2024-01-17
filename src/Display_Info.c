@@ -60,7 +60,7 @@ void display_error(Error *error, WindowInfo win) {
 // Draws the mana bar at the top of the window
 void draw_mana(Mana mana, WindowInfo win) {
     char mana_values[130];
-    sprintf(mana_values, "%ld/%ld", mana.quantity, mana.max);
+    sprintf(mana_values, "%.0f/%.0f", mana.quantity, mana.max);
     double filled = (double) mana.quantity / (double) mana.max;
     draw_bar((MAP_WIDTH * win.cell_size) * 1 / 5, win.cell_size * 1 / 4,
              (MAP_WIDTH * win.cell_size) * 3 / 5, win.cell_size * 1 / 2, filled,

@@ -113,23 +113,24 @@ double get_damage(const Monster *monster, Gem gem) {
     const int n = gem.level;
     const int t_g = gem.hue;
     const int t_m = monster->hue;
-    return d * (1L << n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
+    return d * pow(2, n) * (1.0 - cos(deg_to_rad(t_g - t_m)) / 2.0);
 }
 
 // Applies the `damage` to the `monster`
-void apply_damage(Monster *monster, double damage) {
+void apply_damage(Monster *monster, double damage, double *add_damage) {
     monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
+    *add_damage += damage;
 }
 
 // Applies the extra damage from the element effect of the `monster`, if
 // necessary
-void apply_extra_damage(Monster *monster) {
+void apply_extra_damage(Monster *monster, double *add_damage) {
     for (int i = 0; i < 4; i++) {
         if (is_past_time(monster->effects.type[i].timeout)) {
             continue;
         }
         if (is_past_time(monster->effects.type[i].next_damage)) {
-            apply_damage(monster, monster->effects.type[i].damage);
+            apply_damage(monster, monster->effects.type[i].damage, add_damage);
             monster->effects.type[i].next_damage =
                 time_future(monster->effects.type[i].damage_interval);
         }
@@ -140,6 +141,7 @@ void apply_extra_damage(Monster *monster) {
 // `false`,otherwise the first monster is initialized with the list of monsters
 Monster *get_next_monster_in_radius(MonsterList *monsters, Position pos,
                                     double radius, bool start) {
+    // TODO : pas convaincu
     static Monster *monster = NULL;
     Monster *tmp;
     if (start) {
