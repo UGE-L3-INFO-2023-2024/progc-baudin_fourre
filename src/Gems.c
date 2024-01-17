@@ -65,8 +65,8 @@ static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
 }
 
 // Adds the `gem` at the head of the `activegem_list`
-ActiveGem *add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
-                                 Coord tower) {
+ActiveGem *
+add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower) {
     ActiveGem *activegem = create_new_activegem(gem, tower);
     if (!activegem)
         return NULL;

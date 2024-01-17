@@ -112,8 +112,8 @@ static UserAction get_action_wait_second_fuse_gem(Event event, WindowInfo win) {
 }
 
 // returns the current user action from the `event` and `action` given.
-UserAction get_user_action(UserAction previous_action, Event event,
-                           WindowInfo win) {
+UserAction
+get_user_action(UserAction previous_action, Event event, WindowInfo win) {
 
     if (event.type == SPACE)
         return NEW_WAVE;
@@ -146,7 +146,9 @@ UserAction get_user_action(UserAction previous_action, Event event,
 
 // Performs the correct action on the `game`, depending on the current
 // `action`
-void perform_user_action(UserAction *action, Event event, Game *game,
+void perform_user_action(UserAction *action,
+                         Event event,
+                         Game *game,
                          WindowInfo *win) {
     static int selected_gem;
     Coord tower;
@@ -155,7 +157,8 @@ void perform_user_action(UserAction *action, Event event, Game *game,
             win->selected_gem = -1;
             break;
         case ADD_TOWER:
-            add_tower(game, win,
+            add_tower(game,
+                      win,
                       (Coord){event.mouse.col / win->cell_size,
                               event.mouse.line / win->cell_size});
             *action = NO_ACTION;
@@ -198,7 +201,8 @@ void perform_user_action(UserAction *action, Event event, Game *game,
             }
             break;
         case ADD_ACTIVEGEM:
-            add_activegem(game, *win,
+            add_activegem(game,
+                          *win,
                           (Coord){event.mouse.col / win->cell_size,
                                   event.mouse.line / win->cell_size});
             *action = NO_ACTION;

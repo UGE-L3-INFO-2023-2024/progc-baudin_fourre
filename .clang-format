@@ -10,3 +10,5 @@ SpacesInParentheses: false
 SpaceAfterCStyleCast: true
 InsertNewlineAtEOF: true
 BreakBeforeBinaryOperators: NonAssignment
+BinPackArguments: false
+BinPackParameters: false

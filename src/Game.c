@@ -85,10 +85,11 @@ void move_monsters(Game *game, Timestamp time) {
 // Applies the pyro effect to the `monster`
 static void apply_pyro_effect(Game *game, Monster *monster, Gem gem) {
     Monster *monster_other = LIST_FIRST(&game->monsters);
-    while ((monster_other = get_next_monster_in_radius(monster_other,
-                                                       monster->position, 2))) {
+    while ((monster_other = get_next_monster_in_radius(
+                monster_other, monster->position, 2))) {
         if (monster_other != monster)
-            apply_damage(monster_other, 0.15 * get_damage(monster_other, gem),
+            apply_damage(monster_other,
+                         0.15 * get_damage(monster_other, gem),
                          &game->total_damage);
         monster_other = LIST_NEXT(monster_other, entries);
     }
@@ -111,7 +112,8 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
     while ((monster_other = get_next_monster_in_radius(
                 monster_other, monster->position, 3.5))) {
         if (monster_other != monster) {
-            apply_damage(monster_other, 0.05 * get_damage(monster_other, gem),
+            apply_damage(monster_other,
+                         0.05 * get_damage(monster_other, gem),
                          &game->total_damage);
             monster->effects.type[HYDRO_PYRO_EFFECT] =
                 get_element_effect(HYDRO_PYRO_EFFECT, 0);
@@ -121,8 +123,8 @@ static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
 }
 
 // Applies the combination of pyro and dendro effect to the `monster`
-static void apply_pyro_dendro_effect(Monster *monster, Gem gem,
-                                     double *add_damage) {
+static void
+apply_pyro_dendro_effect(Monster *monster, Gem gem, double *add_damage) {
     apply_damage(monster, 2 * get_damage(monster, gem), add_damage);
 }
 
@@ -245,8 +247,8 @@ void damage_monsters(Game *game) {
             Gem gem = shot->source;
             LIST_REMOVE(shot, entries);
             free_shot(shot);
-            apply_damage(monster, get_damage(monster, gem),
-                         &game->total_damage);
+            apply_damage(
+                monster, get_damage(monster, gem), &game->total_damage);
             add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
                 mana_eliminate_monster(&game->mana, monster);
@@ -268,7 +270,8 @@ static Monster *find_monster_to_shoot(Coord tower_coord,
     Monster *monster_fit = NULL;
     Monster *monster = LIST_FIRST(monster_list);
     while ((monster = get_next_monster_in_radius(
-                monster, coord_to_center_position(tower_coord),
+                monster,
+                coord_to_center_position(tower_coord),
                 tower_field_radius))) {
         if (!monster_fit || monster_fit->hp < monster->hp) {
             monster_fit = monster;
@@ -314,8 +317,8 @@ void game_fuse_gems(Game *game, int gem1, int gem2) {
     }
     remove_from_inventory(&game->inventory, gem1);
     remove_from_inventory(&game->inventory, gem2);
-    add_to_inventory(&game->inventory, fuse_gems(first_gem, second_gem),
-                     &game->error);
+    add_to_inventory(
+        &game->inventory, fuse_gems(first_gem, second_gem), &game->error);
 }
 
 // Updates the `game` sinc the last update at `prev_time`

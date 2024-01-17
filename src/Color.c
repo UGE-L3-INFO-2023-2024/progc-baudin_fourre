@@ -17,8 +17,8 @@
 #include "Element.h"
 
 // assign the values (r, g, b) to (*R, *G, *B)
-static void assign_rgb(double *R, double *G, double *B, double r, double g,
-                       double b) {
+static void
+assign_rgb(double *R, double *G, double *B, double r, double g, double b) {
     *R = r;
     *G = g;
     *B = b;
@@ -56,6 +56,8 @@ MLV_Color hue_to_rgba(Hue hue) {
         default:
             break;
     }
-    return MLV_rgba((uint8_t) ((R + m) * 255), (uint8_t) ((G + m) * 255),
-                    (uint8_t) ((B + m) * 255), 255);
+    return MLV_rgba((uint8_t) ((R + m) * 255),
+                    (uint8_t) ((G + m) * 255),
+                    (uint8_t) ((B + m) * 255),
+                    255);
 }

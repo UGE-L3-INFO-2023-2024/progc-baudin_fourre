@@ -50,8 +50,8 @@ Gem generate_pure_gem(int level);
  * @return ActiveGem* the address of the gem created, or NULL if there was an
  * error
  */
-ActiveGem *add_to_activegemslist(ActiveGemList *activegem_list, Gem gem,
-                                 Coord tower);
+ActiveGem *
+add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower);
 
 /**
  * @brief Frees the space allocated for the list of active gems

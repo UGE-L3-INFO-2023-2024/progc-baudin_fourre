@@ -25,9 +25,15 @@ Event get_events(void) {
     MLV_Button_state state;
     event.type = NOEVENT;
     do {
-        mlv_event =
-            MLV_get_event(&key, NULL, NULL, NULL, NULL, &event.mouse.col,
-                          &event.mouse.line, &button, &state);
+        mlv_event = MLV_get_event(&key,
+                                  NULL,
+                                  NULL,
+                                  NULL,
+                                  NULL,
+                                  &event.mouse.col,
+                                  &event.mouse.line,
+                                  &button,
+                                  &state);
         if (mlv_event == MLV_MOUSE_BUTTON && button == MLV_BUTTON_LEFT
             && state == MLV_PRESSED)
             event.type = CLICK;

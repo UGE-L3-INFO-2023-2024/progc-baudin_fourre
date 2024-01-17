@@ -35,8 +35,8 @@ static WaveType random_wave(int wave_count) {
 }
 
 // Returns the characteristics of the wave given its type
-static void get_wave_characteristics(WaveType type, int *nb_monsters,
-                                     int *speed) {
+static void
+get_wave_characteristics(WaveType type, int *nb_monsters, int *speed) {
     switch (type) {
         case NORMAL:
             *nb_monsters = 12;

@@ -43,8 +43,8 @@ typedef enum {
  * @param win WindowInfo containing information on the current window
  * @return UserAction
  */
-UserAction get_user_action(UserAction previous_action, Event event,
-                           WindowInfo win);
+UserAction
+get_user_action(UserAction previous_action, Event event, WindowInfo win);
 
 /**
  * @brief Performs the correct action on the `game`, depending on the current
@@ -56,7 +56,9 @@ UserAction get_user_action(UserAction previous_action, Event event,
  * @param win Address of the WindowInfo containing information on the current
  * window
  */
-void perform_user_action(UserAction *action, Event event, Game *game,
+void perform_user_action(UserAction *action,
+                         Event event,
+                         Game *game,
                          WindowInfo *win);
 
 #endif // __ACTION_H__

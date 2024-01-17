@@ -46,7 +46,7 @@ void draw_selected_square(Square s);
  * @param filled percentage to which the bare must be filled
  * @param color color with which the bar must be filled
  */
-void draw_bar(int x, int y, int width, int height, double filled,
-              MLV_Color color);
+void draw_bar(
+    int x, int y, int width, int height, double filled, MLV_Color color);
 
 #endif // __GRAPHIC_UTILS_H__

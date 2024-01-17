@@ -19,11 +19,13 @@
 #include "Window.h"
 
 // draws a bar on the right of the game window
-static void draw_right_bar(Game *game, UserAction current_action,
-                           WindowInfo *win) {
-    MLV_draw_filled_rectangle(MAP_WIDTH * win->cell_size, 0,
+static void
+draw_right_bar(Game *game, UserAction current_action, WindowInfo *win) {
+    MLV_draw_filled_rectangle(MAP_WIDTH * win->cell_size,
+                              0,
                               RIGHT_BAR_COLS * win->cell_size,
-                              MAP_HEIGHT * win->cell_size, RIGHT_BAR_COLOR);
+                              MAP_HEIGHT * win->cell_size,
+                              RIGHT_BAR_COLOR);
     draw_top_buttons(win);
     draw_inventory(game->inventory, win);
     display_error(&game->error, *win);

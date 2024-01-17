@@ -29,8 +29,8 @@ static Effects init_monster_effects(void) {
 }
 
 // Returns the adress of the new Monster created with the given arguments
-Monster *create_new_monster(const Map *map, int speed, int HP,
-                            Timestamp start_time) {
+Monster *
+create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
     Monster *monster = malloc(sizeof(Monster));
     if (!monster) {
         perror("Crash on monster allocation");
@@ -92,8 +92,8 @@ void move_monster(const Map *map, Monster *monster, double time_elapsed) {
     }
 
     new_pos = get_new_position(monster->position, speed * time_elapsed, move);
-    if (has_past_center_position(new_pos, monster->direction,
-                                 monster->next_cell)) {
+    if (has_past_center_position(
+            new_pos, monster->direction, monster->next_cell)) {
         monster->position =
             coord_to_center_position(position_to_coord(monster->position));
         monster->direction = get_position_direction(map, monster->position);
@@ -139,8 +139,8 @@ void apply_extra_damage(Monster *monster, double *add_damage) {
 
 // Returns the address of the next monster in the `radius` of `pos` if start is
 // `false`,otherwise the first monster is initialized with the list of monsters
-Monster *get_next_monster_in_radius(Monster *monster, Position pos,
-                                    double radius) {
+Monster *
+get_next_monster_in_radius(Monster *monster, Position pos, double radius) {
     while (
         monster
         && !(is_past_time(monster->start_time)

@@ -54,7 +54,8 @@ int is_position_center(Position position) {
 
 // Returns 1 if the position is past the center of the `next_cell` according to
 // te `direction`, 0 otherwise
-int has_past_center_position(Position position, Direction dir,
+int has_past_center_position(Position position,
+                             Direction dir,
                              Coord next_cell) {
     Position next = coord_to_center_position(next_cell);
     switch (dir) {

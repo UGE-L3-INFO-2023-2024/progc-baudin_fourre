@@ -49,8 +49,8 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @return Monster* address of the Monster structure allocated,
  * or NULL if there was an allocation error
  */
-Monster *create_new_monster(const Map *map, int speed, int HP,
-                            Timestamp start_time);
+Monster *
+create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
 
 /**
  * @brief Frees the space allocated for the list of monsters
@@ -109,7 +109,7 @@ bool is_dead_monster(const Monster *monster);
  * @return Monster* the address of the next monster in radius, or NULL if the
  * list has reached its end
  */
-Monster *get_next_monster_in_radius(Monster *monster, Position pos,
-                                    double radius);
+Monster *
+get_next_monster_in_radius(Monster *monster, Position pos, double radius);
 
 #endif // __MONSTERS_H__

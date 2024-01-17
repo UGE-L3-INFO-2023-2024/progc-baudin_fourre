@@ -50,8 +50,11 @@ Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
     return (Cell *) &map->cells[CI(next_coord)];
 }
 
-static bool check_around(const Map *map, const Cell *cell, Direction dir,
-                         Direction forbidden_dir, int dist) {
+static bool check_around(const Map *map,
+                         const Cell *cell,
+                         Direction dir,
+                         Direction forbidden_dir,
+                         int dist) {
     if (cell == NULL) {
         return false;
     }
@@ -61,8 +64,11 @@ static bool check_around(const Map *map, const Cell *cell, Direction dir,
     if (dist > 0) {
         for (int i = 0; i < 4; i++) {
             if (i != forbidden_dir && i != (dir ^ 1)
-                && !check_around(map, next_cell_direction(map, cell, i), i,
-                                 forbidden_dir, dist - 1)) {
+                && !check_around(map,
+                                 next_cell_direction(map, cell, i),
+                                 i,
+                                 forbidden_dir,
+                                 dist - 1)) {
                 return false;
             }
         }
@@ -70,8 +76,8 @@ static bool check_around(const Map *map, const Cell *cell, Direction dir,
     return true;
 }
 
-static int distance_reached_direction(const Map *map, const Cell *cell,
-                                      Direction dir) {
+static int
+distance_reached_direction(const Map *map, const Cell *cell, Direction dir) {
     int distance = 0;
     while ((cell = next_cell_direction(map, cell, dir))
            && !out_of_edges(cell->coord, MARGIN - 1)

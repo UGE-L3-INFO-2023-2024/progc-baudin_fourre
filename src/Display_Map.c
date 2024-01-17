@@ -22,16 +22,31 @@
 // draws a tower in a square `s`
 void draw_tower_in_square(Square s) {
     draw_square(s, BKGD_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 0.1, s.y + s.size * 0.1,
-                              s.size * 0.8, s.size * 0.2, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 0.2, s.y + s.size * 0.2,
-                              s.size * 0.6, s.size * 0.5, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 0.1, s.y + s.size * 0.7,
-                              s.size * 0.8, s.size * 0.2, TOWER_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 0.3, s.y + s.size * 0.1,
-                              s.size * 0.1, s.size * 0.1, BKGD_COLOR);
-    MLV_draw_filled_rectangle(s.x + s.size * 0.6, s.y + s.size * 0.1,
-                              s.size * 0.1, s.size * 0.1, BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.1,
+                              s.y + s.size * 0.1,
+                              s.size * 0.8,
+                              s.size * 0.2,
+                              TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.2,
+                              s.y + s.size * 0.2,
+                              s.size * 0.6,
+                              s.size * 0.5,
+                              TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.1,
+                              s.y + s.size * 0.7,
+                              s.size * 0.8,
+                              s.size * 0.2,
+                              TOWER_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.3,
+                              s.y + s.size * 0.1,
+                              s.size * 0.1,
+                              s.size * 0.1,
+                              BKGD_COLOR);
+    MLV_draw_filled_rectangle(s.x + s.size * 0.6,
+                              s.y + s.size * 0.1,
+                              s.size * 0.1,
+                              s.size * 0.1,
+                              BKGD_COLOR);
 }
 
 // Draws a gem of color `color` with its center coordinates and size
@@ -56,23 +71,36 @@ void draw_gem_in_square(Square s, Gem gem, MLV_Font *font) {
     char level_str[2];
     sprintf(level_str, "%d", gem.level);
     if (gem.type != NONE) {
-        draw_gem(s.x + s.size / 2, s.y + s.size / 2,
-                 s.size * 0.45 + s.size * 0.05, MLV_COLOR_GOLD);
+        draw_gem(s.x + s.size / 2,
+                 s.y + s.size / 2,
+                 s.size * 0.45 + s.size * 0.05,
+                 MLV_COLOR_GOLD);
     }
-    draw_gem(s.x + s.size / 2, s.y + s.size / 2, s.size * 0.45,
+    draw_gem(s.x + s.size / 2,
+             s.y + s.size / 2,
+             s.size * 0.45,
              hue_to_rgba(gem.hue));
 
     if (font) {
         MLV_get_size_of_text_with_font(level_str, &text_w, &text_h, font);
-        MLV_draw_adapted_text_box_with_font(
-            s.x + (s.size - text_w) * 0.5, s.y + (s.size - text_h - 1) * 0.5,
-            level_str, font, 1, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
-            MLV_TEXT_CENTER);
+        MLV_draw_adapted_text_box_with_font(s.x + (s.size - text_w) * 0.5,
+                                            s.y + (s.size - text_h - 1) * 0.5,
+                                            level_str,
+                                            font,
+                                            1,
+                                            TRANSPARANT,
+                                            MLV_COLOR_BLACK,
+                                            TRANSPARANT,
+                                            MLV_TEXT_CENTER);
     } else {
         MLV_get_size_of_text(level_str, &text_w, &text_h);
         MLV_draw_adapted_text_box(s.x + (s.size - text_w) * 0.5,
-                                  s.y + (s.size - text_h - 1) * 0.5, level_str,
-                                  1, TRANSPARANT, MLV_COLOR_BLACK, TRANSPARANT,
+                                  s.y + (s.size - text_h - 1) * 0.5,
+                                  level_str,
+                                  1,
+                                  TRANSPARANT,
+                                  MLV_COLOR_BLACK,
+                                  TRANSPARANT,
                                   MLV_TEXT_CENTER);
     }
 }
@@ -101,7 +129,8 @@ void draw_activegems(ActiveGemList activegems, int cell_size) {
         draw_activegem(*activegem, cell_size);
         MLV_draw_circle((activegem->tower.col + 0.5) * cell_size,
                         (activegem->tower.line + 0.5) * cell_size,
-                        3 * cell_size, MLV_COLOR_BLACK);
+                        3 * cell_size,
+                        MLV_COLOR_BLACK);
     }
 }
 
@@ -122,10 +151,16 @@ static void draw_cell(CellType type, Coord coord, int cell_size) {
     else if (type == HOME)
         color = HOME_COLOR;
 
-    MLV_draw_filled_rectangle(coord.col * cell_size, coord.line * cell_size,
-                              cell_size, cell_size, color);
-    MLV_draw_rectangle(coord.col * cell_size, coord.line * cell_size, cell_size,
-                       cell_size, outline);
+    MLV_draw_filled_rectangle(coord.col * cell_size,
+                              coord.line * cell_size,
+                              cell_size,
+                              cell_size,
+                              color);
+    MLV_draw_rectangle(coord.col * cell_size,
+                       coord.line * cell_size,
+                       cell_size,
+                       cell_size,
+                       outline);
 }
 
 // Draws the grid of the `map`
@@ -141,7 +176,8 @@ void draw_map(const Map *map, int cell_size) {
 static void draw_shot(Shot shot, int cell_size) {
     int radius = 3;
     MLV_draw_filled_circle((int) (shot.position.x * cell_size),
-                           (int) (shot.position.y * cell_size), radius,
+                           (int) (shot.position.y * cell_size),
+                           radius,
                            hue_to_rgba(shot.source.hue));
 }
 
@@ -160,8 +196,12 @@ static void draw_monster(Monster monster, int cell_size) {
     int x = (int) (monster.position.x * cell_size);
     int y = (int) (monster.position.y * cell_size);
     MLV_draw_filled_circle(x, y, radius, hue_to_rgba(monster.hue));
-    draw_bar((int) (x - radius * 1.5), (int) (y - radius * 1.5), radius * 3,
-             radius / 2, monster.hp / monster.hp_init, MLV_COLOR_GREEN);
+    draw_bar((int) (x - radius * 1.5),
+             (int) (y - radius * 1.5),
+             radius * 3,
+             radius / 2,
+             monster.hp / monster.hp_init,
+             MLV_COLOR_GREEN);
 }
 
 // draws the list of `monsters` on their position of the `map`

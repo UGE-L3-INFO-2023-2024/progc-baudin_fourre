@@ -39,8 +39,11 @@ void init_graphic(WindowInfo *win) {
 
 // Clears the window
 void clear_window(WindowInfo win) {
-    MLV_draw_filled_rectangle(0, 0, MAP_WIDTH * win.cell_size,
-                              MAP_HEIGHT * win.cell_size, MLV_COLOR_LIGHT_GREY);
+    MLV_draw_filled_rectangle(0,
+                              0,
+                              MAP_WIDTH * win.cell_size,
+                              MAP_HEIGHT * win.cell_size,
+                              MLV_COLOR_LIGHT_GREY);
 }
 
 // Waits according to the framerate
