@@ -17,6 +17,7 @@
 #include "Graphic.h"
 #include "Mana.h"
 #include "Monsters.h"
+#include "Queue.h"
 #include "Shots.h"
 #include "Timer.h"
 #include "Utils.h"
@@ -69,10 +70,8 @@ void move_monsters(Game *game, Timestamp time) {
     Monster *monster;
     double elapsed = elapsed_since(time);
     LIST_FOREACH(monster, &game->monsters, entries) {
-        if (is_past_time(monster->start_time)) {
+        if (is_past_time(monster->start_time))
             move_monster(&game->map, monster, elapsed);
-            apply_extra_damage(monster, &game->total_damage); // TODO : pas convaincu
-        }
         if (game->map.cells[CI_RAW_POS(monster->position)].type == HOME) {
             if (!mana_banish_monster(&game->mana, monster, &game->error))
                 game->defeat = 1;
@@ -85,12 +84,13 @@ void move_monsters(Game *game, Timestamp time) {
 
 // Applies the pyro effect to the `monster`
 static void apply_pyro_effect(Game *game, Monster *monster, Gem gem) {
-    Monster *monster_tmp = NULL;
-    get_next_monster_in_radius(&game->monsters, monster->position, 2, true);
-    while ((monster_tmp = get_next_monster_in_radius(
-                &game->monsters, monster->position, 2, false))) {
-        if (monster_tmp != monster)
-            apply_damage(monster_tmp, 0.15 * get_damage(monster_tmp, gem), &game->total_damage);
+    Monster *monster_other = LIST_FIRST(&game->monsters);
+    while ((monster_other = get_next_monster_in_radius(monster_other,
+                                                       monster->position, 2))) {
+        if (monster_other != monster)
+            apply_damage(monster_other, 0.15 * get_damage(monster_other, gem),
+                         &game->total_damage);
+        monster_other = LIST_NEXT(monster_other, entries);
     }
 }
 
@@ -107,20 +107,22 @@ static void apply_dendro_effect(Monster *monster, Gem gem) {
 
 // Applies the combination of pyro and hydro effect to the `monster`
 static void apply_pyro_hydro_effect(Game *game, Monster *monster, Gem gem) {
-    Monster *monster_tmp = NULL;
-    get_next_monster_in_radius(&game->monsters, monster->position, 3.5, true);
-    while ((monster_tmp = get_next_monster_in_radius(
-                &game->monsters, monster->position, 3.5, false))) {
-        if (monster_tmp != monster) {
-            apply_damage(monster_tmp, 0.05 * get_damage(monster_tmp, gem), &game->total_damage);
+    Monster *monster_other = LIST_FIRST(&game->monsters);
+    while ((monster_other = get_next_monster_in_radius(
+                monster_other, monster->position, 3.5))) {
+        if (monster_other != monster) {
+            apply_damage(monster_other, 0.05 * get_damage(monster_other, gem),
+                         &game->total_damage);
             monster->effects.type[HYDRO_PYRO_EFFECT] =
                 get_element_effect(HYDRO_PYRO_EFFECT, 0);
         }
+        monster_other = LIST_NEXT(monster_other, entries);
     }
 }
 
 // Applies the combination of pyro and dendro effect to the `monster`
-static void apply_pyro_dendro_effect(Monster *monster, Gem gem, double *add_damage) {
+static void apply_pyro_dendro_effect(Monster *monster, Gem gem,
+                                     double *add_damage) {
     apply_damage(monster, 2 * get_damage(monster, gem), add_damage);
 }
 
@@ -243,7 +245,8 @@ void damage_monsters(Game *game) {
             Gem gem = shot->source;
             LIST_REMOVE(shot, entries);
             free_shot(shot);
-            apply_damage(monster, get_damage(monster, gem), &game->total_damage);
+            apply_damage(monster, get_damage(monster, gem),
+                         &game->total_damage);
             add_monster_element_effect(game, monster, gem);
             if (is_dead_monster(monster)) {
                 mana_eliminate_monster(&game->mana, monster);
@@ -253,22 +256,24 @@ void damage_monsters(Game *game) {
             }
         }
     }
+    LIST_FOREACH(monster, &game->monsters, entries) {
+        if (is_past_time(monster->start_time))
+            apply_extra_damage(monster, &game->total_damage);
+    }
 }
 
 static Monster *find_monster_to_shoot(Coord tower_coord,
                                       MonsterList *monster_list) {
     const double tower_field_radius = 3.0;
-    Monster *monster;
     Monster *monster_fit = NULL;
-    get_next_monster_in_radius(monster_list,
-                               coord_to_center_position(tower_coord),
-                               tower_field_radius, true);
+    Monster *monster = LIST_FIRST(monster_list);
     while ((monster = get_next_monster_in_radius(
-                monster_list, coord_to_center_position(tower_coord),
-                tower_field_radius, false))) {
+                monster, coord_to_center_position(tower_coord),
+                tower_field_radius))) {
         if (!monster_fit || monster_fit->hp < monster->hp) {
             monster_fit = monster;
         }
+        monster = LIST_NEXT(monster, entries);
     }
     return monster_fit;
 }

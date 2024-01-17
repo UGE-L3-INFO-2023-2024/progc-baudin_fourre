@@ -139,28 +139,17 @@ void apply_extra_damage(Monster *monster, double *add_damage) {
 
 // Returns the address of the next monster in the `radius` of `pos` if start is
 // `false`,otherwise the first monster is initialized with the list of monsters
-Monster *get_next_monster_in_radius(MonsterList *monsters, Position pos,
-                                    double radius, bool start) {
-    // TODO : pas convaincu
-    static Monster *monster = NULL;
-    Monster *tmp;
-    if (start) {
-        monster = LIST_FIRST(monsters);
-        return NULL;
-    }
-
-    while (monster
-           && ((!is_past_time(monster->start_time))
-               || distance_between_positions(monster->position, pos) > radius))
+Monster *get_next_monster_in_radius(Monster *monster, Position pos,
+                                    double radius) {
+    while (
+        monster
+        && !(is_past_time(monster->start_time)
+             && distance_between_positions(monster->position, pos) <= radius))
         monster = LIST_NEXT(monster, entries);
-    if (!monster)
-        return NULL;
 
-    tmp = monster;
-    monster = LIST_NEXT(monster, entries);
-    return tmp;
+    return monster;
 }
 
-bool is_dead_monster(Monster *monster) {
+bool is_dead_monster(const Monster *monster) {
     return monster->hp == 0;
 }

@@ -96,7 +96,7 @@ void apply_damage(Monster *monster, double damage, double *add_damage);
  */
 void apply_extra_damage(Monster *monster, double *add_damage);
 
-bool is_dead_monster(Monster *monster);
+bool is_dead_monster(const Monster *monster);
 
 /**
  * @brief Get the next monster in the radius of pos
@@ -109,7 +109,7 @@ bool is_dead_monster(Monster *monster);
  * @return Monster* the address of the next monster in radius, or NULL if the
  * list has reached its end
  */
-Monster *get_next_monster_in_radius(MonsterList *monsters, Position pos,
-                                    double radius, bool start);
+Monster *get_next_monster_in_radius(Monster *monster, Position pos,
+                                    double radius);
 
 #endif // __MONSTERS_H__
