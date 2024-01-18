@@ -12,10 +12,7 @@
 #include <MLV/MLV_all.h>
 
 #include "Action.h"
-#include "Color.h"
 #include "Game.h"
-#include "Mana.h"
-#include "Monsters.h"
 #include "Window.h"
 
 /**

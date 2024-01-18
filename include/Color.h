@@ -10,7 +10,7 @@
 #ifndef __COLOR_H__
 #define __COLOR_H__
 
-#include <MLV/MLV_all.h>
+#include <MLV/MLV_color.h>
 
 #include "Element.h"
 

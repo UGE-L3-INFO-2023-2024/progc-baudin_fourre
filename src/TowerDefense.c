@@ -17,6 +17,7 @@
 #include "Game.h"
 #include "Graphic.h"
 #include "Timer.h"
+#include "Window.h"
 
 int main(void) {
     Timestamp cur_time;
@@ -39,7 +40,7 @@ int main(void) {
         if (game.defeat)
             continue;
 
-        action = get_user_action(action, event, win);
+        action = get_user_action(action, event, &win);
         perform_user_action(&action, event, &game, &win);
 
         update_game(&game, cur_time);

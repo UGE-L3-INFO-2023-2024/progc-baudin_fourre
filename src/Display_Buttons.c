@@ -10,20 +10,18 @@
 #include "Display_Buttons.h"
 
 #include "Color.h"
-#include "Display_Info.h"
 #include "Display_Map.h"
 #include "Graphic_Utils.h"
 #include "Inventory.h"
-#include "Mana.h"
 #include "Window.h"
-#include <MLV/MLV_all.h>
+#include <MLV/MLV_text.h>
 
 // draws the add gem button in the Square `s`, with a current level of
 // `cur_level`
 static void draw_add_gem_button(WindowInfo *win) {
-    char gem_level[5];
+    char gem_level[5] = {0};
     Square s = win->new_gem;
-    sprintf(gem_level, "%d", win->new_gem_level);
+    snprintf(gem_level, 4, "%d", win->new_gem_level);
     draw_square(s, BKGD_COLOR);
     draw_gem_color_in_square(s, MLV_COLOR_CYAN);
     win->dec_gem_level =
@@ -126,7 +124,7 @@ void draw_top_buttons(WindowInfo *win) {
 
 // Returns the square surrounding the gem of of index `index` in the `inventory`
 static Square
-get_inventory_gem(Inventory inventory, int index, WindowInfo win) {
+get_inventory_gem(int index, WindowInfo win) {
     int size = RIGHT_BAR_COLS * win.cell_size * 2 / 10;
     int x = MAP_WIDTH * win.cell_size + RIGHT_BAR_COLS * win.cell_size / 10
             + size * (index % INVENTORY_COLS);
@@ -159,11 +157,11 @@ void draw_inventory(Inventory inventory, WindowInfo *win) {
         (s.size / INVENTORY_COLS) * (INVENTORY_SIZE / INVENTORY_COLS)};
     win->inventory = s;
     for (int i = 0; i < inventory.size; i++) {
-        s_gem = get_inventory_gem(inventory, i, *win);
+        s_gem = get_inventory_gem(i, *win);
         draw_gem_in_square(s_gem, inventory.gems[i], win->right_bar_font);
     }
     if (win->selected_gem >= 0 && win->selected_gem < inventory.size)
         draw_gem_color_in_square(
-            get_inventory_gem(inventory, win->selected_gem, *win),
+            get_inventory_gem(win->selected_gem, *win),
             SELECTED_COLOR);
 }

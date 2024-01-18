@@ -15,7 +15,6 @@
 #include "Map.h"
 #include "Monsters.h"
 #include "Shots.h"
-#include "Window.h"
 
 /**
  * @brief Draws a tower centered in the square

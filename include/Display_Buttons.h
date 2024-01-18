@@ -1,5 +1,5 @@
 /**
- * @file Display_Button.c
+ * @file Display_Buttons.h
  * @author Anaelle Fourré & Florian Baudin
  * @brief Provides functions used to create and dipslay the buttons needed in
  * the game using the MLV library

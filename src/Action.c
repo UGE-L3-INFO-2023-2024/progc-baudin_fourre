@@ -12,32 +12,32 @@
 #include "Game.h"
 #include "Window.h"
 
-static UserAction get_click_on_button(Event event, WindowInfo win) {
-    if (is_click_in_button(event.mouse, win.new_tower))
+static UserAction get_click_on_button(Event event, const WindowInfo *win) {
+    if (is_click_in_button(event.mouse, win->new_tower))
         return NEW_TOWER;
-    if (is_click_in_button(event.mouse, win.new_gem))
+    if (is_click_in_button(event.mouse, win->new_gem))
         return NEW_GEM;
-    if (is_click_in_button(event.mouse, win.inc_gem_level))
+    if (is_click_in_button(event.mouse, win->inc_gem_level))
         return INC_GEM_LEVEL;
-    if (is_click_in_button(event.mouse, win.dec_gem_level))
+    if (is_click_in_button(event.mouse, win->dec_gem_level))
         return DEC_GEM_LEVEL;
-    if (is_click_in_button(event.mouse, win.inventory))
+    if (is_click_in_button(event.mouse, win->inventory))
         return SELECT_GEM;
-    if (is_click_in_button(event.mouse, win.increase_mana_level))
+    if (is_click_in_button(event.mouse, win->increase_mana_level))
         return INC_MANA_LEVEL;
-    if (is_click_in_button(event.mouse, win.fuse_gem))
+    if (is_click_in_button(event.mouse, win->fuse_gem))
         return WAIT_FUSE_GEM;
     return NO_ACTION;
 }
 
 // Returns the current user action from the `event` when there was previously no
 // action
-static UserAction get_action_no_action(Event event, WindowInfo win) {
+static UserAction get_action_no_action(Event event, const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
         action = get_click_on_button(event, win);
         if (action == NO_ACTION) {
-            if (is_click_in_game(event.mouse, win.cell_size))
+            if (is_click_in_game(event.mouse, win->cell_size))
                 return REMOVE_ACTIVEGEM;
         }
         return action;
@@ -47,10 +47,10 @@ static UserAction get_action_no_action(Event event, WindowInfo win) {
 
 // Returns the current user action from the `event` when the user has clicked on
 // the new tower button
-static UserAction get_action_new_tower(Event event, WindowInfo win) {
+static UserAction get_action_new_tower(Event event, const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
-        if (is_click_in_button(event.mouse, win.new_tower))
+        if (is_click_in_button(event.mouse, win->new_tower))
             return NO_ACTION;
         action = get_click_on_button(event, win);
         if (action == NO_ACTION)
@@ -63,7 +63,7 @@ static UserAction get_action_new_tower(Event event, WindowInfo win) {
 
 // Returns the current user action from the `event` when the user has selected a
 // gem to add to a tower
-static UserAction get_action_wait_tower(Event event, WindowInfo win) {
+static UserAction get_action_wait_tower(Event event, const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
         action = get_click_on_button(event, win);
@@ -77,12 +77,12 @@ static UserAction get_action_wait_tower(Event event, WindowInfo win) {
 
 // Returns the current user action from the `event` when the  user has clicked
 // on the fuse gem button
-static UserAction get_action_wait_fuse_gem(Event event, WindowInfo win) {
+static UserAction get_action_wait_fuse_gem(Event event, const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
-        if (is_click_in_button(event.mouse, win.fuse_gem))
+        if (is_click_in_button(event.mouse, win->fuse_gem))
             return NO_ACTION;
-        if (is_click_in_button(event.mouse, win.inventory))
+        if (is_click_in_button(event.mouse, win->inventory))
             return SELECT_FUSE_GEM;
         action = get_click_on_button(event, win);
         if (action == NO_ACTION)
@@ -95,12 +95,12 @@ static UserAction get_action_wait_fuse_gem(Event event, WindowInfo win) {
 
 // Returns the current user action from the `event` when the user has selected a
 // first gem to fuse
-static UserAction get_action_wait_second_fuse_gem(Event event, WindowInfo win) {
+static UserAction get_action_wait_second_fuse_gem(Event event, const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
-        if (is_click_in_button(event.mouse, win.fuse_gem))
+        if (is_click_in_button(event.mouse, win->fuse_gem))
             return NO_ACTION;
-        if (is_click_in_button(event.mouse, win.inventory))
+        if (is_click_in_button(event.mouse, win->inventory))
             return FUSE_GEM;
         action = get_click_on_button(event, win);
         if (action == NO_ACTION)
@@ -113,7 +113,7 @@ static UserAction get_action_wait_second_fuse_gem(Event event, WindowInfo win) {
 
 // returns the current user action from the `event` and `action` given.
 UserAction
-get_user_action(UserAction previous_action, Event event, WindowInfo win) {
+get_user_action(UserAction previous_action, Event event, const WindowInfo *win) {
 
     if (event.type == SPACE)
         return NEW_WAVE;

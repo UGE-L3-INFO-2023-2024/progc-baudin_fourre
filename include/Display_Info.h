@@ -22,7 +22,7 @@
  * @param nb_str address of the string to put the string obtained from the
  * number
  */
-void get_string_from_number(uint64_t number, char *nb_str);
+void get_string_from_number(unsigned long long number, char *nb_str);
 
 /**
  * @brief Displays the error in the right bar of the window
@@ -30,7 +30,7 @@ void get_string_from_number(uint64_t number, char *nb_str);
  * @param error Error containing the type of the message to display
  * @param win WindowInfo containing information on the current window
  */
-void display_error(Error *error, WindowInfo win);
+void display_error(Error error, const WindowInfo *win);
 
 /**
  * @brief Draws the mana bar at the top of the window
@@ -38,7 +38,7 @@ void display_error(Error *error, WindowInfo win);
  * @param mana Mana to draw
  * @param win WindowInfo containing information on the current window
  */
-void draw_mana(Mana mana, WindowInfo win);
+void draw_mana(Mana mana, const WindowInfo *win);
 
 /**
  * @brief Draws information on the game in the window
@@ -46,7 +46,7 @@ void draw_mana(Mana mana, WindowInfo win);
  * @param next_wave Timestamp indicating the time at which the next wave starts
  * @param win WindowInfo containing information on the current window
  */
-void draw_game_information(Timestamp next_wave, WindowInfo win);
+void draw_game_information(Timestamp next_wave, const WindowInfo *win);
 
 /**
  * @brief Displays the costs of the actions of the game at the top of the right
@@ -54,13 +54,13 @@ void draw_game_information(Timestamp next_wave, WindowInfo win);
  *
  * @param win WindowInfo containing the information of the current window
  */
-void display_cost(WindowInfo win);
+void display_cost(const WindowInfo *win);
 
 /**
  * @brief Displays that the game is over in the center of the window
  *
  * @param win WindowInfo containing information on the current window
  */
-void display_game_over(WindowInfo win);
+void display_game_over(const WindowInfo *win);
 
 #endif // __DISPLAY_INFO_H__
