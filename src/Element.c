@@ -24,7 +24,8 @@ Hue get_median_hue(Hue hue1, Hue hue2) {
 
 // Generates a random hue in the range of the `element`
 Hue random_hue(Element element) {
-    int start, interval;
+    int start = 0;
+    int interval = 0;
     switch (element) {
         case PYRO:
             start = 330;

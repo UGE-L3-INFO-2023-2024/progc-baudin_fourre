@@ -20,7 +20,8 @@
 #include "Window.h"
 
 int main(void) {
-    Timestamp cur_time;
+    Timestamp cur_time, begin_frame_time;
+    double wait_time;
     Game game;
     Event event;
     UserAction action;
@@ -40,6 +41,7 @@ int main(void) {
         if (game.defeat)
             continue;
 
+        begin_frame_time = time_now();
         action = get_user_action(action, event, &win);
         perform_user_action(&action, event, &game, &win);
 
@@ -48,7 +50,9 @@ int main(void) {
 
         draw_game(&game, action, &win);
         refresh();
-        wait_framerate();
+
+        wait_time = elapsed_since(begin_frame_time);
+        wait_framerate(1.0 / 60 - wait_time);
     }
     free_game(&game);
     quit(&win);

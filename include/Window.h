@@ -52,10 +52,11 @@ void init_graphic(WindowInfo *win);
 Square new_square(int x, int y, int size);
 
 /**
- * @brief Waits according to the set framerate
+ * @brief Waits `wait_time` seconds to respect the framerate
  *
+ * @param wait_time the time to wait
  */
-void wait_framerate(void);
+void wait_framerate(double wait_time);
 
 /**
  * @brief Refreshes the graphic window with the changes made
