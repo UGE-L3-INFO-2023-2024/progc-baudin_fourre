@@ -9,8 +9,6 @@
 
 #include "Utils.h"
 
-#include "Timer.h"
-
 #include <math.h>
 
 #define SQUARE(x) ((x) * (x))

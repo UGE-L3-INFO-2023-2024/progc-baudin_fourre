@@ -13,17 +13,20 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+// Returns a random coordinate within the map away by margin from the edges for the nest
 static Coord random_nest_coords(void) {
     return (Coord){
-        .col = MLV_get_random_integer(0 + MARGIN, MAP_WIDTH - MARGIN),
-        .line = MLV_get_random_integer(0 + MARGIN, MAP_HEIGHT - MARGIN)};
+        .col = MLV_get_random_integer(MARGIN, MAP_WIDTH - MARGIN - 1),
+        .line = MLV_get_random_integer(MARGIN, MAP_HEIGHT - MARGIN - 1)};
 }
 
+// Checks if the coordinate `coord` is within the map, away by `margin` from the edges
 static bool out_of_edges(Coord coord, int margin) {
     return (coord.line < margin || coord.line >= MAP_HEIGHT - margin
             || coord.col < margin || coord.col >= MAP_WIDTH - margin);
 }
 
+// Initializes the map with the coordinates of each cell
 static void init_map(Map *map) {
     assert(map);
 
@@ -37,6 +40,7 @@ static void init_map(Map *map) {
     }
 }
 
+// Returns the next cell in dir from the cell in the map
 static Cell *
 next_cell_from_direction(const Map *map, const Cell *cell, Direction dir) {
     assert(map);
@@ -49,6 +53,7 @@ next_cell_from_direction(const Map *map, const Cell *cell, Direction dir) {
     return (Cell *) &map->cells[CI(next_coord)];
 }
 
+// Returns true if the cell `cell` is surrounded by empty cells in a triangle of `dist` cells in the oposite direction of `forbidden_dir`
 static bool check_around(const Map *map,
                          const Cell *cell,
                          Direction dir,
@@ -75,6 +80,7 @@ static bool check_around(const Map *map,
     return true;
 }
 
+// Returns the maximum distance of a potential path in dir from the cell in the map
 static int
 distance_reached_direction(const Map *map, const Cell *cell, Direction dir) {
     int distance = 0;
@@ -86,6 +92,7 @@ distance_reached_direction(const Map *map, const Cell *cell, Direction dir) {
     return distance;
 }
 
+// Returns a random number between 0 and size - 1, weighted by the weights
 static int weighted_random(int weights[], int size) {
     assert(weights);
 
@@ -96,7 +103,7 @@ static int weighted_random(int weights[], int size) {
     assert(sum > 0);
 
     int random_index = size - 1;
-    int random_num = MLV_get_random_integer(0, sum);
+    int random_num = MLV_get_random_integer(0, sum - 1);
     int acc = 0;
     for (int i = 0; i < random_index; i++) {
         acc += weights[i];

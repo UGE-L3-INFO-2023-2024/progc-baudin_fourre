@@ -12,7 +12,6 @@
 #include <assert.h>
 #include <math.h>
 #include <stdbool.h>
-#include <stdint.h>
 
 #include "Error.h"
 #include "Monsters.h"
@@ -26,15 +25,14 @@ Mana init_mana(void) {
     };
 }
 
-// Returns 1 if the quantity of mana is superior to the amount `required`, or
-// else 0;
+// Returns true if the quantity of mana is superior to the amount `required`, false otherwise
 static bool enough_mana(const Mana *mana, double required) {
     assert(required >= 0);
     return required <= mana->quantity;
 }
 
 // Decreases the mana quanityt by `required` if possible.
-// Returns 1 if it was possible, else 0.
+// Returns true if it was possible, false otherwise
 static bool mana_remove_required(Mana *mana, double required, Error *error) {
     assert(required >= 0);
     if (!enough_mana(mana, required)) {
@@ -53,7 +51,7 @@ void add_mana(Mana *mana, double quantity) {
         mana->quantity += quantity;
 }
 
-// Increases the mana level, returns 1 if it was possible, or else 0
+// Increases the mana level, returns true if it was possible, false otherwise
 bool increase_mana_level(Mana *mana, Error *error) {
     if (!mana_remove_required(mana, mana->max * 0.25, error)) {
         return false;

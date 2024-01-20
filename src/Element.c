@@ -9,10 +9,7 @@
 
 #include "Element.h"
 
-#include <stdio.h>
 #include <stdlib.h>
-
-#include "Monsters.h"
 
 // Returns the median hue between `hue1` and `hue2`
 Hue get_median_hue(Hue hue1, Hue hue2) {
