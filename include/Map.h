@@ -65,7 +65,7 @@ typedef struct {
 Map generate_map(void);
 
 /**
- * @brief Get the direction of the cell below `position`
+ * @brief Gets the direction of the cell below `position`
  *
  * @param map Map containing the cells and the path
  * @param position Position where to get the direction

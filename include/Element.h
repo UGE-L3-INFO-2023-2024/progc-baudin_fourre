@@ -50,7 +50,7 @@ typedef struct {
 } ElementEffect;
 
 /**
- * @brief Get the median hue between `hue1` and `hue2`
+ * @brief Gets the median hue between `hue1` and `hue2`
  *
  * @param hue1 the first hue
  * @param hue2 the second hue

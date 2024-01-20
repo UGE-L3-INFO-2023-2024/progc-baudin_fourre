@@ -49,7 +49,7 @@ Error init_error(void);
 void new_error(Error *error, ErrorType type);
 
 /**
- * @brief Get the error message from its type
+ * @brief Gets the error message from its type
  *
  * @param error the error to get the message from
  * @return the message associated to the error type

@@ -45,14 +45,14 @@ Shot *create_new_shot(Coord tower, Gem gem);
 void free_shots(ShotList *shots);
 
 /**
- * @brief Free a shot
+ * @brief Frees a shot
  *
  * @param shot the shot to free
  */
 void free_shot(Shot *shot);
 
 /**
- * @brief Move a shot to a target position
+ * @brief Moves a shot to a target position
  *
  * @param shot the shot to move
  * @param target the target position

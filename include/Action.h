@@ -37,7 +37,7 @@ typedef enum {
 } UserAction;
 
 /**
- * @brief Get the user action from the interactions with the game
+ * @brief Gets the user action from the interactions with the game
  *
  * @param previous_action the UserAction of the game, before the present, from which the current UserAction will depend
  * @param event the Event retrieved from which to get the corresponding UserAction

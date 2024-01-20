@@ -20,7 +20,7 @@ typedef struct {
 } Square, Button;
 
 /**
- * @brief Draw a `square` using the color `bkgd_color`
+ * @brief Draws a `square` using the color `bkgd_color`
  *
  * @param square Square to draw, with its coordinates
  * @param bkgd_color the color of the square
@@ -28,14 +28,14 @@ typedef struct {
 void draw_square(Square square, MLV_Color bkgd_color);
 
 /**
- * @brief Draw the square as selected by drawing a transparent black square over it
+ * @brief Draws the square as selected by drawing a transparent black square over it
  *
  * @param s the Square to draw as selected
  */
 void draw_selected_square(Square s);
 
 /**
- * @brief Draw a filled bar according to the information given
+ * @brief Draws a filled bar according to the information given
  *
  * @param x x-coordinate of the North-West corner of the bar
  * @param y y-coordinate of the North-West corner of the bar

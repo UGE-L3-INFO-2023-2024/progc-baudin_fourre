@@ -112,7 +112,7 @@ void apply_damage(Monster *monster, double damage, double *add_damage);
 void apply_extra_damage(Monster *monster, double *add_damage);
 
 /**
- * @brief Tell if the monster is dead
+ * @brief Tells if the monster is dead
  *
  * @param monster the monster to check
  * @return true if the monster is dead, false otherwise
@@ -120,7 +120,7 @@ void apply_extra_damage(Monster *monster, double *add_damage);
 bool is_dead_monster(const Monster *monster);
 
 /**
- * @brief Get the next monster in the radius of pos
+ * @brief Gets the next monster in the radius of pos
  *
  * @param monster a monster in the list to check first and start from
  * @param pos position around which the radius is checked

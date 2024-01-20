@@ -57,14 +57,14 @@ Game init_game(void);
 bool add_tower(Game *game, WindowInfo *win, Coord coord);
 
 /**
- * @brief increases the new gem level by one
+ * @brief Increases the new gem level by one
  *
  * @param win the WindowInfo structure containing the new gem level
  */
 void increase_new_gem_level(WindowInfo *win);
 
 /**
- * @brief decreases the new gem level by one
+ * @brief Decreases the new gem level by one
  *
  * @param win the WindowInfo structure containing the new gem level
  */
@@ -114,7 +114,7 @@ void add_wave(Game *game);
 void remove_activegem(Game *game, Coord tower);
 
 /**
- * @brief Move all the shots of the game
+ * @brief Moves all the shots of the game
  *
  * @param game the current game
  * @param time Timestamp since the shots were last moved
@@ -146,7 +146,7 @@ void damage_monsters(Game *game);
 void game_fuse_gems(Game *game, int gem1, int gem2);
 
 /**
- * @brief  Updates the `game` according to the time the game was last updated
+ * @brief Updates the `game` according to the time the game was last updated
  *
  * @param game the game to update
  * @param cur_time time of the last update

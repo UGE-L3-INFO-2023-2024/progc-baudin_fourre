@@ -17,14 +17,14 @@
 #include "Shots.h"
 
 /**
- * @brief Draw a tower centered in the square
+ * @brief Draws a tower centered in the square
  *
  * @param s Square to center the tower in
  */
 void draw_tower_in_square(Square s);
 
 /**
- * @brief Draw a gem centered in the square `s`
+ * @brief Draws a gem centered in the square `s`
  *
  * @param s Square to center the gem in
  * @param color Color of the gem to draw
@@ -32,7 +32,7 @@ void draw_tower_in_square(Square s);
 void draw_gem_color_in_square(Square s, MLV_Color color);
 
 /**
- * @brief Draw a gem centered in the square `s`
+ * @brief Draws a gem centered in the square `s`
  *
  * @param s Square to center the gem in
  * @param gem Gem to draw
@@ -42,7 +42,7 @@ void draw_gem_color_in_square(Square s, MLV_Color color);
 void draw_gem_in_square(Square s, Gem gem, MLV_Font *font);
 
 /**
- * @brief Draw the list of activegems by drawing gems in the correct towers
+ * @brief Draws the list of activegems by drawing gems in the correct towers
  *
  * @param activegems the list of activegems to draw
  * @param cell_size size of a cell
@@ -50,7 +50,7 @@ void draw_gem_in_square(Square s, Gem gem, MLV_Font *font);
 void draw_activegems(ActiveGemList activegems, int cell_size);
 
 /**
- * @brief Draw the list of shots on the map
+ * @brief Draws the list of shots on the map
  *
  * @param shots the list of shots to draw
  * @param cell_size size of a cell
@@ -58,7 +58,7 @@ void draw_activegems(ActiveGemList activegems, int cell_size);
 void draw_shots(ShotList shots, int cell_size);
 
 /**
- * @brief Draw the list of monsters on their position of the map
+ * @brief Draws the list of monsters on their position of the map
  *
  * @param monsters List of monsters to draw
  * @param map Map on which the monsters move
@@ -67,7 +67,7 @@ void draw_shots(ShotList shots, int cell_size);
 void draw_monsters(MonsterList monsters, const Map *map, int cell_size);
 
 /**
- * @brief Draw the grid of the map, according to the type of each cell
+ * @brief Draws the grid of the map, according to the type of each cell
  *
  * @param cell_size size of a cell
  */

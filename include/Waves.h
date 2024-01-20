@@ -11,6 +11,9 @@
 
 #include "Monsters.h"
 
+/**
+ * @brief Enumerates the different types of waves
+ */
 typedef enum {
     NORMAL = 5,
     CROWD = 7,

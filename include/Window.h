@@ -13,11 +13,13 @@
 #include <MLV/MLV_all.h>
 
 #include "Graphic_Utils.h"
-#include "Map.h"
 
 #define RIGHT_BAR_COLS 10
 #define INVENTORY_COLS 4
 
+/**
+ * @brief Structure containing information of the window
+ */
 typedef struct {
     int cell_size;
     int new_gem_level;
@@ -60,7 +62,6 @@ void wait_framerate(double wait_time);
 
 /**
  * @brief Refreshes the graphic window with the changes made
- *
  */
 void refresh(void);
 

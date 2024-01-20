@@ -42,7 +42,7 @@ typedef struct {
 Event get_events(void);
 
 /**
- * @brief Get the index of the selected gem of the inventory from an event
+ * @brief Gets the index of the selected gem of the inventory from an event
  *
  * @param event Event retrieved (must be of type click), with the coordinates of the click
  * @param win Information of the current window

@@ -16,7 +16,7 @@
 #include "Window.h"
 
 /**
- * @brief Get the shortened string associated to the `number` with standard
+ * @brief Gets the shortened string associated to the `number` with standard
  * prefixes 'k', 'M' and 'G'
  *
  * @param number the number to shorten

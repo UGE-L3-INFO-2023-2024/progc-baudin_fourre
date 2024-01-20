@@ -16,7 +16,7 @@
 #include "Window.h"
 
 /**
- * @brief draw the entire game based on the current action
+ * @brief Draws the entire game based on the current action
  *
  * @param game the game to draw
  * @param action current UserAction of the game
