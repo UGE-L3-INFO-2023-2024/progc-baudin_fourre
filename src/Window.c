@@ -9,13 +9,15 @@
 
 #include "Window.h"
 #include "Color.h"
-#include "Inventory.h"
+#include "Map.h"
 #include <MLV/MLV_all.h>
+#include <MLV/MLV_window.h>
 
 // Returns the cell size according to the user desktop size
-static void get_cell_size(int *cell_size, unsigned int *w, unsigned int *h) {
+static void get_cell_size(int *cell_size, int *w, int *h) {
     int w_cell_size, h_cell_size;
-    MLV_get_desktop_size(w, h);
+    *w = MLV_get_desktop_width();
+    *h = MLV_get_desktop_height();
     w_cell_size = *w / (MAP_WIDTH + RIGHT_BAR_COLS);
     h_cell_size = *h / MAP_HEIGHT;
     *cell_size = w_cell_size <= h_cell_size ? w_cell_size : h_cell_size;
@@ -23,12 +25,12 @@ static void get_cell_size(int *cell_size, unsigned int *w, unsigned int *h) {
 
 // Initializes the graphic window
 void init_graphic(WindowInfo *win) {
-    unsigned int w, h;
+    int w, h;
     get_cell_size(&win->cell_size, &w, &h);
     MLV_create_window("Tower Defense", "", w, h);
     MLV_clear_window(RIGHT_BAR_COLOR);
     win->right_bar_font =
-        MLV_load_font("fonts/calling.ttf", win->cell_size * 0.7);
+        MLV_load_font("fonts/calling.ttf", win->cell_size * 7 / 10);
     win->small_font =
         MLV_load_font("fonts/calling.ttf", win->cell_size * 1 / 2);
     win->new_gem_level = 0;
