@@ -1,7 +1,7 @@
 /**
  * @file Queue.h
  * @author Anaelle Fourré & Florian Baudin
- * @brief
+ * @brief This module provides macros from the sys/queue.h module
  * @date 2024-01-05
  *
  */

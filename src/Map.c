@@ -187,19 +187,3 @@ Direction get_position_direction(const Map *map, Position position) {
         return NODIR;
     return cell.direction;
 }
-
-// gcc src/Map.c -Iinclude/ -o TestMap -lMLV
-/*
-int main() {
-    Map map = generate_map();
-
-    for (int i = 0; i < MAP_WIDTH; i++) {
-        for (int j = 0; j < MAP_HEIGHT; j++) {
-            printf("%c", 'A' + map.cells[i][j].type);
-        }
-        printf("\n");
-    }
-
-    return 0;
-}
-*/

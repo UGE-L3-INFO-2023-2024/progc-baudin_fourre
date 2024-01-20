@@ -19,7 +19,7 @@ static void get_cell_size(int *cell_size, int *w, int *h) {
     *w = MLV_get_desktop_width();
     *h = MLV_get_desktop_height();
     w_cell_size = *w / (MAP_WIDTH + RIGHT_BAR_COLS);
-    h_cell_size = *h / MAP_HEIGHT;
+    h_cell_size = *h / (MAP_HEIGHT * 1.1);
     *cell_size = w_cell_size <= h_cell_size ? w_cell_size : h_cell_size;
 }
 
