@@ -1,6 +1,8 @@
 # Rapport du Projet de Programmation C : Tower Defense
 
-Florian Baudin & Anaelle Fourre
+Florian Baudin, Anaëlle Fourré
+
+![Copie d'écran du programme](ScreenshotTowerDefense.png)
 
 ## Introduction
 
@@ -129,4 +131,4 @@ Afin de gérer les erreurs de l'utilisateur, nous avons créé une structure `Er
 
 ## Conclusion
 
-
+Nous avons créé un jeu de Tower Defense en C, en essayant de maintenir un code propre et bien organisé. Le programme final est jouable, bien qu'un peu ennuyant car assez facile une fois le jeu compris. En effet, beaucoup de formule dépendent du niveau de la réserve de mana. Ainsi, si l'on démarre une vague avec beaucoup d'avance on gagne assez de mana pour l'agrandir et donc en gagner encore plus en en démarrant encore une avec beaucoup d'avance. Le mana est suffisant pour acheter des gemmes très fortes et battres tous les monstres de plusieurs vagues simultanément. Nous avons essayé de contrer cette facilité en ajoutant un délai de dix secondes entre le démarrage de deux vagues et en diminuant la constante de dégât laissé à notre choix. Le développement de ce jeu n'en était pas moins intéressant.
