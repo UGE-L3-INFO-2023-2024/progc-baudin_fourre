@@ -13,18 +13,18 @@ Nous devions notamment utiliser la bibliothèque graphique MLV, et respecter une
 
 ### Organisation du travail
 
-Nous avons travaillé sur ce projet en binôme. Nous avons donc utilisé Git pour gérer le versionning du projet, comme indiqué dans le sujet. Nous avons également utilisé Discord pour communiquer et nous organiser, après s'être mis d'accord sur une première structure et modularisation du projet.
+Nous avons travaillé sur ce projet en binôme. Nous avons donc utilisé Git pour gérer le versionning du projet, comme indiqué dans le sujet. Nous avons en particulier travaillé sur la branche develop. Nous avons également utilisé Discord pour communiquer et nous organiser, après s'être mis d'accord sur une première structure et modularisation du projet.
 
 ## Manuel utilisateur
 
 ### Compilation
 
-Afin de pouvoir jouer au jeu, il faut tout d'abord compiler le projet. Pour cela, il faut se placer à la racine du projet et exécuter la commande `make`. Cela va créer un exécutable `tower_defense` à la racine du projet ainsi que les fichiers objets intermédiaires (.o et .d) dans le dossier `bin`.
+Afin de pouvoir jouer au jeu, il faut tout d'abord compiler le projet. Pour cela, il faut se placer à la racine du projet et exécuter la commande `make`. Cela va créer un exécutable `tower-defense` à la racine du projet ainsi que les fichiers objets intermédiaires (.o et .d) dans le dossier `bin`.
 En effet, chaque fichier source (.c) est compilé en un fichier objet (.o) et un fichier de dépendances (.d). Le fichier de dépendances permet de savoir quelles sont les dépendances d'un fichier source, et ainsi de recompiler automatiquement les fichiers sources qui ont été modifiés.
 
 ### Exécution
 
-Une fois le projet compilé, il suffit d'exécuter la commande `./tower_defense` pour lancer le jeu.
+Une fois le projet compilé, il suffit d'exécuter la commande `./tower-defense` pour lancer le jeu.
 Aucune option n'est disponible pour le moment.
 
 ### Nettoyage
