@@ -20,7 +20,7 @@
 #include "Window.h"
 
 int main(void) {
-    Timestamp cur_time, begin_frame_time;
+    Timestamp update_time, begin_frame_time;
     double wait_time;
     Game game;
     Event event;
@@ -33,7 +33,7 @@ int main(void) {
     event = (Event){NOEVENT, (Coord){0, 0}};
     action = NO_ACTION;
     init_graphic(&win);
-    cur_time = time_now();
+    update_time = time_now();
 
     draw_game(&game, action, &win);
 
@@ -45,14 +45,14 @@ int main(void) {
         action = get_user_action(action, event, &win);
         perform_user_action(&action, event, &game, &win);
 
-        update_game(&game, cur_time);
-        cur_time = time_now();
+        update_game(&game, update_time);
+        update_time = time_now();
 
         draw_game(&game, action, &win);
         refresh();
 
-        wait_time = elapsed_since(begin_frame_time);
-        wait_framerate(1.0 / 60 - wait_time);
+        wait_time = 1.0 / 60 - elapsed_since(begin_frame_time);
+        wait_framerate(wait_time);
     }
     free_game(&game);
     quit(&win);
