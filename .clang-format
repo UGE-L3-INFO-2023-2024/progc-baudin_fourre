@@ -1,0 +1,14 @@
+UseTab: Never
+IndentWidth: 4
+BreakBeforeBraces: Attach
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: None
+IndentCaseLabels: true
+ColumnLimit: 80
+AlignConsecutiveMacros: true
+SpacesInParentheses: false
+SpaceAfterCStyleCast: true
+InsertNewlineAtEOF: true
+BreakBeforeBinaryOperators: NonAssignment
+BinPackArguments: false
+BinPackParameters: false
