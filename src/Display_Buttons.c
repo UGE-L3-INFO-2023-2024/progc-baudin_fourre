@@ -123,8 +123,7 @@ void draw_top_buttons(WindowInfo *win) {
 }
 
 // Returns the square surrounding the gem of of index `index` in the `inventory`
-static Square
-get_inventory_gem(int index, WindowInfo win) {
+static Square get_inventory_gem(int index, WindowInfo win) {
     int size = RIGHT_BAR_COLS * win.cell_size * 2 / 10;
     int x = MAP_WIDTH * win.cell_size + RIGHT_BAR_COLS * win.cell_size / 10
             + size * (index % INVENTORY_COLS);
@@ -161,7 +160,6 @@ void draw_inventory(Inventory inventory, WindowInfo *win) {
         draw_gem_in_square(s_gem, inventory.gems[i], win->right_bar_font);
     }
     if (win->selected_gem >= 0 && win->selected_gem < inventory.size)
-        draw_gem_color_in_square(
-            get_inventory_gem(win->selected_gem, *win),
-            SELECTED_COLOR);
+        draw_gem_color_in_square(get_inventory_gem(win->selected_gem, *win),
+                                 SELECTED_COLOR);
 }

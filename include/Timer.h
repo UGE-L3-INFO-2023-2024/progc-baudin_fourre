@@ -36,7 +36,7 @@ Timestamp time_now(void);
 Timestamp time_add_seconds(Timestamp time, double seconds);
 
 /**
- * @brief Gets the current time plus `seconds` 
+ * @brief Gets the current time plus `seconds`
  *
  * @param seconds the number of seconds to add to the current time
  * @return the current time with `seconds` added

@@ -95,7 +95,8 @@ static UserAction get_action_wait_fuse_gem(Event event, const WindowInfo *win) {
 
 // Returns the current user action from the `event` when the user has selected a
 // first gem to fuse
-static UserAction get_action_wait_second_fuse_gem(Event event, const WindowInfo *win) {
+static UserAction get_action_wait_second_fuse_gem(Event event,
+                                                  const WindowInfo *win) {
     UserAction action;
     if (event.type == CLICK) {
         if (is_click_in_button(event.mouse, win->fuse_gem))
@@ -112,8 +113,9 @@ static UserAction get_action_wait_second_fuse_gem(Event event, const WindowInfo 
 }
 
 // returns the current user action from the `event` and `action` given.
-UserAction
-get_user_action(UserAction previous_action, Event event, const WindowInfo *win) {
+UserAction get_user_action(UserAction previous_action,
+                           Event event,
+                           const WindowInfo *win) {
 
     if (event.type == SPACE)
         return NEW_WAVE;

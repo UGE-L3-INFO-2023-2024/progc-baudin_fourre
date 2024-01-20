@@ -52,10 +52,11 @@ bool is_position_center(Position position) {
     return 0;
 }
 
-// Returns true if the position is past the center of the `next_cell` according to the `direction`, false otherwise
+// Returns true if the position is past the center of the `next_cell` according
+// to the `direction`, false otherwise
 bool has_past_center_position(Position position,
-                             Direction dir,
-                             Coord next_cell) {
+                              Direction dir,
+                              Coord next_cell) {
     Position next = coord_to_center_position(next_cell);
     switch (dir) {
         case NORTH:

@@ -9,8 +9,8 @@
 
 #include "Game.h"
 
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
 
 #include "Error.h"
 #include "Gems.h"
@@ -20,8 +20,8 @@
 #include "Shots.h"
 #include "Timer.h"
 #include "Utils.h"
-#include "Window.h"
 #include "Waves.h"
+#include "Window.h"
 
 // Returns a Game structure with its initial values
 Game init_game(void) {
@@ -242,8 +242,9 @@ void damage_monsters(Game *game) {
     LIST_FOREACH_SAFE(monster, &game->monsters, entries, next_m) {
         Shot *shot, *next_s;
         LIST_FOREACH_SAFE(shot, &monster->shots, entries, next_s) {
-            // When the shot reaches the monster, coordinates are set to be equal
-            // so here we check if floating point numbers are equal, but that's ok
+            // When the shot reaches the monster, coordinates are set to be
+            // equal so here we check if floating point numbers are equal, but
+            // that's ok
             if (!EQUAL_POSITIONS(shot->position, monster->position))
                 continue;
             Gem gem = shot->source;

@@ -28,7 +28,8 @@ typedef struct {
 void draw_square(Square square, MLV_Color bkgd_color);
 
 /**
- * @brief Draws the square as selected by drawing a transparent black square over it
+ * @brief Draws the square as selected by drawing a transparent black square
+ * over it
  *
  * @param s the Square to draw as selected
  */

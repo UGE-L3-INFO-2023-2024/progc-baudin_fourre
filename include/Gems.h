@@ -26,7 +26,8 @@ typedef struct {
 } Gem;
 
 /**
- * @brief Structure representing an active gem (a gem that has been placed on a tower)
+ * @brief Structure representing an active gem (a gem that has been placed on a
+ * tower)
  */
 typedef struct ActiveGem {
     Gem gem;
@@ -51,7 +52,8 @@ typedef LIST_HEAD(ActiveGemList, ActiveGem) ActiveGemList;
 Gem generate_pure_gem(int level);
 
 /**
- * @brief Creates an active gem from a gem and adds it to the list of active gems
+ * @brief Creates an active gem from a gem and adds it to the list of active
+ * gems
  *
  * @param activegem_list the list of active gems
  * @param gem the gem to add to the list

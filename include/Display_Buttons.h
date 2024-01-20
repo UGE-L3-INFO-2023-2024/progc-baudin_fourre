@@ -21,7 +21,8 @@
 void draw_top_buttons(WindowInfo *win);
 
 /**
- * @brief Draws the `inventory` and its gems in the right bar, hollow the selected gem if there's one
+ * @brief Draws the `inventory` and its gems in the right bar, hollow the
+ * selected gem if there's one
  *
  * @param inventory the inventory to draw
  * @param win the WindowInfo containing information on the current window

@@ -68,7 +68,8 @@ ElementEffect init_element_effect(void);
 /**
  * @brief Generates a random hue in the given element, if there's one
  *
- * @param element Element from which to generate the hue (if NONE, generate any hue)
+ * @param element Element from which to generate the hue (if NONE, generate any
+ * hue)
  * @return Hue random hue generated
  */
 Hue random_hue(Element element);

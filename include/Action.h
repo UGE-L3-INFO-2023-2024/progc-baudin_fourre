@@ -39,8 +39,10 @@ typedef enum {
 /**
  * @brief Gets the user action from the interactions with the game
  *
- * @param previous_action the UserAction of the game, before the present, from which the current UserAction will depend
- * @param event the Event retrieved from which to get the corresponding UserAction
+ * @param previous_action the UserAction of the game, before the present, from
+ * which the current UserAction will depend
+ * @param event the Event retrieved from which to get the corresponding
+ * UserAction
  * @param win the WindowInfo containing information on the current window
  * @return the UserAction realized by the user
  */
@@ -48,7 +50,8 @@ UserAction
 get_user_action(UserAction previous_action, Event event, const WindowInfo *win);
 
 /**
- * @brief Performs the correct action on the `game` depending on the current `action`
+ * @brief Performs the correct action on the `game` depending on the current
+ * `action`
  *
  * @param action the UserAction previously retrieved
  * @param event the Event previously retrieved

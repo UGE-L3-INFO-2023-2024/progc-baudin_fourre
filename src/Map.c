@@ -37,7 +37,8 @@ static void init_map(Map *map) {
     }
 }
 
-static Cell *next_cell_from_direction(const Map *map, const Cell *cell, Direction dir) {
+static Cell *
+next_cell_from_direction(const Map *map, const Cell *cell, Direction dir) {
     assert(map);
     assert(cell);
 
@@ -172,7 +173,8 @@ Map generate_map(void) {
     return map;
 }
 
-// Returns true if the coordinates `coord` are within the map, or false otherwise
+// Returns true if the coordinates `coord` are within the map, or false
+// otherwise
 bool is_in_map(Coord coord) {
     return coord.col >= 0 && coord.line >= 0 && coord.col < MAP_WIDTH
            && coord.line < MAP_HEIGHT;

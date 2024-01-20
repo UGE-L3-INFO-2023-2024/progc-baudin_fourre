@@ -15,7 +15,8 @@
 #define PI 3.14159265358979323846
 
 /**
- * @brief Macro that checks if two positions are equal (warning: check equality on double)
+ * @brief Macro that checks if two positions are equal (warning: check equality
+ * on double)
  */
 #define EQUAL_POSITIONS(pos1, pos2)                                            \
     (((pos1).x == (pos2).x) && ((pos1).y == (pos2).y))
@@ -84,7 +85,7 @@ Position coord_to_center_position(Coord coord);
 
 /**
  * @brief Gets the distance between two positions
- * 
+ *
  * @param pos1 First position
  * @param pos2 Second position
  * @return the distance between the two positions
@@ -97,9 +98,12 @@ double distance_between_positions(Position pos1, Position pos2);
  * @param position Float position
  * @param dir Cardinal direction in which the `position` is moving
  * @param next_cell Coordinates of the `next_cell` the position must past
- * @return true if the position is past the center of the next cell, false otherwise
+ * @return true if the position is past the center of the next cell, false
+ * otherwise
  */
-bool has_past_center_position(Position position, Direction dir, Coord next_cell);
+bool has_past_center_position(Position position,
+                              Direction dir,
+                              Coord next_cell);
 
 /**
  * @brief Gets the coordinates of the next cell on the path
