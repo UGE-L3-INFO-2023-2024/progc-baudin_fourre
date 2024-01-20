@@ -3,17 +3,17 @@
 CFLAGS = -Wall -std=c17 -pedantic -MMD
 LDLIBS = -lMLV -lm
 SRCS = $(wildcard src/*.c) 
-OBJS = $(SRCS:src/%.c=obj/%.o)
+OBJS = $(SRCS:src/%.c=bin/%.o)
 EXEC = TowerDefense
 
 $(EXEC): $(OBJS)
 	gcc -Iinclude -o $@ $^ $(LDLIBS)
 
-obj/%.o: src/%.c
-	@mkdir -p obj
+bin/%.o: src/%.c
+	@mkdir -p bin
 	gcc -Iinclude $(CFLAGS) -c $< -o $@
 
--include $(wildcard obj/*.d)
+-include $(wildcard bin/*.d)
 
 clean:
-	rm -f $(EXEC) $(OBJS) obj/*.d
+	rm -f $(EXEC) $(OBJS) bin/*.d

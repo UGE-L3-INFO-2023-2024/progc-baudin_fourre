@@ -36,6 +36,7 @@ void init_graphic(WindowInfo *win) {
         MLV_load_font("fonts/calling.ttf", win->cell_size * 7 / 10);
     win->small_font =
         MLV_load_font("fonts/calling.ttf", win->cell_size * 1 / 2);
+    MLV_change_frame_rate(60);
     win->new_gem_level = 0;
     win->selected_gem = -1;
     win->nb_towers = 0;
@@ -50,9 +51,9 @@ void clear_window(WindowInfo win) {
                               MLV_COLOR_LIGHT_GREY);
 }
 
-// Waits `wait_time` seconds to respect the framerate
-void wait_framerate(double wait_time) {
-    MLV_wait_milliseconds((int) (wait_time * 1000));
+// Waits according to the set framerate
+void wait_framerate(void) {
+    MLV_delay_according_to_frame_rate();
 }
 
 // Refreshes the window with the changes made

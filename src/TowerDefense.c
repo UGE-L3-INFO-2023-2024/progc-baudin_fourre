@@ -52,7 +52,7 @@ int main(void) {
         refresh();
 
         wait_time = 1.0 / 60 - elapsed_since(begin_frame_time);
-        wait_framerate(wait_time);
+        wait_framerate();
     }
     free_game(&game);
     quit(&win);
