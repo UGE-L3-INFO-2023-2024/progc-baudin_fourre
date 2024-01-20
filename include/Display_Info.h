@@ -16,7 +16,8 @@
 #include "Window.h"
 
 /**
- * @brief Get the shortened string associated to the `number` with standard prefixes 'k', 'M' and 'G'
+ * @brief Get the shortened string associated to the `number` with standard
+ * prefixes 'k', 'M' and 'G'
  *
  * @param number the number to shorten
  * @param nb_str the string to write (must be 32 char allocated)
@@ -54,6 +55,14 @@ void draw_game_information(Timestamp next_wave, const WindowInfo *win);
  * @param win WindowInfo containing the information of the current window
  */
 void display_cost(const WindowInfo *win);
+
+/**
+ * @brief Displays the score in the top left corner of the window
+ *
+ * @param win WindowInfo containing information on the current window
+ * @param score the score to display
+ */
+void display_score(const WindowInfo *win, double score);
 
 /**
  * @brief Displays that the game is over in the center of the window

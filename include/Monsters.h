@@ -41,6 +41,7 @@ typedef struct Monster {
     ShotList shots;
     LIST_ENTRY(Monster) entries;
     Direction direction;
+    int score_mult;
 } Monster;
 
 /**
@@ -55,10 +56,12 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @param speed speed of the monster, in cells per seconds
  * @param HP initial HP of the monster
  * @param start_time time when the monster leaves the nest
+ * @param score_mult the value by which the damage to the monster is multiplied
+ * when added to the score
  * @return the Monster structure allocated
  */
-Monster *
-create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
+Monster *create_new_monster(
+    const Map *map, int speed, int HP, Timestamp start_time, int score_mult);
 
 /**
  * @brief Frees the space allocated for the list of monsters
@@ -79,7 +82,8 @@ void free_monster(Monster *monster);
  *
  * @param map Map where the monster moves
  * @param monster the monster to move
- * @param time_elapsed time elapsed during the movement of the monster in seconds
+ * @param time_elapsed time elapsed during the movement of the monster in
+ * seconds
  */
 void move_monster(const Map *map, Monster *monster, double time_elapsed);
 
@@ -121,7 +125,8 @@ bool is_dead_monster(const Monster *monster);
  * @param monster a monster in the list to check first and start from
  * @param pos position around which the radius is checked
  * @param radius radius of the circle around pos
- * @return the next monster in radius (can be the first monster passed) or NULL if the list has reached its end
+ * @return the next monster in radius (can be the first monster passed) or NULL
+ * if the list has reached its end
  */
 Monster *
 get_next_monster_in_radius(Monster *monster, Position pos, double radius);

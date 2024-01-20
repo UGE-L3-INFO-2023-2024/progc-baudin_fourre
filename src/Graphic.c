@@ -9,6 +9,7 @@
 #include "Graphic.h"
 
 #include "Action.h"
+#include "Color.h"
 #include "Display_Buttons.h"
 #include "Display_Info.h"
 #include "Display_Map.h"
@@ -17,7 +18,6 @@
 #include "Map.h"
 #include "Monsters.h"
 #include "Window.h"
-#include "Color.h"
 
 // draws a bar on the right of the game window
 static void
@@ -31,6 +31,7 @@ draw_right_bar(Game *game, UserAction current_action, WindowInfo *win) {
     draw_inventory(game->inventory, win);
     display_error(game->error, win);
     display_cost(win);
+    display_score(win, game->total_damage);
     if (current_action == NEW_TOWER)
         draw_selected_square(win->new_tower);
     if (current_action == WAIT_FUSE_GEM

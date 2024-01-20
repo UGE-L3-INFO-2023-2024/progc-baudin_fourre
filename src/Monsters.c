@@ -29,8 +29,8 @@ static Effects init_monster_effects(void) {
 }
 
 // Returns the adress of the new Monster created with the given arguments
-Monster *
-create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
+Monster *create_new_monster(
+    const Map *map, int speed, int HP, Timestamp start_time, int score_mult) {
     Monster *monster = malloc(sizeof(Monster));
     if (!monster) {
         perror("Crash on monster allocation");
@@ -46,6 +46,7 @@ create_new_monster(const Map *map, int speed, int HP, Timestamp start_time) {
         .speed = speed,
         .start_time = start_time,
         .effects = init_monster_effects(),
+        .score_mult = score_mult,
     };
 
     LIST_INIT(&monster->shots);
@@ -119,7 +120,7 @@ double get_damage(const Monster *monster, Gem gem) {
 // Applies the `damage` to the `monster`
 void apply_damage(Monster *monster, double damage, double *add_damage) {
     monster->hp = (monster->hp - damage) > 0 ? monster->hp - damage : 0;
-    *add_damage += damage;
+    *add_damage += damage / monster->score_mult;
 }
 
 // Applies the extra damage from the element effect of the `monster`, if

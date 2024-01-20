@@ -25,7 +25,7 @@ static void get_cell_size(int *cell_size, unsigned int *w, unsigned int *h) {
 void init_graphic(WindowInfo *win) {
     unsigned int w, h;
     get_cell_size(&win->cell_size, &w, &h);
-    MLV_create_full_screen_window("Tower Defense", "", w, h);
+    MLV_create_window("Tower Defense", "", w, h);
     MLV_clear_window(RIGHT_BAR_COLOR);
     win->right_bar_font =
         MLV_load_font("fonts/calling.ttf", win->cell_size * 0.7);

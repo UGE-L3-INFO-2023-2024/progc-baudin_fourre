@@ -65,8 +65,12 @@ void display_error(Error error, const WindowInfo *win) {
 
 // Draws the mana bar at the top of the window
 void draw_mana(Mana mana, const WindowInfo *win) {
-    char mana_values[130] = {0};
-    snprintf(mana_values, 129, "%.0f/%.0f", mana.quantity, mana.max);
+    char mana_values[66] = {0};
+    char mana_max[32] = {0};
+    char mana_value[32] = {0};
+    get_string_from_number((unsigned long long) mana.quantity, mana_value);
+    get_string_from_number((unsigned long long) mana.max, mana_max);
+    snprintf(mana_values, 65, "%s/%s", mana_value, mana_max);
     double filled = mana.quantity / mana.max;
     draw_bar((MAP_WIDTH * win->cell_size) * 1 / 5,
              win->cell_size * 1 / 4,
@@ -93,10 +97,13 @@ void draw_mana(Mana mana, const WindowInfo *win) {
 static void display_new_tower_cost(const WindowInfo *win) {
     int w = 0, h = 0;
     char cost[32] = {0};
-    get_string_from_number((unsigned long long) mana_required_tower(win->nb_towers), cost);
+    get_string_from_number(
+        (unsigned long long) mana_required_tower(win->nb_towers), cost);
     MLV_get_size_of_text_with_font(cost, &w, &h, win->right_bar_font);
     MLV_draw_adapted_text_box_with_font(
-        win->new_tower.x - (w - win->new_tower.size) / 2, // TODO : verifier que * 0.5 était transformable en / 2
+        win->new_tower.x
+            - (w - win->new_tower.size)
+                  / 2, // TODO : verifier que * 0.5 était transformable en / 2
         win->new_tower.y - win->new_tower.size * 2 / 5,
         cost,
         win->right_bar_font,
@@ -198,6 +205,23 @@ void draw_game_information(Timestamp next_wave, const WindowInfo *win) {
                                         TRANSPARANT,
                                         color,
                                         bkgd,
+                                        MLV_TEXT_CENTER);
+}
+
+// Displays the score in the top left corner of the window
+void display_score(const WindowInfo *win, double score) {
+    char score_info[42] = {0};
+    char score_value[32] = {0};
+    get_string_from_number((unsigned long long) score, score_value);
+    snprintf(score_info, 41, "Score : %s", score_value);
+    MLV_draw_adapted_text_box_with_font(0,
+                                        0,
+                                        score_info,
+                                        win->right_bar_font,
+                                        1,
+                                        TRANSPARANT,
+                                        MLV_COLOR_BLACK,
+                                        MLV_rgba(255, 255, 255, 230),
                                         MLV_TEXT_CENTER);
 }
 

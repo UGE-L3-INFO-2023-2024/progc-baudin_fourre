@@ -73,7 +73,8 @@ void wave_generation(MonsterList *monster_list, const Map *map, int nb_wave) {
 
     for (int i = 0; i < nb_monsters; i++) {
         monster_start_time = time_future(i * (1.0 / speed));
-        new_monster = create_new_monster(map, speed, hp, monster_start_time);
+        new_monster =
+            create_new_monster(map, speed, hp, monster_start_time, nb_wave);
         LIST_INSERT_HEAD(monster_list, new_monster, entries);
     }
 }
