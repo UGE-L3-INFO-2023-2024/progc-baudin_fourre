@@ -16,9 +16,19 @@
 #include "Gems.h"
 #include "Utils.h"
 
+/**
+ * @brief Macro to get the cell at the given coordinates
+ */
 #define CI(x) (x).col][(x).line
+
+/**
+ * @brief Macro to get the cell from a position casted to int
+ */
 #define CI_RAW_POS(p) ((int) ((p).x))][((int) ((p).y))
 
+/**
+ * @brief Enumerates the different types of cells
+ */
 typedef enum {
     EMPTY = 0,
     TOWER,
@@ -27,6 +37,9 @@ typedef enum {
     HOME,
 } CellType;
 
+/**
+ * @brief Structure representing a cell of the map
+ */
 typedef struct {
     CellType type;
     Coord coord;
@@ -36,13 +49,19 @@ typedef struct {
     };
 } Cell;
 
+/**
+ * @brief Structure representing the map
+ */
 typedef struct {
     Cell cells[MAP_WIDTH][MAP_HEIGHT];
     Coord nest;
 } Map;
 
-Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir);
-
+/**
+ * @brief Generates a map with a path from the nest to the home
+ *
+ * @return the generated map
+ */
 Map generate_map(void);
 
 /**
@@ -58,9 +77,9 @@ Direction get_position_direction(const Map *map, Position position);
 /**
  * @brief Checks if the `coord` are within the map
  *
- * @param coord The Coord to check
- * @return int 1 if the coordinates are in the map, 0 otherwise
+ * @param coord the coord to check
+ * @return true if the coordinates are in the map, false otherwise
  */
-int is_in_map(Coord coord);
+bool is_in_map(Coord coord);
 
 #endif // __MAP_H__

@@ -10,9 +10,9 @@
 #include "Events.h"
 
 #include <MLV/MLV_all.h>
+#include <assert.h>
 #include <stdlib.h>
 
-#include "Graphic.h"
 #include "Map.h"
 #include "Utils.h"
 
@@ -50,29 +50,30 @@ Event get_events(void) {
 }
 
 // Returns the index in the inventory of the gem selected
-int get_selected_inventory_gem(Event event, WindowInfo win) {
-    return ((event.mouse.line - win.inventory.y)
-            / (win.inventory.size / INVENTORY_COLS))
+int get_selected_inventory_gem(Event event, const WindowInfo *win) {
+    assert(event.type == CLICK);
+    return ((event.mouse.line - win->inventory.y)
+            / (win->inventory.size / INVENTORY_COLS))
                * INVENTORY_COLS
-           + (event.mouse.col - win.inventory.x)
-                 / (win.inventory.size / INVENTORY_COLS);
+           + (event.mouse.col - win->inventory.x)
+                 / (win->inventory.size / INVENTORY_COLS);
 }
 
-// Returns 1 if the Coord `click` are within the Square `button`, or 0
+// Returns true if the Coord `click` are within the Square `button`, or false
 // otherwise
-int is_click_in_button(Coord click, Square button) {
+bool is_click_in_button(Coord click, Square button) {
     if (click.col < button.x || click.col > button.x + button.size)
-        return 0;
+        return false;
     if (click.line < button.y || click.line > button.y + button.length)
-        return 0;
-    return 1;
+        return false;
+    return true;
 }
 
-// Returns 1 if the Coord `click` are in the game window, or 0 otherwise
-int is_click_in_game(Coord click, int cell_size) {
+// Returns true if the Coord `click` are in the game window, or false otherwise
+bool is_click_in_game(Coord click, int cell_size) {
     if (click.col > MAP_WIDTH * cell_size)
-        return 0;
+        return false;
     if (click.line > MAP_HEIGHT * cell_size)
-        return 0;
-    return 1;
+        return false;
+    return true;
 }

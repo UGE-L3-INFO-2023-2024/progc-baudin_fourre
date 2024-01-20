@@ -11,10 +11,12 @@
 #define __ERROR_H__
 
 #include "Timer.h"
-#include "Window.h"
 
 #define ERROR_TIMEOUT 3
 
+/**
+ * @brief Enumerates the different types of errors that can occur in the game
+ */
 typedef enum {
     NO_ERROR,
     MISSING_MANA,
@@ -23,31 +25,34 @@ typedef enum {
     MAX_TOWER_COUNT,
 } ErrorType;
 
+/**
+ * @brief Structure representing an error
+ */
 typedef struct {
     ErrorType type;
     Timestamp timeout;
 } Error;
 
 /**
- * @brief Initializes an Error structure with type : NO_ERROR
+ * @brief Initializes an Error with type NO_ERROR
  *
- * @return Error
+ * @return the initialized Error
  */
 Error init_error(void);
 
 /**
  * @brief Modifies the `error` with the new `type`
  *
- * @param error
- * @param type
+ * @param error Error to modify
+ * @param type New type of the error
  */
 void new_error(Error *error, ErrorType type);
 
 /**
  * @brief Get the error message from its type
  *
- * @param error Error to get the message from
- * @return char* the message associated to the error type
+ * @param error the error to get the message from
+ * @return the message associated to the error type
  */
 char *get_error_message(Error error);
 

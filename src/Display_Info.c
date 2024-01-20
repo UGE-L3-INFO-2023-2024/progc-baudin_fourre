@@ -35,9 +35,9 @@ void get_string_from_number(unsigned long long number, char *nb_str) {
                 number /= 1000;
             }
         }
-        snprintf(nb_str, 32, "%lld,%d%c", number, frac_nb, suffix);
+        snprintf(nb_str, 31, "%lld,%d%c", number, frac_nb, suffix);
     } else
-        snprintf(nb_str, 32, "%lld", number);
+        snprintf(nb_str, 31, "%lld", number);
 }
 
 // Displays the error in the right bar of the window
@@ -92,7 +92,7 @@ void draw_mana(Mana mana, const WindowInfo *win) {
 // displays the cost of adding a new tower over the new tower button
 static void display_new_tower_cost(const WindowInfo *win) {
     int w = 0, h = 0;
-    char cost[33] = {0};
+    char cost[32] = {0};
     get_string_from_number((unsigned long long) mana_required_tower(win->nb_towers), cost);
     MLV_get_size_of_text_with_font(cost, &w, &h, win->right_bar_font);
     MLV_draw_adapted_text_box_with_font(
@@ -112,7 +112,7 @@ static void display_new_tower_cost(const WindowInfo *win) {
 // displays the cost of adding a new gem over the new gem button
 static void display_new_gem_cost(const WindowInfo *win) {
     int w = 0, h = 0;
-    char cost[33] = {0};
+    char cost[32] = {0};
     get_string_from_number((uint64_t) (100 * pow(2, win->new_gem_level)), cost);
     MLV_get_size_of_text_with_font(cost, &w, &h, win->right_bar_font);
     MLV_draw_adapted_text_box_with_font(

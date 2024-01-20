@@ -16,12 +16,11 @@
 #include "Window.h"
 
 /**
- * @brief draws the game in int entirety according to the current action
+ * @brief draw the entire game based on the current action
  *
- * @param game address of the Game structure to draw
+ * @param game the game to draw
  * @param action current UserAction of the game
- * @param win address of the WindowInfo containing information on the graphic
- * window
+ * @param win the WindowInfo containing information on the window
  */
 void draw_game(Game *game, UserAction action, WindowInfo *win);
 

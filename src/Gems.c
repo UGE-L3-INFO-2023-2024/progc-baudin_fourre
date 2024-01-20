@@ -43,8 +43,7 @@ Gem fuse_gems(Gem first, Gem second) {
 }
 
 // Allocates a new ActiveGem for the `gem`.
-// Returns the address of the ActiveGem allocated, or NULL if there was an
-// error.
+// Returns the address of the ActiveGem allocated
 static ActiveGem *create_new_activegem(Gem gem, Coord tower) {
     // Timestamp instant_time;
     ActiveGem *active_gem = malloc(sizeof(ActiveGem));
@@ -70,6 +69,7 @@ add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower) {
     ActiveGem *activegem = create_new_activegem(gem, tower);
     if (!activegem)
         return NULL;
+
     LIST_INSERT_HEAD(activegem_list, activegem, entries);
 
     return activegem;

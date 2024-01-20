@@ -24,12 +24,11 @@
 #define SELECTED_COLOR  MLV_rgba(0, 0, 0, 100)
 #define TRANSPARANT     MLV_rgba(255, 255, 255, 0)
 
-// Returns the RGBA representation of the Hue `hue`
 /**
- * @brief Calculates the RGBA color from the Hue structure
+ * @brief Calculates the RGBA color from the Hue
  *
- * @param hue Hue structure to convert to RGBA
- * @return MLV_Color the RGBA color converted
+ * @param hue Hue to convert to RGBA
+ * @return the RGBA color converted as an MLV_Color
  */
 MLV_Color hue_to_rgba(Hue hue);
 

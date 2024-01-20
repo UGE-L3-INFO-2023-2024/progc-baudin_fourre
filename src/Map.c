@@ -13,8 +13,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "Mana.h"
-
 static Coord random_nest_coords(void) {
     return (Coord){
         .col = MLV_get_random_integer(0 + MARGIN, MAP_WIDTH - MARGIN),
@@ -39,7 +37,7 @@ static void init_map(Map *map) {
     }
 }
 
-Cell *next_cell_direction(const Map *map, const Cell *cell, Direction dir) {
+static Cell *next_cell_from_direction(const Map *map, const Cell *cell, Direction dir) {
     assert(map);
     assert(cell);
 
@@ -65,7 +63,7 @@ static bool check_around(const Map *map,
         for (int i = 0; i < 4; i++) {
             if (i != forbidden_dir && i != (dir ^ 1)
                 && !check_around(map,
-                                 next_cell_direction(map, cell, i),
+                                 next_cell_from_direction(map, cell, i),
                                  i,
                                  forbidden_dir,
                                  dist - 1)) {
@@ -79,7 +77,7 @@ static bool check_around(const Map *map,
 static int
 distance_reached_direction(const Map *map, const Cell *cell, Direction dir) {
     int distance = 0;
-    while ((cell = next_cell_direction(map, cell, dir))
+    while ((cell = next_cell_from_direction(map, cell, dir))
            && !out_of_edges(cell->coord, MARGIN - 1)
            && check_around(map, cell, dir, (dir ^ 1), MARGIN - 1)) {
         distance++;
@@ -148,7 +146,7 @@ Map generate_map(void) {
             /** trace path **/
             for (int i = 0; i < random_length; i++) {
                 cell->direction = random_dir;
-                cell = next_cell_direction(&map, cell, random_dir);
+                cell = next_cell_from_direction(&map, cell, random_dir);
                 assert(cell);
                 cell->type = PATH;
             }
@@ -174,13 +172,13 @@ Map generate_map(void) {
     return map;
 }
 
-// Returns 1 if the coordinates `coord` are within the map, or 0 otherwise
-int is_in_map(Coord coord) {
+// Returns true if the coordinates `coord` are within the map, or false otherwise
+bool is_in_map(Coord coord) {
     return coord.col >= 0 && coord.line >= 0 && coord.col < MAP_WIDTH
            && coord.line < MAP_HEIGHT;
 }
 
-// Returns the direction of the cell where the `position`is situated
+// Returns the direction of the cell where the `position` is situated
 Direction get_position_direction(const Map *map, Position position) {
     Cell cell = map->cells[CI_RAW_POS(position)];
     if (cell.type != PATH && cell.type != NEST)

@@ -11,7 +11,7 @@
 
 // Here we want to use the macros from sys/queue.h module
 // #include <sys/queue.h>
-// because this module is not standard, we copy/paste macros here
+// because this module is not standard, we copy-paste macros here
 
 /*
  * List definitions.

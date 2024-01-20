@@ -26,7 +26,7 @@ assign_rgb(double *R, double *G, double *B, double r, double g, double b) {
 
 // Returns the RGBA representation of the Hue `hue`
 MLV_Color hue_to_rgba(Hue hue) {
-    assert(hue < 360);
+    assert(hue >= 0 && hue < 360);
     double H = hue / 60.0;
     double L = .6;
     double S = 1.;

@@ -13,7 +13,11 @@
 #include "Graphic_Utils.h"
 #include "Utils.h"
 #include "Window.h"
+#include <stdbool.h>
 
+/**
+ * @brief Enum of the different types of events that can occur in the game
+ */
 typedef enum {
     NOEVENT,
     CLICK,
@@ -22,43 +26,46 @@ typedef enum {
     QUIT,
 } EventType;
 
+/**
+ * @brief Structure representing an event
+ */
 typedef struct {
     EventType type;
     Coord mouse;
 } Event;
 
 /**
- * @brief Gets the keyboard event from the user, if there's one
+ * @brief Gets the interface event from the user, if there's one
  *
- * @return Event the event retrieved
+ * @return the event retrieved
  */
 Event get_events(void);
 
 /**
  * @brief Get the index of the selected gem of the inventory from an event
  *
- * @param event Event retrieved (click of the mouse)
+ * @param event Event retrieved (must be of type click), with the coordinates of the click
  * @param win Information of the current window
- * @return int index of the selected gem of the inventory
+ * @return index of the selected gem of the inventory
  */
-int get_selected_inventory_gem(Event event, WindowInfo win);
+int get_selected_inventory_gem(Event event, const WindowInfo *win);
 
 /**
- * @brief Checks if the Coord `click`are within the Square `button`
+ * @brief Checks if the Coord `click` are within the Square `button`
  *
- * @param click
- * @param button
- * @return int 1 if the click is in the square, 0 otherwise
+ * @param click Coordinates of the click
+ * @param button Square to check
+ * @return true if the click is in the square, false otherwise
  */
-int is_click_in_button(Coord click, Square button);
+bool is_click_in_button(Coord click, Square button);
 
 /**
  * @brief Checks if the Coord `click` are in the game window
  *
  * @param click Coordinates of the click
  * @param cell_size size of a cell
- * @return int 1 if the click is in the Game window, 0 otherwise
+ * @return true if the click is in the Game window, false otherwise
  */
-int is_click_in_game(Coord click, int cell_size);
+bool is_click_in_game(Coord click, int cell_size);
 
 #endif // __EVENTS_H__

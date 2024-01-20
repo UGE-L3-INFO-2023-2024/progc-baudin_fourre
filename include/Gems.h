@@ -15,6 +15,9 @@
 #include "Timer.h"
 #include "Utils.h"
 
+/**
+ * @brief Structure representing a gem
+ */
 typedef struct {
     short damage_mult;
     int level;
@@ -22,6 +25,9 @@ typedef struct {
     Element type;
 } Gem;
 
+/**
+ * @brief Structure representing an active gem (a gem that has been placed on a tower)
+ */
 typedef struct ActiveGem {
     Gem gem;
     Coord tower;
@@ -31,6 +37,9 @@ typedef struct ActiveGem {
     LIST_ENTRY(ActiveGem) entries;
 } ActiveGem;
 
+/**
+ * @brief Structure representing a linked list of active gems
+ */
 typedef LIST_HEAD(ActiveGemList, ActiveGem) ActiveGemList;
 
 /**
@@ -42,13 +51,12 @@ typedef LIST_HEAD(ActiveGemList, ActiveGem) ActiveGemList;
 Gem generate_pure_gem(int level);
 
 /**
- * @brief Adds the `gem` at the head of the `activegem_list`
+ * @brief Creates an active gem from a gem and adds it to the list of active gems
  *
- * @param activegem_list address of the head og the list of active gems
- * @param gem Gem to add to the list
- * @param tower Address of the cell where the active gem will be placed
- * @return ActiveGem* the address of the gem created, or NULL if there was an
- * error
+ * @param activegem_list the list of active gems
+ * @param gem the gem to add to the list
+ * @param tower the cell where the active gem will be placed
+ * @return the new active gem allocated
  */
 ActiveGem *
 add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower);
@@ -56,16 +64,16 @@ add_to_activegemslist(ActiveGemList *activegem_list, Gem gem, Coord tower);
 /**
  * @brief Frees the space allocated for the list of active gems
  *
- * @param activegems Address of the head of the list of active gems
+ * @param activegems the list of active gems
  */
 void free_activegems(ActiveGemList *activegems);
 
 /**
  * @brief Fuses gems `first` and `second` into a new gem of higher level
  *
- * @param first
- * @param second
- * @return Gem the resulting Gem of the fusion
+ * @param first the first gem to fusion
+ * @param second the second gem to fustion
+ * @return the resulting gem of the fusion
  */
 Gem fuse_gems(Gem first, Gem second);
 

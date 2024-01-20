@@ -16,11 +16,10 @@
 #include "Window.h"
 
 /**
- * @brief Get the shortened string associated to the `number`
+ * @brief Get the shortened string associated to the `number` with standard prefixes 'k', 'M' and 'G'
  *
- * @param number
- * @param nb_str address of the string to put the string obtained from the
- * number
+ * @param number the number to shorten
+ * @param nb_str the string to write (must be 32 char allocated)
  */
 void get_string_from_number(unsigned long long number, char *nb_str);
 

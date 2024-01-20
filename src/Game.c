@@ -9,12 +9,11 @@
 
 #include "Game.h"
 
-#include <stdint.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "Error.h"
 #include "Gems.h"
-#include "Graphic.h"
 #include "Mana.h"
 #include "Monsters.h"
 #include "Queue.h"
@@ -22,6 +21,7 @@
 #include "Timer.h"
 #include "Utils.h"
 #include "Window.h"
+#include "Waves.h"
 
 // Returns a Game structure with its initial values
 Game init_game(void) {
@@ -39,30 +39,30 @@ Game init_game(void) {
     };
 }
 
-// Returns 0 if a tower couldn't be added to the map at the coordinates
-// `coord`, or 1 otherwise
-int add_tower(Game *game, WindowInfo *win, Coord coord) {
+// Returns false if a tower couldn't be added to the map at the coordinates
+// `coord`, or true otherwise
+bool add_tower(Game *game, WindowInfo *win, Coord coord) {
     if (win->nb_towers > NB_TOWERS_MAX)
         new_error(&game->error, MAX_TOWER_COUNT);
     if (!is_in_map(coord) || game->map.cells[CI(coord)].type != EMPTY)
-        return 0;
+        return false;
     if (!mana_buy_tower(&game->mana, win->nb_towers, &game->error))
-        return 0;
+        return false;
     game->map.cells[CI(coord)].type = TOWER;
     game->map.cells[CI(coord)].gem = NULL;
     win->nb_towers += 1;
-    return 1;
+    return true;
 }
 
 // Creates a new pure gem, adding it to the inventory
-// Returns 1 if the gem could be created, 0 otherwise
-int new_gem(Game *game, int level) {
+// Returns true if the gem could be created, false otherwise
+bool new_gem(Game *game, int level) {
     if (!mana_buy_gem(&game->mana, level, &game->error))
-        return 0;
+        return false;
     Gem new_gem = generate_pure_gem(level);
     if (!add_to_inventory(&game->inventory, new_gem, &game->error))
         add_mana(&game->mana, (int) (100 * pow(2, level)));
-    return 1;
+    return true;
 }
 
 // Move the monsters of the `game` according to their movement since `time`
@@ -74,7 +74,7 @@ void move_monsters(Game *game, Timestamp time) {
             move_monster(&game->map, monster, elapsed);
         if (game->map.cells[CI_RAW_POS(monster->position)].type == HOME) {
             if (!mana_banish_monster(&game->mana, monster, &game->error))
-                game->defeat = 1;
+                game->defeat = true;
             monster->position = coord_to_center_position(game->map.nest);
             monster->direction = game->map.cells[CI(game->map.nest)].direction;
             free_shots(&monster->shots);
@@ -242,6 +242,8 @@ void damage_monsters(Game *game) {
     LIST_FOREACH_SAFE(monster, &game->monsters, entries, next_m) {
         Shot *shot, *next_s;
         LIST_FOREACH_SAFE(shot, &monster->shots, entries, next_s) {
+            // When the shot reaches the monster, coordinates are set to be equal
+            // so here we check if floating point numbers are equal, but that's ok
             if (!EQUAL_POSITIONS(shot->position, monster->position))
                 continue;
             Gem gem = shot->source;

@@ -22,7 +22,7 @@ typedef enum {
  * @brief Generates a new random wave adding the monsters created to the
  * monster list
  *
- * @param monster_list address of the list of monsters
+ * @param monster_list the list of monsters
  * @param map Map where the wave is
  * @param nb_wave number of the wave generated
  */

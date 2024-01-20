@@ -41,8 +41,8 @@ Position get_new_position(Position old_pos, double distance, Vector move) {
     return new_pos;
 }
 
-// Returns 1 is the `position` is centered in a cell, or else 0
-int is_position_center(Position position) {
+// Returns true is the `position` is centered in a cell, false otherwise
+bool is_position_center(Position position) {
     double margin = 0.05;
     double x = position.x - (int) position.x;
     double y = position.y - (int) position.y;
@@ -52,9 +52,8 @@ int is_position_center(Position position) {
     return 0;
 }
 
-// Returns 1 if the position is past the center of the `next_cell` according to
-// te `direction`, 0 otherwise
-int has_past_center_position(Position position,
+// Returns true if the position is past the center of the `next_cell` according to the `direction`, false otherwise
+bool has_past_center_position(Position position,
                              Direction dir,
                              Coord next_cell) {
     Position next = coord_to_center_position(next_cell);

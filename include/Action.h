@@ -14,7 +14,9 @@
 #include "Game.h"
 #include "Window.h"
 
-// Enumerates the various possible actions of the user
+/**
+ * @brief Enumerates the various possible actions of the user
+ */
 typedef enum {
     NO_ACTION,
     NEW_TOWER,
@@ -35,26 +37,23 @@ typedef enum {
 } UserAction;
 
 /**
- * @brief Get the user action object
+ * @brief Get the user action from the interactions with the game
  *
- * @param previous_action the UserAction of the game, before the present, from
- * which the current UserAction will depend
- * @param event Event retrieved from which to get the corresponding UserAction
- * @param win WindowInfo containing information on the current window
- * @return UserAction
+ * @param previous_action the UserAction of the game, before the present, from which the current UserAction will depend
+ * @param event the Event retrieved from which to get the corresponding UserAction
+ * @param win the WindowInfo containing information on the current window
+ * @return the UserAction realized by the user
  */
 UserAction
 get_user_action(UserAction previous_action, Event event, const WindowInfo *win);
 
 /**
- * @brief Performs the correct action on the `game`, depending on the current
- * `action`
+ * @brief Performs the correct action on the `game` depending on the current `action`
  *
- * @param action adress of the UserAction previously retrieved
+ * @param action the UserAction previously retrieved
  * @param event the Event previously retrieved
- * @param game Address of the current Game to modify
- * @param win Address of the WindowInfo containing information on the current
- * window
+ * @param game the current Game to modify
+ * @param win the WindowInfo containing information on the current window
  */
 void perform_user_action(UserAction *action,
                          Event event,

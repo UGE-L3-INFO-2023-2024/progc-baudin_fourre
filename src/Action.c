@@ -180,18 +180,18 @@ void perform_user_action(UserAction *action,
             *action = NO_ACTION;
             break;
         case SELECT_GEM:
-            win->selected_gem = get_selected_inventory_gem(event, *win);
+            win->selected_gem = get_selected_inventory_gem(event, win);
             *action = WAIT_TOWER;
             break;
         case SELECT_FUSE_GEM:
-            win->selected_gem = get_selected_inventory_gem(event, *win);
+            win->selected_gem = get_selected_inventory_gem(event, win);
             if (win->selected_gem >= game->inventory.size)
                 *action = WAIT_FUSE_GEM;
             else
                 *action = WAIT_SECOND_FUSE_GEM;
             break;
         case FUSE_GEM:
-            selected_gem = get_selected_inventory_gem(event, *win);
+            selected_gem = get_selected_inventory_gem(event, win);
             if (selected_gem >= game->inventory.size
                 || selected_gem == win->selected_gem)
                 *action = WAIT_SECOND_FUSE_GEM;

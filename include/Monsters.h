@@ -18,10 +18,16 @@
 
 #define HP_MULT 10
 
+/**
+ * @brief Structure representing the effects applied to a monster
+ */
 typedef struct {
     ElementEffect type[4];
 } Effects;
 
+/**
+ * @brief Structure representing the information of a monster
+ */
 typedef struct Monster {
     int speed;
     double hp_init;
@@ -37,6 +43,9 @@ typedef struct Monster {
     Direction direction;
 } Monster;
 
+/**
+ * @brief Structure representing a linked list of monsters
+ */
 typedef LIST_HEAD(MonsterList, Monster) MonsterList;
 
 /**
@@ -46,8 +55,7 @@ typedef LIST_HEAD(MonsterList, Monster) MonsterList;
  * @param speed speed of the monster, in cells per seconds
  * @param HP initial HP of the monster
  * @param start_time time when the monster leaves the nest
- * @return Monster* address of the Monster structure allocated,
- * or NULL if there was an allocation error
+ * @return the Monster structure allocated
  */
 Monster *
 create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
@@ -55,36 +63,39 @@ create_new_monster(const Map *map, int speed, int HP, Timestamp start_time);
 /**
  * @brief Frees the space allocated for the list of monsters
  *
- * @param monsters address of the list of monsters
+ * @param monsters the list of monsters
  */
 void free_monsters(MonsterList *monsters);
 
+/**
+ * @brief Frees an allocated monster
+ *
+ * @param monster the monster to free
+ */
 void free_monster(Monster *monster);
 
 /**
- * @brief Moves the monster on the map for a duration of
- * `time_elapsed`
+ * @brief Moves the monster on the map for a duration of `time_elapsed`
  *
  * @param map Map where the monster moves
- * @param monster Address of the monster to modify
- * @param time_elapsed time elapsed during the movement of the monster in
- * seconds
+ * @param monster the monster to move
+ * @param time_elapsed time elapsed during the movement of the monster in seconds
  */
 void move_monster(const Map *map, Monster *monster, double time_elapsed);
 
 /**
  * @brief Gets the value of the damage of the `gem` on the `monster`
  *
- * @param monster
- * @param gem
- * @return double The value of the damage
+ * @param monster the monster to damage
+ * @param gem the gem that damages
+ * @return the value of the damage
  */
 double get_damage(const Monster *monster, Gem gem);
 
 /**
  * @brief Applies the `damage` to the `monster`
  *
- * @param monster Address of the Monster to apply the damage to
+ * @param monster the monster to apply the damage to
  * @param damage quantity of damage to apply
  */
 void apply_damage(Monster *monster, double damage, double *add_damage);
@@ -92,22 +103,25 @@ void apply_damage(Monster *monster, double damage, double *add_damage);
 /**
  * @brief Applies the extra_damage attached to the `monster` if there's one
  *
- * @param monster Address of the Monster structure
+ * @param monster the Monster structure
  */
 void apply_extra_damage(Monster *monster, double *add_damage);
 
+/**
+ * @brief Tell if the monster is dead
+ *
+ * @param monster the monster to check
+ * @return true if the monster is dead, false otherwise
+ */
 bool is_dead_monster(const Monster *monster);
 
 /**
  * @brief Get the next monster in the radius of pos
  *
- * @param monsters list of monsters to initialize the first monster
- * @param pos Position arounnd which the radius is checked
- * @param radius
- * @param start true to initialize the first monster, false to return the next
- * monster in radius
- * @return Monster* the address of the next monster in radius, or NULL if the
- * list has reached its end
+ * @param monster a monster in the list to check first and start from
+ * @param pos position around which the radius is checked
+ * @param radius radius of the circle around pos
+ * @return the next monster in radius (can be the first monster passed) or NULL if the list has reached its end
  */
 Monster *
 get_next_monster_in_radius(Monster *monster, Position pos, double radius);

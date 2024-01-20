@@ -37,7 +37,7 @@ typedef struct {
 /**
  * @brief Initializes the graphic window
  *
- * @param win Address of the WindowInfo structure to intialize
+ * @param win the WindowInfo structure to intialize
  */
 void init_graphic(WindowInfo *win);
 
@@ -66,7 +66,7 @@ void refresh(void);
 /**
  * @brief Clears the window (displays a grey rectangle over the window)
  *
- * @param win Address of the WindowInfo containing information on the window to
+ * @param win the WindowInfo containing information on the window to
  * quit
  */
 void clear_window(WindowInfo win);
@@ -74,7 +74,7 @@ void clear_window(WindowInfo win);
 /**
  * @brief Quits and frees the window
  *
- * @param win Address of the WindowInfo containing information on the window to
+ * @param win the WindowInfo containing information on the window to
  * quit
  */
 void quit(WindowInfo *win);
