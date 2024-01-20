@@ -91,11 +91,21 @@ Dans notre structure de jeu, nous avons décidé de stocker les monstres, les ti
 
 ### Gestion du chemin des monstres
 
-Afin de générer le chemin aléatoire des monstres, nous avons utilisé l'algorithme indiqué dans le sujet. Le chemin est ensuite stocké dans le module `Map`, en changeant le type des cellules de la carte faisant partie du chemin et en y ajoutant leur direction. Nous stockons également dans la map les coordonnées du nid des montres. Afin de parcourir le chemin, il nous suffit donc de partir du nid des monstres et de suivre le chemin grâce aux directions de chaque cellule. De même, nous pouvons facilement calculer la prochain cellule où le monstre doit se déplacer.
+La génération aléatoire du chemin des monstres est faite avec l'algorithme indiqué dans le sujet. Le chemin est ensuite stocké dans le module `Map`, en changeant le type des cellules de la carte faisant partie du chemin et en y ajoutant leur direction. Nous stockons également dans la map les coordonnées du nid des montres. Afin de parcourir le chemin, il nous suffit donc de partir du nid des monstres et de suivre le chemin grâce aux directions de chaque cellule. De même, nous pouvons facilement calculer la prochain cellule où le monstre doit se déplacer.
+
+### Tours et gemmes
+
+Lorsque l'on ajoute une tour à la map, on modifie le type de la cellule de la carte du module `Map`. On y ajoute également la gemme si une est positioné dessus.
+
+Lorsqu'une gemme est positionnée sur une tour, on ajoute la gemme comme "gemme active" dans une liste chainée de gemmes actives. Ces à partir de cette liste qu'on créer les tirs en les parcourant.
 
 ### Mouvemement des monstres et des tirs
 
-Afin de gérer le mouvement des monstres et des tirs, nous avons utilisé le temps calculé dans la boucle principale du jeu, correspondant au temps de dernière mise à jour. Cela permet de savoir combien de temps s'est écoulé depuis la dernière mise à jour et donc de déterminer la distance parcourue par le monstre ou le tir depuis la dernière mise à jour.
+Pour gérer le mouvement des monstres et des tirs, nous avons utilisé le temps calculé dans la boucle principale du jeu, correspondant au temps de dernière mise à jour. Cela permet de savoir combien de temps s'est écoulé depuis la dernière mise à jour et donc de déterminer la distance parcourue par le monstre ou le tir depuis la dernière mise à jour.
+
+### Stockage des tirs
+
+Les tirs sont stockés dans une liste chainée sur les monstres ciblés. Ainsi, si le monstre meurt en étant touché par un de ces tirs, tous les autres tirs le ciblant peuvent être supprimés facilement.
 
 ### Gestion des vagues
 
@@ -107,14 +117,16 @@ Afin d'afficher le jeu et de lire les événements, nous avons utilisé la bibli
 
 ### Frame rate et timer
 
-Afin de gérer le temps dans jeu, nous avons utilisé les structures de temps et les fonctions de `time.h`. Ainsi, nous initialisons un timer au début du jeu, et nous calculons pour les structures le nécessitant, le temps future auquel l'action se fera. Nous pouvons ainsi déterminer si une nouvelle vague doit être lancée, si un monstre doit se déplacer, ou si une gemme a terminé de charger, chacune des ces structures contenant un temps auquel il doivent se lancer, il suffit donc de regarder si ce temps a été dépassé.
+Pour la gestion du temps dans le jeu, nous avons utilisé les structures de temps et les fonctions de `time.h`. Ainsi, nous initialisons un timer au début du jeu, et nous calculons pour les structures le nécessitant, le temps future auquel l'action se fera. Nous pouvons ainsi déterminer si une nouvelle vague doit être lancée, si un monstre doit se déplacer, ou si une gemme a terminé de charger, chacune des ces structures contenant un temps auquel il doivent se lancer, il suffit donc de regarder si ce temps a été dépassé.
 
 ### Gestion des événements
 
-Afin de gérer les événements de l'utilisateur, nous avons utilisé la bibliothèque graphique MLV. Nous récupérons ainsi les clics de la souris et clavier à chaque framerate, qui sont ensuite traités par le module `Action` qui gère l'événement en fonction de l'action courant du joueur, et qui détermine ensuite la nouvelle action du joueur.
+Afin de gérer les événements d'entrées utilisateur, nous avons utilisé la bibliothèque graphique MLV. Nous récupérons ainsi les clics de la souris et clavier dans notre boucle principale, et ils sont ensuite traités par le module `Action` qui gère l'événement en fonction de l'action courante du joueur et qui détermine ensuite la nouvelle action du joueur.
 
 ### Gestion des erreurs
 
 Afin de gérer les erreurs de l'utilisateur, nous avons créé une structure `Error`. Cette structure contient un type d'erreur, et un temps de fin. Ainsi, lorsque l'utilisateur fait une erreur, nous créons une erreur avec le type d'erreur correspondant, et le temps de fin correspondant à un temps de 3 secondes dans le futur. Nous pouvons ainsi afficher l'erreur à l'écran à chaque affichage, et la faire disparaitre lorsque le temps de fin est dépassé.
 
 ## Conclusion
+
+
