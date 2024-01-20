@@ -66,8 +66,7 @@ Voici la liste des modules :
   - `Wave` : contient les fonctions permettant de générer les vagues d'ennemis
   - `Error` : contient la structure et les fonctions permettant de gérer les erreurs du jeu
   - `Inventory` : contient la structure de l'inventaire du jeu et les fonctions permettant de gérer l'inventaire
-  - `Timer` : contient la structure du timer du jeu et les fonctions permettant de gérer le
-  framerate du jeu
+  - `Timer` : contient la structure du timer du jeu et les fonctions permettant de gérer le framerate du jeu
   - `TowerDefense` : contient la boucle principale de jeu
 - Les modules permettant l'affichage du jeu:
   - `Window` : contient la structure de la fenêtre graphique du jeu et les fonctions permettant de gérer la fenêtre graphique et ses informations
@@ -88,7 +87,7 @@ Voici la liste des modules :
 
 ### Structures de listes chainées
 
-Dans notre structure de jeu, nous avons décidé de stocker les monstres, les tirs et les gemmes actives dans des listes chainées. Ainsi, nous pouvons facilement ajouter et supprimer des éléments de ces structures, et nous pouvons facilement parcourir ces structures pour afficher les éléments, ou pour gérer les collisions. Nous avons utilisé des macros pour gérer ces listes chainées, afin de pouvoir facilement créer des listes chainées pour ces différents structures.
+Dans notre structure de jeu, nous avons décidé de stocker les monstres, les tirs et les gemmes actives dans des listes chainées. Ainsi, nous pouvons facilement ajouter et supprimer des éléments de ces structures, et nous pouvons facilement parcourir ces structures pour afficher les éléments, ou pour gérer les collisions. Nous avons utilisé les macros du module `sys/queue.h` pour gérer ces listes chainées, afin de pouvoir facilement créer des listes chainées pour ces différents structures. `sys/queue.h` n'étant pas totalement standard, nous avons simplement copié les macros dans notre module `Queue`.
 
 ### Gestion du chemin des monstres
 
@@ -100,7 +99,7 @@ Afin de gérer le mouvement des monstres et des tirs, nous avons utilisé le tem
 
 ### Gestion des vagues
 
-Afin de gérer les vagues, nous avons utilisé le module `Wave`. Cette structure permet la génération des vagues d'ennemis, en fonction du niveau de la vague. Nous avons décidé de ne pas avoir de structures de vagues et de stocker les monstres de toutes les vagues dans une seule liste chainée. Nous avons en effet observé que les informations de la vague dont le monstre provenait n'etait utile que lors de la création du monstre, et que ces informations n'etaient plus utiles par la suite, les monstres étant ensuite gérés de manière indépendante.
+Afin de gérer les vagues, notre module `Wave` nous permet la génération des vagues d'ennemis, en fonction du niveau de la vague. Nous avons décidé de ne pas avoir de structures de vagues et de stocker les monstres de toutes les vagues dans une seule liste chainée. Nous avons en effet observé que les informations de la vague dont le monstre provenait n'etait utile que lors de la création du monstre, et que ces informations n'étaient plus utiles par la suite, les monstres étant ensuite gérés de manière indépendante.
 
 ### Gestion de la bibliothèque graphique MLV
 
@@ -108,8 +107,7 @@ Afin d'afficher le jeu et de lire les événements, nous avons utilisé la bibli
 
 ### Frame rate et timer
 
-Afin de gérer le temps dans jeu, nous avons utilisé les structure de temps et les fonctions de `time.h` et `sys/time.h`. Ainsi, nous initialisons un timer au début du jeu, et nous calculons pour les structures le nécessitant, le temps future auquel l'action se fera . Nous pouvons ainsi déterminer si une nouvelle vague doit être lancée, ou si un monstre doit se déplacer, ou si une gemme a terminé de charger, chacune des ces structures contenant un temps auquel il doivent se lancer, il suffit donc de regarder si ce temps a été dépassé.
-Afin de gérer le framerate du jeu, nous avons utilisé la bibliothèque graphique MLV. Cette bibliothèque permet d'attendre selon un framerate donné. Cela gère donc le temps écoulé pendant le frame et attend le temps restant.
+Afin de gérer le temps dans jeu, nous avons utilisé les structures de temps et les fonctions de `time.h`. Ainsi, nous initialisons un timer au début du jeu, et nous calculons pour les structures le nécessitant, le temps future auquel l'action se fera. Nous pouvons ainsi déterminer si une nouvelle vague doit être lancée, si un monstre doit se déplacer, ou si une gemme a terminé de charger, chacune des ces structures contenant un temps auquel il doivent se lancer, il suffit donc de regarder si ce temps a été dépassé.
 
 ### Gestion des événements
 
@@ -117,6 +115,6 @@ Afin de gérer les événements de l'utilisateur, nous avons utilisé la bibliot
 
 ### Gestion des erreurs
 
-Afin de gérer les erreurs de l'utilisateur, nous avons crée une structure `Erreur`. Cette structure contient un type d'erreur, et un temps de fin. Ainsi, lorsque l'utilisateur fait une erreur, nous créons une erreur avec le type d'erreur correspondant, et le temps de fin correspondant à un temps de 3 secondes dans le futur. Nous pouvons ainsi afficher l'erreur à l'écran à chaque affichage, et la faire disparaitre lorsque le temps de fin est dépassé.
+Afin de gérer les erreurs de l'utilisateur, nous avons créé une structure `Error`. Cette structure contient un type d'erreur, et un temps de fin. Ainsi, lorsque l'utilisateur fait une erreur, nous créons une erreur avec le type d'erreur correspondant, et le temps de fin correspondant à un temps de 3 secondes dans le futur. Nous pouvons ainsi afficher l'erreur à l'écran à chaque affichage, et la faire disparaitre lorsque le temps de fin est dépassé.
 
 ## Conclusion

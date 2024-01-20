@@ -11,7 +11,6 @@
 
 #define _DEFAULT_SOURCE 1
 #include <stdbool.h>
-#include <sys/time.h>
 #include <time.h>
 
 /**
